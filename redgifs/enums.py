@@ -62,7 +62,7 @@ class Tags(Enum):
     @staticmethod
     def search(query: str):
         """
-        A friendly method to get the closest tag name.
+        A friendly method to get the closest tag name. This is useful in searching for GIFs because RedGifs is case-sensitive (example: `cum` and `Cum` gives different results).
 
         Parameters
         ----------

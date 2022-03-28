@@ -22,7 +22,7 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 """
 
-from typing import Any
+from typing import Any, Union
 
 class RedgifsError(BaseException):
     """Base class for all redgifs error"""
@@ -48,9 +48,6 @@ class HTTPException(RedgifsError):
     response: :class:`aiohttp.ClientResponse`
         The response of the failed HTTP request.
 
-    reason: :class:`str`
-        The reason of failed HTTP request.
-
     status: :class:`int`
         The status code of the HTTP request.
 
@@ -58,10 +55,10 @@ class HTTPException(RedgifsError):
         The original error message from RedGifs.
     """
 
-    def __init__(self, response: Any, json, async_: bool = False):
+    def __init__(self, response: Union[requests.Response, aiohttp.ClientResponse], json: Union[dict, str], _async: bool = False):
         self.response: Any = response
-        self.reason: str = response.reason
-        self.status: int = response.status if async_ else response.status_code
+        self.status: int = response.status if _async else response.status_code
+        self.error: str = json
         if isinstance(json, dict):
             self.error = json.get('errorMessage')
         

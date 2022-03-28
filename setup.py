@@ -22,7 +22,7 @@ setup(
     author='scrazzz',
     url='https://github.com/scrazzz/redgifs',
     project_urls={
-        'Documentation': 'https://github.com/scrazzz/redgifs',
+        'Documentation': 'https://redgifs.readthedocs.io',
         'Issue tracker': 'https://github.com/scrazzz/redgifs/issues'
     },
     version=version,
