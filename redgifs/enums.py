@@ -27,7 +27,7 @@ import difflib
 from enum import Enum
 from typing import List
 
-from .errors import NoMatchFound
+from .errors import InvalidTag
 
 class Order(Enum):
     """An enum representing the Order."""
@@ -75,9 +75,9 @@ class Tags(Enum):
         """
 
         try:
-            return difflib.get_close_matches(query, [x.value for x in Tags.__members__.values()])[0]
+            return difflib.get_close_matches(query.title(), [x.value for x in Tags.__members__.values()])[0]
         except IndexError:
-            raise NoMatchFound(query)
+            raise InvalidTag(query) from None
 
     big_tits = 'Big Tits'
     blowjob = 'Blowjob'

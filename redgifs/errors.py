@@ -22,23 +22,26 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 """
 
+import requests
+import aiohttp
+
 from typing import Any, Union
 
 class RedgifsError(BaseException):
     """Base class for all redgifs error"""
     pass
 
-class NoMatchFound(RedgifsError):
-    """Exception raised when no match was found.
+class InvalidTag(RedgifsError):
+    """Exception raised when no match was found for a tag.
     
     Attributes
     ----------
     query: :class:`str`
-        The query that was searched for.
+        The tag that was searched for.
     """
     def __init__(self, query: str):
         self.query: str = query
-        super().__init__(f'Match for "{query}" was not found')
+        super().__init__(f'Tag for "{query}" was not found.')
 
 class HTTPException(RedgifsError):
     """Exception raised when an HTTP Exception occurs.
