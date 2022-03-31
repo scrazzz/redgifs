@@ -22,22 +22,23 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 """
 
-from typing import List
+from typing import List, Dict, Any
 
 from .models import SearchResult, Gifs, URLs, Users
 
-# might not even use this tbh
-def parse_search(json: dict):
+
+def parse_search(searched_for: str, json: Dict[str, Any]):
     json_gifs = json['gifs']
     users = json['users']
     return SearchResult(
+        searched_for=searched_for,
         page=json['page'],
         pages=json['pages'],
         total=json['total'],
         gifs=[
             Gifs(
                 id=gif['id'],
-                create_date=gif['createDate'].
+                create_date=gif['createDate'],
                 has_audio=gif['hasAudio'],
                 width=gif['width'],
                 height=gif['height'],
@@ -53,10 +54,10 @@ def parse_search(json: dict):
                     poster=gif['urls']['poster'],
                     thumbnail=gif['urls']['thumbnail'],
                     vthumbnail=gif['urls']['vthumbnail']
-                )
+                ),
                 username=gif['userName'],
                 type=gif['type'],
-                avg_color=gif['avgColor']
+                avg_color=gif['avgColor'],
             ) for gif in json_gifs],
         users=[
             Users(
@@ -77,11 +78,11 @@ def parse_search(json: dict):
                 views=user['views'],
                 poster=user['poster'],
                 preview=user['preview'],
-                thumbnail=user['thumbnail']
+                thumbnail=user['thumbnail'],
             )
             for user in users
         ],
-        tags=json['tags']
+        tags=json['tags'],
     )
 
 

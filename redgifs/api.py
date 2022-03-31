@@ -26,6 +26,7 @@ from typing import List, Optional, Union
 
 from .enums import Order, Tags
 from .http import HTTP
+from .parser import parse_search
 
 class API:
     """The API Instance to get information from RedGifs API."""
@@ -68,11 +69,11 @@ class API:
         """
 
         if isinstance(search_text, str):
-            query = Tags.search(search_text)
+            st = Tags.search(search_text)
         elif isinstance(search_text, Tags):
-            query = search_text
-        resp = self.http.search(query, order, count, page)
-        return resp 
+            st = search_text.value
+        resp = self.http.search(st, order, count, page)
+        return parse_search(st, resp)
 
     def search_creators(self, *, page: int = 1, order: Order = Order.recent, verified: bool = False, tags: Optional[Union[List[Tags], List[str]]] = None):
         """

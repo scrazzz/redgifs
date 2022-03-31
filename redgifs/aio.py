@@ -26,6 +26,7 @@ from typing import List, Optional, Union
 
 from .http import *
 from .enums import Tags
+from .parser import parse_search
 
 class API:
     def __init__(self) -> None:
@@ -34,19 +35,20 @@ class API:
     async def get_tags(self):
         return (await self.http.get_tags())
 
+    async def get_gif(self, id: str):
+        resp = await self.http.get_gif(id)
+        return resp
+
     async def search(self, search_text: Union[str, Tags], *, order: Order = Order.recent, count: int = 80, page: int = 1):
         if isinstance(search_text, str):
-            query = Tags.search(search_text)
+            st = Tags.search(search_text)
         elif isinstance(search_text, Tags):
-            query = search_text
-        return (await self.http.search(query, order, count, page))
+            st = search_text.value
+        resp = await self.http.search(st, order, count, page)
+        return parse_search(st, resp)
     
     async def search_creators(self, *, page: int = 1, order: Order = Order.recent, verified: bool = False, tags: Optional[Union[List[Tags], List[str]]] = None):
         resp = await self.http.search_creators(page=page, order=order, verified=verified, tags=tags)
-        return resp
-
-    async def get_gif(self, id: str):
-        resp = await self.http.get_gif(id)
         return resp
 
     async def close(self) -> None:

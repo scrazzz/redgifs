@@ -22,7 +22,6 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 """
 
-import re
 import typing
 from urllib.parse import quote
 from typing import Any, ClassVar, List, Literal, Optional, Union
@@ -65,7 +64,7 @@ class HTTP:
         r = Route(
             'GET',
             '/v2/gifs/search?search_text={search_text}&order={order}&count={count}&page={page}',
-            search_text=search_text.value if isinstance(search_text, Tags) else search_text, order=order.value, count=count, page=page
+            search_text=search_text, order=order.value, count=count, page=page
         )
         return self.request(r, **params)
 

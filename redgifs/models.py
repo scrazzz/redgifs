@@ -75,9 +75,10 @@ class Users:
 
 @dataclass(slots=True)
 class SearchResult:
+    searched_for: str
     page: int
     pages: int
     total: int
-    gifs: List[Gifs]   #
-#    users: List[Users] #
-#    tags: List[str]
+    gifs: List[Gifs]
+    users: List[Users]
+    tags: List[str]

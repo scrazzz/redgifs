@@ -31,6 +31,6 @@ Exceptions
 
 .. autoexception:: RedgifsError
 
-.. autoexception:: NoMatchFound
+.. autoexception:: InvalidTag
 
 .. autoexception:: HTTPException
