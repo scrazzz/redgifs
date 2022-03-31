@@ -25,7 +25,7 @@ DEALINGS IN THE SOFTWARE.
 import requests
 import aiohttp
 
-from typing import Any, Union
+from typing import Any, Dict, Union
 
 class RedgifsError(BaseException):
     """Base class for all redgifs error"""
@@ -48,8 +48,8 @@ class HTTPException(RedgifsError):
 
     Attributes
     ----------
-    response: :class:`aiohttp.ClientResponse`
-        The response of the failed HTTP request.
+    response: Union[:class:`requests.Response`, :class:`aiohttp.ClientResponse`]
+        The response of the failed HTTP request. It may be either :class:`requests.Response` or :class:`aiohttp.ClientResponse`.
 
     status: :class:`int`
         The status code of the HTTP request.
@@ -58,11 +58,16 @@ class HTTPException(RedgifsError):
         The original error message from RedGifs.
     """
 
-    def __init__(self, response: Union[requests.Response, aiohttp.ClientResponse], json: Union[dict, str], _async: bool = False):
+    def __init__(self, response: Union[requests.Response, aiohttp.ClientResponse], json: Union[Dict[str, str], str], _async: bool = False):
         self.response: Any = response
-        self.status: int = response.status if _async else response.status_code
-        self.error: str = json
+
+        if isinstance(response, requests.Response):
+            self.status = response.status_code
+        elif isinstance(response, aiohttp.ClientResponse):
+            self.status = response.status
+
+        self.error: Dict[str, str] | str = json
         if isinstance(json, dict):
-            self.error = json.get('errorMessage')
-        
-        super().__init__(f'{self.status} {self.reason} (Error: {self.error})')
+            self.error = json.get('errorMessage') # type: ignore
+
+        super().__init__(f'{self.status} (Error: {self.error})')
