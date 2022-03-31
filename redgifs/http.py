@@ -83,7 +83,7 @@ class HTTP:
             )
         return self.request(r, **params)
 
-    def get_gif(self, id: str, **params):
+    def get_gif(self, id: str, **params: Any):
         r = Route(
             'GET',
             '/v2/gifs/{id}',
@@ -91,7 +91,7 @@ class HTTP:
         )
         return self.request(r, **params)
 
-    def close(self):
+    def close(self) -> None:
         self.__session.close()
 
 class AsyncHttp(HTTP):
@@ -102,7 +102,7 @@ class AsyncHttp(HTTP):
         url: str = route.url
         method: str = route.method
         async with self.__session.request(method, url, **kwargs) as resp:
-            js: aiohttp.ClientResponse = await resp.json()
+            js = await resp.json()
             if resp.status == 200:
                 return js
             else:

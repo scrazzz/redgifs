@@ -56,7 +56,7 @@ class API:
         Parameters
         ----------
         search_text: Union[str, :class:`Tags`]
-            The GIFs to search for. Can be a string or an instance of Tag.
+            The GIFs to search for. Can be a string or an instance of :class:`Tags`.
         
         order: Optional[:class:`Order`]
             The order of the GIFs to return.
