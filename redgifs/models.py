@@ -25,16 +25,24 @@ DEALINGS IN THE SOFTWARE.
 from dataclasses import dataclass
 from typing import List, Union
 
-@dataclass(slots=True)
+@dataclass()
 class URLs:
+    __slots__ = ('sd', 'hd', 'poster', 'thumbnail', 'vthumbnail')
+
     sd: str
     hd: str
     poster: str
     thumbnail: str
     vthumbnail: str
 
-@dataclass(slots=True)
+@dataclass()
 class Gifs:
+    __slots__ = (
+        'id', 'create_date', 'has_audio', 'width', 'height',
+        'likes', 'tags', 'verified', 'views', 'duration',
+        'published', 'urls', 'username', 'type', 'avg_color',
+    )
+
     id: int
     create_date: int
     has_audio: bool
@@ -52,8 +60,15 @@ class Gifs:
     avg_color: str
     # gallery
 
-@dataclass(slots=True)
+@dataclass()
 class Users:
+    __slots__ = (
+        'creation_time', 'description', 'followers', 'following', 'gifs',
+        'name', 'profile_image_url', 'profile_url', 'published_collections', 'published_gifs',
+        'subscription', 'url', 'username', 'verified', 'views',
+        'poster', 'preview', 'thumbnail',
+    )
+
     creation_time: int
     description: Union[str, None]
     followers: int
@@ -73,8 +88,12 @@ class Users:
     preview: str
     thumbnail: str
 
-@dataclass(slots=True)
+@dataclass()
 class SearchResult:
+    __slots__ = (
+        'searched_for', 'page', 'pages', 'total', 'gifs', 'users', 'tags',
+    )
+
     searched_for: str
     page: int
     pages: int
