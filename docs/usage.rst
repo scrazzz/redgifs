@@ -24,3 +24,5 @@ To install the development version:
 
 Examples
 --------
+
+Examples can be found in the examples directory of the repository.

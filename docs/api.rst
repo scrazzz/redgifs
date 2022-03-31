@@ -19,6 +19,7 @@ Enums
    :undoc-members:
 
 .. autoclass:: Tags
+   :noindex:
    :members:
 
 .. autoclass:: Tags
@@ -33,4 +34,4 @@ Exceptions
 
 .. autoexception:: InvalidTag
 
-.. autoexception:: HTTPException
+.. autoexception:: HTTPException(response, json)

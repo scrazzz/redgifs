@@ -3,7 +3,7 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to redgifs's documentation!
+redgifs
 ===================================
 
 Sync and Async Python Wrapper for RedGifs API.
@@ -12,10 +12,14 @@ Sync and Async Python Wrapper for RedGifs API.
    ⚠ This project is still under development.
 
 
-Contents
---------
+Getting started
+---------------
 
 .. toctree::
-
    usage
+
+API Reference
+-------------
+
+.. toctree::
    api
