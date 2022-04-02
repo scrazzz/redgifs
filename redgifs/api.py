@@ -26,11 +26,12 @@ from typing import List, Optional, Union
 
 from .enums import Order, Tags
 from .http import HTTP
-from .parser import parse_search
+from .parser import parse_search, parse_creators
+from .models import SearchResult, CreatorsResult
 
 class API:
     """The API Instance to get information from RedGifs API."""
-    def __init__(self):
+    def __init__(self) -> None:
         self.http: HTTP = HTTP()
 
     def get_tags(self):
@@ -49,7 +50,7 @@ class API:
         resp = self.http.get_gif(id)
         return resp
 
-    def search(self, search_text: Union[str, Tags], *, order: Order = Order.recent, count: int = 80, page: int = 1):
+    def search(self, search_text: Union[str, Tags], *, order: Order = Order.recent, count: int = 80, page: int = 1) -> SearchResult:
         """
         Search for a GIF.
 
@@ -75,29 +76,37 @@ class API:
         resp = self.http.search(st, order, count, page)
         return parse_search(st, resp)
 
-    def search_creators(self, *, page: int = 1, order: Order = Order.recent, verified: bool = False, tags: Optional[Union[List[Tags], List[str]]] = None):
+    def search_creators(
+        self,
+        *,
+        page: int = 1,
+        order: Order = Order.recent,
+        verified: bool = False,
+        tags: Optional[Union[List[Tags], List[str]]] = None
+    ) -> CreatorsResult:
         """
         Search for RedGifs Creators.
 
         Parameters
         ----------
         page: Optional[int]
-            The page number of the Creators to return.
+            The number of page to return.
 
         order: Optional[:class:`Order`]
-            The order of the Creators to return.
+            The order of the creators to return.
 
         verified: Optional[bool]
-            Wheather to only return verified Creators.
+            Wheather to only return verified creators.
 
         tags: Optional[Union[List[Tags], List[str]]]
             A list of tags to look for.
+            Narrows down the results to content creators that have contents with all those tags.
         """
         resp = self.http.search_creators(page=page, order=order, verified=verified, tags=tags)
-        return resp
+        return parse_creators(resp)
 
-    def close(self):
+    def close(self) -> None:
         """
-        Close the sessions.
+        Closes the session.
         """
         return self.http.close()

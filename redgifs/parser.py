@@ -22,10 +22,9 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 """
 
-from typing import List, Dict, Any
+from typing import Any, Dict
 
-from .models import SearchResult, Gifs, URLs, Users
-
+from .models import Gifs, URLs, Users, SearchResult, CreatorsResult
 
 def parse_search(searched_for: str, json: Dict[str, Any]):
     json_gifs = json['gifs']
@@ -58,7 +57,9 @@ def parse_search(searched_for: str, json: Dict[str, Any]):
                 username=gif['userName'],
                 type=gif['type'],
                 avg_color=gif['avgColor'],
-            ) for gif in json_gifs],
+            )
+            for gif in json_gifs
+        ],
         users=[
             Users(
                 creation_time=user['creationtime'],
@@ -70,6 +71,7 @@ def parse_search(searched_for: str, json: Dict[str, Any]):
                 profile_image_url=user['profileImageUrl'],
                 profile_url=user['profileUrl'],
                 published_collections=user['publishedCollections'],
+                status=user['status'],
                 published_gifs=user['publishedGifs'],
                 subscription=user['subscription'],
                 url=user['url'],
@@ -85,6 +87,34 @@ def parse_search(searched_for: str, json: Dict[str, Any]):
         tags=json['tags'],
     )
 
-
-def parse_search_creators(json: dict):
-    ...
+def parse_creators(json: Dict[str, Any]):
+    items = json['items']
+    return CreatorsResult(
+        items=[
+            Users(
+                creation_time=user['creationtime'],
+                description=user['description'],
+                followers=user['followers'],
+                following=user['following'],
+                gifs=user['gifs'],
+                name=user['name'],
+                profile_image_url=user['profileImageUrl'],
+                profile_url=user['profileUrl'],
+                published_collections=user['publishedCollections'],
+                status=user['status'],
+                published_gifs=user['publishedGifs'],
+                subscription=user['subscription'],
+                url=user['url'],
+                username=user['username'],
+                verified=user['verified'],
+                views=user['views'],
+                poster=user['poster'],
+                preview=user['preview'],
+                thumbnail=user['thumbnail'],
+            )
+            for user in items
+        ],
+        pages=json['pages'],
+        page=json['page'],
+        total=json['total'],
+    )

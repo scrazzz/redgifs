@@ -25,7 +25,7 @@ DEALINGS IN THE SOFTWARE.
 from dataclasses import dataclass
 from typing import List, Union
 
-@dataclass()
+@dataclass
 class URLs:
     __slots__ = ('sd', 'hd', 'poster', 'thumbnail', 'vthumbnail')
 
@@ -35,7 +35,7 @@ class URLs:
     thumbnail: str
     vthumbnail: str
 
-@dataclass()
+@dataclass
 class Gifs:
     __slots__ = (
         'id', 'create_date', 'has_audio', 'width', 'height',
@@ -60,7 +60,7 @@ class Gifs:
     avg_color: str
     # gallery
 
-@dataclass()
+@dataclass
 class Users:
     __slots__ = (
         'creation_time', 'description', 'followers', 'following', 'gifs',
@@ -79,16 +79,17 @@ class Users:
     profile_url: str
     published_collections: int
     published_gifs: int
+    status: str
     subscription: int
     url: str
     username: str
     verified: bool
     views: int
-    poster: str
-    preview: str
-    thumbnail: str
+    poster: str | None
+    preview: str | None
+    thumbnail: str | None
 
-@dataclass()
+@dataclass
 class SearchResult:
     __slots__ = (
         'searched_for', 'page', 'pages', 'total', 'gifs', 'users', 'tags',
@@ -101,3 +102,14 @@ class SearchResult:
     gifs: List[Gifs]
     users: List[Users]
     tags: List[str]
+
+@dataclass
+class CreatorsResult:
+    __slots__ = (
+        'items', 'pages', 'page', 'total'
+    )
+
+    items: List[Users]
+    pages: int
+    page: int
+    total: int
