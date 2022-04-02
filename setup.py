@@ -14,7 +14,10 @@ extras_require = {
     'docs': [
         'Sphinx==4.4.0',
         'furo==2022.2.23'
-    ]
+    ],
+    'test': [
+        'pytest==7.1.1'
+    ],
 }
 
 setup(
