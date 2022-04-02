@@ -34,4 +34,4 @@ Exceptions
 
 .. autoexception:: InvalidTag
 
-.. autoexception:: HTTPException(response, json)
+.. autoexception:: HTTPException

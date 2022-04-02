@@ -58,7 +58,7 @@ class HTTPException(RedgifsError):
         The original error message from RedGifs.
     """
 
-    def __init__(self, response: Union[requests.Response, aiohttp.ClientResponse], json: Union[Dict[str, str], str], _async: bool = False):
+    def __init__(self, response: Union[requests.Response, aiohttp.ClientResponse], json: Union[Dict[str, str], str]):
         self.response: Any = response
 
         if isinstance(response, requests.Response):
@@ -68,6 +68,6 @@ class HTTPException(RedgifsError):
 
         self.error: Dict[str, str] | str = json
         if isinstance(json, dict):
-            self.error = json.get('errorMessage') # type: ignore
+            self.error = json.get('errorMessage', '')
 
         super().__init__(f'{self.status} (Error: {self.error})')
