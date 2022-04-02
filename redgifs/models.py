@@ -23,7 +23,7 @@ DEALINGS IN THE SOFTWARE.
 """
 
 from dataclasses import dataclass
-from typing import List, Union
+from typing import List, Optional, Union
 
 @dataclass
 class URLs:
@@ -85,9 +85,9 @@ class Users:
     username: str
     verified: bool
     views: int
-    poster: str | None
-    preview: str | None
-    thumbnail: str | None
+    poster: Optional[str]
+    preview: Optional[str]
+    thumbnail: Optional[str]
 
 @dataclass
 class SearchResult:
