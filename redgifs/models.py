@@ -65,8 +65,8 @@ class Users:
     __slots__ = (
         'creation_time', 'description', 'followers', 'following', 'gifs',
         'name', 'profile_image_url', 'profile_url', 'published_collections', 'published_gifs',
-        'subscription', 'url', 'username', 'verified', 'views',
-        'poster', 'preview', 'thumbnail',
+        'status', 'subscription', 'url', 'username', 'verified',
+        'views', 'poster', 'preview', 'thumbnail',
     )
 
     creation_time: int
