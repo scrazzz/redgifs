@@ -25,7 +25,7 @@ DEALINGS IN THE SOFTWARE.
 import random
 import difflib
 from enum import Enum
-from typing import List
+from typing import List, Optional
 
 from .errors import InvalidTag
 
@@ -41,26 +41,27 @@ class Order(Enum):
 class Tags(Enum):
     """An enum representing available tags in RedGifs."""
 
-    def random(self, n: int = 1):
+    @classmethod
+    def random(cls, count: int = 1) -> Optional[List["Tags"]]:
         """
-        A method to get random tags.
+        A class method to get random tags.
 
         Parameters
         ----------
-        n: int
+        count: int
             The amount of tags to return.
-        
+
         Returns
         -------
         Optional[List[Tags]]
         """
 
-        if n > 4664:
+        if count > 4664:
             raise ValueError('n cannot be more than 4664')
-        return random.choices([x for x in Tags.__members__.values()], k=n)
+        return random.choices([x for x in Tags.__members__.values()], k=count)
 
-    @staticmethod
-    def search(query: str):
+    @classmethod
+    def search(cls, query: str) -> Optional[str]:
         """
         A friendly method to get the closest tag name. This is useful in searching for GIFs because RedGifs is case-sensitive (example: `cum` and `Cum` gives different results).
 
@@ -68,7 +69,7 @@ class Tags(Enum):
         ----------
         query: str
             The tag name to look for.
-        
+
         Returns
         -------
         Optional[str]
