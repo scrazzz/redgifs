@@ -24,14 +24,16 @@ DEALINGS IN THE SOFTWARE.
 
 from typing import List, Optional, Union
 
+import aiohttp
+
 from .http import *
 from .enums import Tags
 from .parser import parse_search, parse_creators
 from .models import SearchResult, CreatorsResult
 
 class API:
-    def __init__(self) -> None:
-        self.http = AsyncHttp()
+    def __init__(self, session: Optional[aiohttp.ClientSession] = None) -> None:
+        self.http: AsyncHttp = AsyncHttp(session)
 
     async def get_tags(self):
         return (await self.http.get_tags())

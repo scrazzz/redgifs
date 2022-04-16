@@ -24,6 +24,8 @@ DEALINGS IN THE SOFTWARE.
 
 from typing import List, Optional, Union
 
+import requests
+
 from .enums import Order, Tags
 from .http import HTTP
 from .parser import parse_search, parse_creators
@@ -31,8 +33,8 @@ from .models import SearchResult, CreatorsResult
 
 class API:
     """The API Instance to get information from RedGifs API."""
-    def __init__(self) -> None:
-        self.http: HTTP = HTTP()
+    def __init__(self, session: Optional[requests.Session] = None) -> None:
+        self.http: HTTP = HTTP(session)
 
     def get_tags(self):
         """Get all available RedGifs Tags."""

@@ -24,7 +24,7 @@ DEALINGS IN THE SOFTWARE.
 
 import typing
 from urllib.parse import quote
-from typing import Any, ClassVar, List, Literal, Optional, Union
+from typing import Any, ClassVar, List, Optional, Union
 
 import requests
 import aiohttp
@@ -44,8 +44,12 @@ class Route:
         self.url: str = url
 
 class HTTP:
-    def __init__(self) -> None:
-        self.__session: requests.Session = requests.Session()
+    def __init__(self, session: Optional[requests.Session] = None) -> None:
+
+        if session is not None and not isinstance(session, requests.Session):
+            raise RuntimeError("session is not of type requests.Session")
+
+        self.__session: requests.Session = session or requests.Session()
 
     def request(self, route: Route, **kwargs: Any):
         url: str = route.url
@@ -95,8 +99,12 @@ class HTTP:
         self.__session.close()
 
 class AsyncHttp(HTTP):
-    def __init__(self) -> None:
-        self.__session: aiohttp.ClientSession = aiohttp.ClientSession()
+    def __init__(self, session: Optional[aiohttp.ClientSession] = None) -> None:
+
+        if session is not None and not isinstance(session, aiohttp.ClientSession):
+            raise RuntimeError("session is not of type aiohttp.ClientSession")
+
+        self.__session: aiohttp.ClientSession = session or aiohttp.ClientSession()
 
     async def request(self, route: Route, **kwargs: Any):
         url: str = route.url
