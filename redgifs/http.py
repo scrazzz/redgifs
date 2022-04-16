@@ -22,13 +22,14 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 """
 
-import typing
+import sys
 from urllib.parse import quote
-from typing import Any, ClassVar, List, Optional, Union
+from typing import Any, ClassVar, Dict, List, Optional, Union
 
 import requests
 import aiohttp
 
+from . import __version__
 from .errors import HTTPException
 from .enums import Tags, Order
 
@@ -50,11 +51,14 @@ class HTTP:
             raise RuntimeError("session is not of type requests.Session")
 
         self.__session: requests.Session = session or requests.Session()
+        self.headers: Dict[str, str] = {
+            'User-Agent': f'redgifs (https://github.com/scrazzz/redgifs {__version__}) Python/{sys.version[:3]}'
+        }
 
     def request(self, route: Route, **kwargs: Any):
         url: str = route.url
         method: str = route.method
-        r: requests.Response = self.__session.request(method, url, **kwargs)
+        r: requests.Response = self.__session.request(method, url, headers=self.headers, **kwargs)
         js = r.json()
         if r.status_code == 200:
             return js
@@ -105,11 +109,14 @@ class AsyncHttp(HTTP):
             raise RuntimeError("session is not of type aiohttp.ClientSession")
 
         self.__session: aiohttp.ClientSession = session or aiohttp.ClientSession()
+        self.headers: Dict[str, str] = {
+            'User-Agent': f'redgifs (https://github.com/scrazzz/redgifs {__version__}) Python/{sys.version[:3]}'
+        }
 
     async def request(self, route: Route, **kwargs: Any):
         url: str = route.url
         method: str = route.method
-        async with self.__session.request(method, url, **kwargs) as resp:
+        async with self.__session.request(method, url, headers=self.headers, **kwargs) as resp:
             js = await resp.json()
             if resp.status == 200:
                 return js
