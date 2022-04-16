@@ -106,7 +106,7 @@ class AsyncHttp(HTTP):
             if resp.status == 200:
                 return js
             else:
-                raise HTTPException(resp, js, _async=True)
+                raise HTTPException(resp, js)
 
     async def close(self):
         await self.__session.close()
