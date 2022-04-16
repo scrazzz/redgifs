@@ -23,10 +23,10 @@ DEALINGS IN THE SOFTWARE.
 """
 
 from dataclasses import dataclass
-from typing import List, Optional, Union
+from typing import List, Optional
 
 @dataclass
-class URLs:
+class URL:
     __slots__ = ('sd', 'hd', 'poster', 'thumbnail', 'vthumbnail')
 
     sd: str
@@ -36,7 +36,7 @@ class URLs:
     vthumbnail: str
 
 @dataclass
-class Gifs:
+class Gif:
     __slots__ = (
         'id', 'create_date', 'has_audio', 'width', 'height',
         'likes', 'tags', 'verified', 'views', 'duration',
@@ -54,14 +54,14 @@ class Gifs:
     views: int
     duration: int
     published: bool
-    urls: URLs
+    urls: URL
     username: str
     type: int
     avg_color: str
     # gallery
 
 @dataclass
-class Users:
+class User:
     __slots__ = (
         'creation_time', 'description', 'followers', 'following', 'gifs',
         'name', 'profile_image_url', 'profile_url', 'published_collections', 'published_gifs',
@@ -70,7 +70,7 @@ class Users:
     )
 
     creation_time: int
-    description: Union[str, None]
+    description: Optional[str]
     followers: int
     following: int
     gifs: int
@@ -99,8 +99,8 @@ class SearchResult:
     page: int
     pages: int
     total: int
-    gifs: List[Gifs]
-    users: List[Users]
+    gifs: List[Gif]
+    users: List[User]
     tags: List[str]
 
 @dataclass
@@ -109,7 +109,7 @@ class CreatorsResult:
         'items', 'pages', 'page', 'total'
     )
 
-    items: List[Users]
+    items: List[User]
     pages: int
     page: int
     total: int

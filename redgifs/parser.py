@@ -24,9 +24,9 @@ DEALINGS IN THE SOFTWARE.
 
 from typing import Any, Dict
 
-from .models import Gifs, URLs, Users, SearchResult, CreatorsResult
+from .models import Gif, URL, User, SearchResult, CreatorsResult
 
-def parse_search(searched_for: str, json: Dict[str, Any]):
+def parse_search(searched_for: str, json: Dict[str, Any]) -> SearchResult:
     json_gifs = json['gifs']
     users = json['users']
     return SearchResult(
@@ -35,7 +35,7 @@ def parse_search(searched_for: str, json: Dict[str, Any]):
         pages=json['pages'],
         total=json['total'],
         gifs=[
-            Gifs(
+            Gif(
                 id=gif['id'],
                 create_date=gif['createDate'],
                 has_audio=gif['hasAudio'],
@@ -47,7 +47,7 @@ def parse_search(searched_for: str, json: Dict[str, Any]):
                 views=gif['views'],
                 duration=gif['duration'],
                 published=gif['published'],
-                urls=URLs(
+                urls=URL(
                     sd=gif['urls']['sd'],
                     hd=gif['urls']['hd'],
                     poster=gif['urls']['poster'],
@@ -61,7 +61,7 @@ def parse_search(searched_for: str, json: Dict[str, Any]):
             for gif in json_gifs
         ],
         users=[
-            Users(
+            User(
                 creation_time=user['creationtime'],
                 description=user['description'],
                 followers=user['followers'],
@@ -87,11 +87,11 @@ def parse_search(searched_for: str, json: Dict[str, Any]):
         tags=json['tags'],
     )
 
-def parse_creators(json: Dict[str, Any]):
+def parse_creators(json: Dict[str, Any]) -> CreatorsResult:
     items = json['items']
     return CreatorsResult(
         items=[
-            Users(
+            User(
                 creation_time=user['creationtime'],
                 description=user['description'],
                 followers=user['followers'],
