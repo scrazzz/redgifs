@@ -27,6 +27,22 @@ from typing import List, Optional
 
 @dataclass
 class URL:
+    """The different types of URLs.
+
+    Attributes
+    ----------
+    sd: str
+
+    hd: str
+
+    poster: str
+
+    thumbnail: str
+
+    vthumbnail: str
+
+    """
+
     __slots__ = ('sd', 'hd', 'poster', 'thumbnail', 'vthumbnail')
 
     sd: str
@@ -37,6 +53,43 @@ class URL:
 
 @dataclass
 class Gif:
+    # TODO: Document "type" and "avg_color"
+    """The GIF returned from RedGifs.
+
+    Attributes
+    ----------
+    id: str
+        The GIF's ID.
+    create_date: int
+        The date when the GIF is published.
+    has_audio: bool
+        Wheather the GIF has sound.
+    width: int
+        The GIF's width.
+    height: int
+        The GIF's height.
+    likes:
+        The amount of likes for the GIF.
+    tags: List[str]
+        A list of tags for the GIF.
+    verified: bool
+        Wheather the publisher of the GIF is a verified creator.
+    views: int
+        The amount of views for the GIF.
+    duration: int
+        The GIF's duration in seconds.
+    published: bool
+        Wheather the GIF is published.
+    urls: URL
+        The different types of URLs for the GIF.
+    username: str
+        The username of the publisher.
+    type: int
+
+    avg_color: str
+
+    """
+
     __slots__ = (
         'id', 'create_date', 'has_audio', 'width', 'height',
         'likes', 'tags', 'verified', 'views', 'duration',
@@ -62,6 +115,52 @@ class Gif:
 
 @dataclass
 class User:
+    # TODO: Document "subscription"
+    """The user's information returned from RedGifs.
+
+    Attributes
+    ----------
+    creation_time: int
+        The user's account creation time.
+    description: str
+        The user's description on their profile.
+    followers: int
+        The user's amount of followers.
+    following: int
+        The user's amount of following users.
+    gifs: int
+        The user's total amount of GIFs published.
+    name: Optional[str]
+        The user's name.
+    profile_image_url: Optional[str]
+        The user's profile image URL.
+    profile_url: str
+        The user's profile URL.
+        This is not the user's URL on ``redgifs.com``.
+    published_collections: int
+        The user's amount of published collections.
+    published_gifs: int
+        The user's amount of published GIFs.
+    status: str
+        The user's status.
+    subscription: int
+
+    url: str
+        The user's URL on ``redgifs.com``.
+    username: str
+        The user's username.
+    verified: bool
+        Wheather the user is a verified creator.
+    views: int
+        The user's total amount of views of the GIFs published.
+    poster: Optional[str]
+        The user's poster.
+    preview: Optional[str]
+        The user's preview.
+    thumbnail: Optional[str]
+        The user's thumbnail.
+    """
+
     __slots__ = (
         'creation_time', 'description', 'followers', 'following', 'gifs',
         'name', 'profile_image_url', 'profile_url', 'published_collections', 'published_gifs',
@@ -91,6 +190,28 @@ class User:
 
 @dataclass
 class SearchResult:
+    # TODO: Document "users"
+    """The result you have searched. This is returned in :py:meth:`redgifs.API.search()`.
+
+    Attributes
+    ----------
+    searched_for: str
+        The result of what you have searched for.
+        This may differ from what you have provided for ``query`` in :py:meth:`search <redgifs.API.search()>`.
+    page: int
+        The current page number.
+    pages: int
+        The total number of pages for the query.
+    total: int
+        The total number of GIFs for the query.
+    gifs: List[Gif]
+        The GIFs which was searched for.
+    users: List[User]
+
+    tags: List[str]
+        The tags related to the GIFs and search query.
+    """
+
     __slots__ = (
         'searched_for', 'page', 'pages', 'total', 'gifs', 'users', 'tags',
     )
@@ -105,6 +226,21 @@ class SearchResult:
 
 @dataclass
 class CreatorsResult:
+    # TODO: Document "total"
+    """The creator result you have searched.
+
+    Attributes
+    ----------
+    items: List[User]
+        The list of creators.
+    pages: int
+        The total number of pages.
+    page: int
+        The current page number.
+    total: int
+
+    """
+
     __slots__ = (
         'items', 'pages', 'page', 'total'
     )

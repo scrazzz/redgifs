@@ -28,20 +28,20 @@ import aiohttp
 from typing import Any, Dict, Union
 
 class RedgifsError(BaseException):
-    """Base class for all redgifs error"""
+    """Base class for all redgifs errors."""
     pass
 
 class InvalidTag(RedgifsError):
     """Exception raised when no match was found for a tag.
-    
+
     Attributes
     ----------
-    query: :class:`str`
+    tag: :class:`str`
         The tag that was searched for.
     """
-    def __init__(self, query: str):
-        self.query: str = query
-        super().__init__(f'Tag for "{query}" was not found.')
+    def __init__(self, tag: str):
+        self.tag: str = tag
+        super().__init__(f'Tag for "{tag}" was not found.')
 
 class HTTPException(RedgifsError):
     """Exception raised when an HTTP Exception occurs.
@@ -50,10 +50,8 @@ class HTTPException(RedgifsError):
     ----------
     response: Union[:class:`requests.Response`, :class:`aiohttp.ClientResponse`]
         The response of the failed HTTP request. It may be either :class:`requests.Response` or :class:`aiohttp.ClientResponse`.
-
     status: :class:`int`
         The status code of the HTTP request.
-
     error: :class:`str`
         The original error message from RedGifs.
     """

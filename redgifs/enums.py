@@ -48,12 +48,12 @@ class Tags(Enum):
 
         Parameters
         ----------
-        count: int
+        count: :py:class:`int`
             The amount of tags to return.
 
         Returns
         -------
-        Optional[List[Tags]]
+        Optional[List[:py:class:`Tags`]] - A list of tags.
         """
 
         if count > 4664:
@@ -67,12 +67,12 @@ class Tags(Enum):
 
         Parameters
         ----------
-        query: str
+        query: :py:class:`str`
             The tag name to look for.
 
         Returns
         -------
-        Optional[str]
+        Optional[:py:class:`str`] - The tag name.
         """
 
         try:
