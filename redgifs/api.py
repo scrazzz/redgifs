@@ -22,17 +22,24 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 """
 
-from typing import List, Optional, Union
+from typing import Any, Dict, List, Optional, Union
 
 import requests
 
-from .enums import Order, Tags
 from .http import HTTP
+from .enums import Order, Tags
 from .parser import parse_search, parse_creators
-from .models import SearchResult, CreatorsResult
+from .models import URL, Gif, SearchResult, CreatorsResult
 
 class API:
-    """The API Instance to get information from RedGifs API."""
+    """The API Instance to get information from the RedGifs API.
+
+    Parameters
+    ----------
+    session: Optional[:class:`requests.Session`]
+        A session object that can be provoded to do the requests.
+        If not provided, a new session object is created.
+    """
     def __init__(self, session: Optional[requests.Session] = None) -> None:
         self.http: HTTP = HTTP(session)
 
@@ -46,11 +53,38 @@ class API:
 
         Parameters
         ----------
-        id: str
+        id: :class:`str`
             The ID of the GIF.
+
+        Returns
+        -------
+        :py:class:`GIF <redgifs.models.Gif>` - The GIF's info.
         """
-        resp = self.http.get_gif(id)
-        return resp
+
+        json: Dict[str, Any] = self.http.get_gif(id)['gif']
+        return Gif(
+            id=json['id'],
+            create_date=json['createDate'],
+            has_audio=json['hasAudio'],
+            width=json['width'],
+            height=json['height'],
+            likes=json['likes'],
+            tags=json['tags'],
+            verified=json['verified'],
+            views=json['views'],
+            duration=json['duration'],
+            published=json['published'],
+            urls=URL(
+                sd=json['urls']['sd'],
+                hd=json['urls']['hd'],
+                poster=json['urls']['poster'],
+                thumbnail=json['urls']['thumbnail'],
+                vthumbnail=json['urls']['vthumbnail']
+            ),
+            username=json['userName'],
+            type=json['type'],
+            avg_color=json['avgColor'],
+        )
 
     def search(self, search_text: Union[str, Tags], *, order: Order = Order.recent, count: int = 80, page: int = 1) -> SearchResult:
         """
@@ -58,17 +92,18 @@ class API:
 
         Parameters
         ----------
-        search_text: Union[str, :class:`Tags`]
+        search_text: Union[:class:`str`, :class:`Tags`]
             The GIFs to search for. Can be a string or an instance of :class:`Tags`.
-        
         order: Optional[:class:`Order`]
             The order of the GIFs to return.
-        
-        count: Optional[int]
+        count: Optional[:class:`int`]
             The amount of GIFs to return.
-        
-        page: Optional[int]
+        page: Optional[:class:`int`]
             The page number of the GIFs to return.
+
+        Returns
+        -------
+        :py:class:`SearchResult <redgifs.models.SearchResult>` - The search result.
         """
 
         if isinstance(search_text, str):
@@ -91,24 +126,23 @@ class API:
 
         Parameters
         ----------
-        page: Optional[int]
+        page: Optional[:class:`int`]
             The number of page to return.
-
         order: Optional[:class:`Order`]
             The order of the creators to return.
-
-        verified: Optional[bool]
+        verified: Optional[:class:`bool`]
             Wheather to only return verified creators.
-
-        tags: Optional[Union[List[Tags], List[str]]]
+        tags: Optional[Union[List[:class:`Tags`], List[:class:`str`]]]
             A list of tags to look for.
-            Narrows down the results to content creators that have contents with all those tags.
+            Narrows down the results to content creators that have contents with all the given tags.
+
+        Returns
+        -------
+        :py:class:`CreatorsResult <redgifs.models.CreatorsResult>` - The search result.
         """
         resp = self.http.search_creators(page=page, order=order, verified=verified, tags=tags)
         return parse_creators(resp)
 
     def close(self) -> None:
-        """
-        Closes the session.
-        """
+        """Closes the API session."""
         return self.http.close()

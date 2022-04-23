@@ -22,14 +22,14 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 """
 
-from typing import List, Optional, Union
+from typing import Any, Dict, List, Optional, Union
 
 import aiohttp
 
-from .http import *
-from .enums import Tags
+from .http import AsyncHttp
+from .enums import Tags, Order
 from .parser import parse_search, parse_creators
-from .models import SearchResult, CreatorsResult
+from .models import Gif, URL, SearchResult, CreatorsResult
 
 class API:
     def __init__(self, session: Optional[aiohttp.ClientSession] = None) -> None:
@@ -39,8 +39,30 @@ class API:
         return (await self.http.get_tags())
 
     async def get_gif(self, id: str):
-        resp = await self.http.get_gif(id)
-        return resp
+        json: Dict[str, Any] = await self.http.get_gif(id)['gif']
+        return Gif(
+            id=json['id'],
+            create_date=json['createDate'],
+            has_audio=json['hasAudio'],
+            width=json['width'],
+            height=json['height'],
+            likes=json['likes'],
+            tags=json['tags'],
+            verified=json['verified'],
+            views=json['views'],
+            duration=json['duration'],
+            published=json['published'],
+            urls=URL(
+                sd=json['urls']['sd'],
+                hd=json['urls']['hd'],
+                poster=json['urls']['poster'],
+                thumbnail=json['urls']['thumbnail'],
+                vthumbnail=json['urls']['vthumbnail']
+            ),
+            username=json['userName'],
+            type=json['type'],
+            avg_color=json['avgColor'],
+        )
 
     async def search(self, search_text: Union[str, Tags], *, order: Order = Order.recent, count: int = 80, page: int = 1) -> SearchResult:
         if isinstance(search_text, str):
