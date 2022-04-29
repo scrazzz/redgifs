@@ -1,8 +1,8 @@
 name: Test
 on:
-  push
+  push:
   pull_request:
-    types: [ open, reopened, synchronize ]
+    types: [ opened, reopened, synchronize ]
 
 jobs:
   pytest:
