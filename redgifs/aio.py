@@ -38,7 +38,7 @@ class API:
     async def get_tags(self):
         return (await self.http.get_tags())
 
-    async def get_gif(self, id: str):
+    async def get_gif(self, id: str) -> Gif:
         json: Dict[str, Any] = await self.http.get_gif(id)['gif']
         return Gif(
             id=json['id'],

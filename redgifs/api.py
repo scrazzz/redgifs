@@ -47,7 +47,7 @@ class API:
         """Get all available RedGifs Tags."""
         return (self.http.get_tags())
     
-    def get_gif(self, id: str):
+    def get_gif(self, id: str) -> Gif:
         """
         Get details of a GIF with its ID.
 
