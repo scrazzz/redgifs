@@ -27,5 +27,6 @@ __license__ = 'MIT'
 __copyright__ = 'Copyright (c) 2022-present scrazzz'
 
 from .api import API
+from .http import ProxyAuth
 from .enums import Order, Tags
 from .errors import *

@@ -24,10 +24,11 @@ DEALINGS IN THE SOFTWARE.
 
 import sys
 from urllib.parse import quote
-from typing import Any, ClassVar, Dict, List, Optional, Union
+from typing import Any, ClassVar, Dict, List, NamedTuple, Optional, Union
 
 import requests
 import aiohttp
+import yarl
 
 from . import __version__
 from .errors import HTTPException
@@ -44,8 +45,17 @@ class Route:
             url = url.format_map({k: quote(v) if isinstance(v, str) else v for k, v in parameters.items()})
         self.url: str = url
 
+class ProxyAuth(NamedTuple):
+    username: str
+    password: str
+
 class HTTP:
-    def __init__(self, session: Optional[requests.Session] = None) -> None:
+    def __init__(
+        self,
+        session: Optional[requests.Session] = None,
+        proxy: Optional[str] = None,
+        proxy_auth: Optional[ProxyAuth] = None
+    ) -> None:
 
         if session is not None and not isinstance(session, requests.Session):
             raise RuntimeError("session is not of type requests.Session")
@@ -54,11 +64,28 @@ class HTTP:
         self.headers: Dict[str, str] = {
             'User-Agent': f'redgifs (https://github.com/scrazzz/redgifs {__version__}) Python/{sys.version[:3]}'
         }
+        self.proxy: Optional[yarl.URL] = yarl.URL(proxy) if proxy else None
+        self.proxy_auth: Optional[ProxyAuth] = proxy_auth
+
+        # Set proxy
+        if self.proxy:
+            self._proxy = {self.proxy.scheme: str(self.proxy)}
+        else:
+            self._proxy = None
+
+        # Set proxy auth
+        if self.proxy_auth and self._proxy:
+            self._proxy_auth = (self.proxy_auth.username, self.proxy_auth.password)
+        # Don't provide proxy authorization if no proxy URL given (self._proxy)
+        else:
+            self._proxy_auth = None
 
     def request(self, route: Route, **kwargs: Any):
         url: str = route.url
         method: str = route.method
-        r: requests.Response = self.__session.request(method, url, headers=self.headers, **kwargs)
+        r: requests.Response = self.__session.request(
+            method, url, headers=self.headers, proxies=self._proxy, auth=self._proxy_auth, **kwargs
+        )
         js = r.json()
         if r.status_code == 200:
             return js
@@ -103,7 +130,12 @@ class HTTP:
         self.__session.close()
 
 class AsyncHttp(HTTP):
-    def __init__(self, session: Optional[aiohttp.ClientSession] = None) -> None:
+    def __init__(
+        self,
+        session: Optional[aiohttp.ClientSession] = None,
+        proxy: Optional[str] = None,
+        proxy_auth: Optional[ProxyAuth] = None
+    ) -> None:
 
         if session is not None and not isinstance(session, aiohttp.ClientSession):
             raise RuntimeError("session is not of type aiohttp.ClientSession")
@@ -112,11 +144,21 @@ class AsyncHttp(HTTP):
         self.headers: Dict[str, str] = {
             'User-Agent': f'redgifs (https://github.com/scrazzz/redgifs {__version__}) Python/{sys.version[:3]}'
         }
+        self.proxy: Optional[yarl.URL] = yarl.URL(proxy) if proxy else None
+        self.proxy_auth: Optional[ProxyAuth] = proxy_auth
+
+        # Set proxy auth
+        if self.proxy_auth and self.proxy:
+            self._proxy_auth = aiohttp.BasicAuth(self.proxy_auth.username, self.proxy_auth.password)
+        else:
+            self._proxy_auth = None
 
     async def request(self, route: Route, **kwargs: Any):
         url: str = route.url
         method: str = route.method
-        async with self.__session.request(method, url, headers=self.headers, **kwargs) as resp:
+        async with self.__session.request(
+            method, url, headers=self.headers, proxy=str(self.proxy), proxy_auth=self._proxy_auth, **kwargs
+        ) as resp:
             js = await resp.json()
             if resp.status == 200:
                 return js
