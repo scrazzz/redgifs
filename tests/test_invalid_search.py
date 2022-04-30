@@ -1,6 +1,6 @@
-from redgifs import API
-
 import pytest
+
+from redgifs import API
 
 @pytest.mark.xfail
 def test_invalid():
