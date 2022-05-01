@@ -5,7 +5,7 @@ with open('requirements.txt') as f:
     requirements = f.read().splitlines()
 
 with open('redgifs/__init__.py') as f:
-    version = re.search(r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]', f.read(), re.MULTILINE)[1]
+    version = re.search(r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]', f.read(), re.MULTILINE)[1] # type: ignore
 
 with open('README.md') as f:
     readme = f.read()
@@ -25,14 +25,14 @@ setup(
     author='scrazzz',
     url='https://github.com/scrazzz/redgifs',
     project_urls={
-        'Documentation': 'https://redgifs.readthedocs.io',
+        'Documentation': 'https://redgifs.rtfd.io',
         'Issue tracker': 'https://github.com/scrazzz/redgifs/issues'
     },
     version=version,
     packages=['redgifs'],
     extras_require=extras_require,
     license='MIT',
-    description='Sync and Async Python Wrapper for RedGifs API.',
+    description='Async and Sync Python Wrapper for the RedGifs API.',
     long_description=readme,
     long_description_content_type='text/markdown',
     include_package_data=True,
