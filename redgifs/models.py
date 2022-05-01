@@ -22,6 +22,7 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 """
 
+import datetime
 from dataclasses import dataclass
 from typing import List, Optional
 
@@ -31,15 +32,15 @@ class URL:
 
     Attributes
     ----------
-    sd: str
+    sd: :class:`str`
 
-    hd: str
+    hd: :class:`str`
 
-    poster: str
+    poster: :class:`str`
 
-    thumbnail: str
+    thumbnail: :class:`str`
 
-    vthumbnail: str
+    vthumbnail: :class:`str`
 
     """
 
@@ -58,35 +59,35 @@ class Gif:
 
     Attributes
     ----------
-    id: str
+    id: :class:`str`
         The GIF's ID.
-    create_date: int
+    create_date: :class:`datetime.datetime`
         The date when the GIF is published.
-    has_audio: bool
+    has_audio: :class:`bool`
         Wheather the GIF has sound.
-    width: int
+    width: :class:`int`
         The GIF's width.
-    height: int
+    height: :class:`int`
         The GIF's height.
-    likes:
+    likes: :class:`int`
         The amount of likes for the GIF.
-    tags: List[str]
+    tags: List[:class:`str`]
         A list of tags for the GIF.
-    verified: bool
+    verified: :class:`bool`
         Wheather the publisher of the GIF is a verified creator.
-    views: int
+    views: :class:`int`
         The amount of views for the GIF.
-    duration: int
+    duration: :class:`int`
         The GIF's duration in seconds.
-    published: bool
+    published: :class:`bool`
         Wheather the GIF is published.
-    urls: URL
+    urls: :class:`URL`
         The different types of URLs for the GIF.
-    username: str
+    username: :class:`str`
         The username of the publisher.
-    type: int
+    type: :class:`int`
 
-    avg_color: str
+    avg_color: :class:`str`
 
     """
 
@@ -97,7 +98,7 @@ class Gif:
     )
 
     id: int
-    create_date: int
+    create_date: datetime.datetime
     has_audio: bool
     width: int
     height: int
@@ -120,44 +121,44 @@ class User:
 
     Attributes
     ----------
-    creation_time: int
+    creation_time: :class:`datetime.datetime`
         The user's account creation time.
-    description: str
+    description: :class:`str`
         The user's description on their profile.
-    followers: int
+    followers: :class:`int`
         The user's amount of followers.
-    following: int
+    following: :class:`int`
         The user's amount of following users.
-    gifs: int
+    gifs: :class:`int`
         The user's total amount of GIFs published.
-    name: Optional[str]
+    name: Optional[:class:`str`]
         The user's name.
-    profile_image_url: Optional[str]
+    profile_image_url: Optional[:class:`str`]
         The user's profile image URL.
-    profile_url: str
+    profile_url: :class:`str`
         The user's profile URL.
         This is not the user's URL on ``redgifs.com``.
-    published_collections: int
+    published_collections: :class:`int`
         The user's amount of published collections.
-    published_gifs: int
+    published_gifs: :class:`int`
         The user's amount of published GIFs.
-    status: str
+    status: :class:`str`
         The user's status.
-    subscription: int
+    subscription: :class:`int`
 
-    url: str
+    url: :class:`str`
         The user's URL on ``redgifs.com``.
-    username: str
+    username: :class:`str`
         The user's username.
-    verified: bool
+    verified: :class:`bool`
         Wheather the user is a verified creator.
-    views: int
+    views: :class:`int`
         The user's total amount of views of the GIFs published.
-    poster: Optional[str]
+    poster: Optional[:class:`str`]
         The user's poster.
-    preview: Optional[str]
+    preview: Optional[:class:`str`]
         The user's preview.
-    thumbnail: Optional[str]
+    thumbnail: Optional[:class:`str`]
         The user's thumbnail.
     """
 
@@ -168,7 +169,7 @@ class User:
         'views', 'poster', 'preview', 'thumbnail',
     )
 
-    creation_time: int
+    creation_time: datetime.datetime
     description: Optional[str]
     followers: int
     following: int
@@ -191,24 +192,24 @@ class User:
 @dataclass
 class SearchResult:
     # TODO: Document "users"
-    """The result you have searched. This is returned in :py:meth:`redgifs.API.search()`.
+    """The result you have searched. This is returned in :py:meth:`search() <redgifs.API.search()>`.
 
     Attributes
     ----------
-    searched_for: str
+    searched_for: :class:`str`
         The result of what you have searched for.
         This may differ from what you have provided for ``query`` in :py:meth:`search <redgifs.API.search()>`.
-    page: int
+    page: :class:`int`
         The current page number.
-    pages: int
+    pages: :class:`int`
         The total number of pages for the query.
-    total: int
+    total: :class:`int`
         The total number of GIFs for the query.
-    gifs: List[Gif]
+    gifs: List[:class:`Gif`]
         The GIFs which was searched for.
-    users: List[User]
+    users: List[:class:`User`]
 
-    tags: List[str]
+    tags: List[:class:`str`]
         The tags related to the GIFs and search query.
     """
 
@@ -231,13 +232,13 @@ class CreatorsResult:
 
     Attributes
     ----------
-    items: List[User]
+    items: List[:class:`User`]
         The list of creators.
-    pages: int
+    pages: :class:`int`
         The total number of pages.
-    page: int
+    page: :class:`int`
         The current page number.
-    total: int
+    total: :class:`int`
 
     """
 

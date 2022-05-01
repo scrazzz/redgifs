@@ -23,6 +23,7 @@ DEALINGS IN THE SOFTWARE.
 """
 
 import sys
+import logging
 from urllib.parse import quote
 from typing import Any, ClassVar, Dict, List, NamedTuple, Optional, Union
 
@@ -33,6 +34,8 @@ import yarl
 from . import __version__
 from .errors import HTTPException
 from .enums import Tags, Order
+
+_log = logging.getLogger(__name__)
 
 class Route:
     BASE: ClassVar[str] = "https://api.redgifs.com"
@@ -86,8 +89,10 @@ class HTTP:
         r: requests.Response = self.__session.request(
             method, url, headers=self.headers, proxies=self._proxy, auth=self._proxy_auth, **kwargs
         )
+        _log.debug(f'{method} {url} returned code: {r.status_code}')
         js = r.json()
         if r.status_code == 200:
+            _log.debug(f'{method} {url} has received: {js}')
             return js
         else:
             raise HTTPException(r, js)
@@ -119,11 +124,7 @@ class HTTP:
         return self.request(r, **params)
 
     def get_gif(self, id: str, **params: Any):
-        r = Route(
-            'GET',
-            '/v2/gifs/{id}',
-            id=id
-        )
+        r = Route('GET', '/v2/gifs/{id}', id=id)
         return self.request(r, **params)
 
     def close(self) -> None:
@@ -159,8 +160,10 @@ class AsyncHttp(HTTP):
         async with self.__session.request(
             method, url, headers=self.headers, proxy=str(self.proxy), proxy_auth=self._proxy_auth, **kwargs
         ) as resp:
+            _log.debug(f'{method} {url} returned code: {resp.status}')
             js = await resp.json()
             if resp.status == 200:
+                _log.debug(f'{method} {url} received: {js}')
                 return js
             else:
                 raise HTTPException(resp, js)

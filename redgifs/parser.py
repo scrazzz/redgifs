@@ -22,11 +22,16 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 """
 
+import logging
+from datetime import datetime
 from typing import Any, Dict
 
 from .models import Gif, URL, User, SearchResult, CreatorsResult
 
+_log = logging.getLogger(__name__)
+
 def parse_search(searched_for: str, json: Dict[str, Any]) -> SearchResult:
+    _log.debug('Using `parse_search` for: {searched_for}')
     json_gifs = json['gifs']
     users = json['users']
     return SearchResult(
@@ -37,7 +42,7 @@ def parse_search(searched_for: str, json: Dict[str, Any]) -> SearchResult:
         gifs=[
             Gif(
                 id=gif['id'],
-                create_date=gif['createDate'],
+                create_date=datetime.utcfromtimestamp(gif['createDate']),
                 has_audio=gif['hasAudio'],
                 width=gif['width'],
                 height=gif['height'],
@@ -62,7 +67,7 @@ def parse_search(searched_for: str, json: Dict[str, Any]) -> SearchResult:
         ],
         users=[
             User(
-                creation_time=user['creationtime'],
+                creation_time=datetime.utcfromtimestamp(user['creationtime']),
                 description=user['description'],
                 followers=user['followers'],
                 following=user['following'],
@@ -88,11 +93,12 @@ def parse_search(searched_for: str, json: Dict[str, Any]) -> SearchResult:
     )
 
 def parse_creators(json: Dict[str, Any]) -> CreatorsResult:
+    _log.debug('Using `parse_creators`')
     items = json['items']
     return CreatorsResult(
         items=[
             User(
-                creation_time=user['creationtime'],
+                creation_time=datetime.utcfromtimestamp(user['creationtime']),
                 description=user['description'],
                 followers=user['followers'],
                 following=user['following'],
