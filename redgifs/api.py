@@ -34,12 +34,20 @@ from .models import URL, Gif, SearchResult, CreatorsResult
 class API:
     """The API Instance to get information from the RedGifs API.
 
+    .. note::
+
+        If you are using this library in an asynchronous code,
+        you should pass a session object which is an instance of
+        :class:`aiohttp.ClientSession`.
+
     Parameters
     ----------
     session: Optional[:class:`requests.Session`]
-        A session object that can be provoded to do the requests.
+        A session object that can be provided to do the requests.
         If not provided, a new session object is created.
+        See above note too.
     """
+
     def __init__(self, session: Optional[requests.Session] = None) -> None:
         self.http: HTTP = HTTP(session)
 
