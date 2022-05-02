@@ -26,14 +26,20 @@ from typing import Any, Dict, List, Optional, Union
 
 import aiohttp
 
-from .http import AsyncHttp
+from .http import AsyncHttp, ProxyAuth
 from .enums import Tags, Order
 from .parser import parse_search, parse_creators
 from .models import Gif, URL, SearchResult, CreatorsResult
 
 class API:
-    def __init__(self, session: Optional[aiohttp.ClientSession] = None) -> None:
-        self.http: AsyncHttp = AsyncHttp(session)
+    def __init__(
+        self,
+        session: Optional[aiohttp.ClientSession] = None,
+        *,
+        proxy: Optional[str] = None,
+        proxy_auth: Optional[ProxyAuth] = None
+    ) -> None:
+        self.http: AsyncHttp = AsyncHttp(session, proxy=proxy, proxy_auth=proxy_auth)
 
     async def get_tags(self):
         return (await self.http.get_tags())

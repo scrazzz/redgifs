@@ -26,7 +26,7 @@ from typing import Any, Dict, List, Optional, Union
 
 import requests
 
-from .http import HTTP
+from .http import HTTP, ProxyAuth
 from .enums import Order, Tags
 from .parser import parse_search, parse_creators
 from .models import URL, Gif, SearchResult, CreatorsResult
@@ -48,8 +48,14 @@ class API:
         See above note too.
     """
 
-    def __init__(self, session: Optional[requests.Session] = None) -> None:
-        self.http: HTTP = HTTP(session)
+    def __init__(
+        self,
+        session: Optional[requests.Session] = None,
+        *,
+        proxy: Optional[str] = None,
+        proxy_auth: Optional[ProxyAuth] = None
+    ) -> None:
+        self.http: HTTP = HTTP(session, proxy=proxy, proxy_auth=proxy_auth)
 
     def get_tags(self):
         """Get all available RedGifs Tags."""

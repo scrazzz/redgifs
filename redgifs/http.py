@@ -56,6 +56,7 @@ class HTTP:
     def __init__(
         self,
         session: Optional[requests.Session] = None,
+        *,
         proxy: Optional[str] = None,
         proxy_auth: Optional[ProxyAuth] = None
     ) -> None:
@@ -134,6 +135,7 @@ class AsyncHttp(HTTP):
     def __init__(
         self,
         session: Optional[aiohttp.ClientSession] = None,
+        *,
         proxy: Optional[str] = None,
         proxy_auth: Optional[ProxyAuth] = None
     ) -> None:
@@ -158,7 +160,7 @@ class AsyncHttp(HTTP):
         url: str = route.url
         method: str = route.method
         async with self.__session.request(
-            method, url, headers=self.headers, proxy=str(self.proxy), proxy_auth=self._proxy_auth, **kwargs
+            method, url, headers=self.headers, proxy=str(self.proxy) if self.proxy else None, proxy_auth=self._proxy_auth, **kwargs
         ) as resp:
             _log.debug(f'{method} {url} returned code: {resp.status}')
             js = await resp.json()
