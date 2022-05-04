@@ -9,7 +9,7 @@
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
-import pathlib
+import re
 import sys
 import os
 sys.path.insert(0, os.path.abspath('..'))
@@ -21,7 +21,8 @@ project = 'redgifs'
 copyright = '2022-present, scrazzz'
 author = 'scrazzz'
 
-version = '0.1.0'
+with open('../redgifs/__init__.py') as f:
+    version = re.search(r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]', f.read(), re.MULTILINE).group(1) # type: ignore
 
 # The full version, including alpha/beta/rc tags
 release = version
