@@ -3,3 +3,4 @@ test.py
 docs/_build/
 *.egg-info
 build/*
+dist/*
