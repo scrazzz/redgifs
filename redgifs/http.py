@@ -25,7 +25,7 @@ DEALINGS IN THE SOFTWARE.
 import sys
 import logging
 from urllib.parse import quote
-from typing import Any, ClassVar, Dict, List, NamedTuple, Optional, Union
+from typing import Any, ClassVar, Coroutine, Dict, List, NamedTuple, Optional, TypeVar, Union, TYPE_CHECKING
 
 import requests
 import aiohttp
@@ -34,6 +34,13 @@ import yarl
 from . import __version__
 from .errors import HTTPException
 from .enums import Tags, Order
+
+if TYPE_CHECKING:
+    from .types import responses
+
+    T = TypeVar('T')
+    Response = Union[Coroutine[Any, Any, T], T]
+
 
 _log = logging.getLogger(__name__)
 
@@ -84,7 +91,7 @@ class HTTP:
         else:
             self._proxy_auth = None
 
-    def request(self, route: Route, **kwargs: Any):
+    def request(self, route: Route, **kwargs: Any) -> Any:
         url: str = route.url
         method: str = route.method
         r: requests.Response = self.__session.request(
@@ -93,15 +100,15 @@ class HTTP:
         _log.debug(f'{method} {url} returned code: {r.status_code}')
         js = r.json()
         if r.status_code == 200:
-            _log.debug(f'{method} {url} has received: {js}')
+            _log.debug(f'{method} {url} received: {js}')
             return js
         else:
             raise HTTPException(r, js)
 
-    def get_tags(self, **params: Any):
+    def get_tags(self, **params: Any) -> Response[responses.TagsResult]:
         return self.request(Route('GET', '/v1/tags'))
     
-    def search(self, search_text: Union[str, Tags], order: Order, count: int, page: int, **params: Any):
+    def search(self, search_text: Union[str, Tags], order: Order, count: int, page: int, **params: Any) -> Response[responses.SearchResult]:
         r = Route(
             'GET',
             '/v2/gifs/search?search_text={search_text}&order={order}&count={count}&page={page}',
@@ -109,22 +116,28 @@ class HTTP:
         )
         return self.request(r, **params)
 
-    def search_creators(self, page: int, order: Order, verified: bool, tags: Union[List[Tags], List[str], None], **params: Any):
+    def search_creators(
+        self,
+        page: int,
+        order: Order,
+        verified: bool,
+        tags: Union[List[Tags], List[str], None],
+        **params: Any
+    ) -> Response[responses.CreatorsResult]:
         if tags:
             r = Route(
-                'GET',
-                '/v1/creators/search?page={page}&order={order}&verified={verified}&tags={tags}',
-                page=page, order=order.value, verified=verified, tags=','.join(t.value for t in tags) if isinstance(tags[0], Tags) else ','.join(t for t in tags) # type: ignore
+                'GET', '/v1/creators/search?page={page}&order={order}&verified={verified}&tags={tags}',
+                page=page, order=order.value, verified=verified,
+                tags=','.join(t.value for t in tags) if isinstance(tags[0], Tags) else ','.join(t for t in tags) # type: ignore
             )
         else:
             r = Route(
-                'GET',
-                '/v1/creators/search?page={page}&order={order}&verified={verified}',
+                'GET', '/v1/creators/search?page={page}&order={order}&verified={verified}',
                 page=page, order=order.value, verified=verified
             )
         return self.request(r, **params)
 
-    def get_gif(self, id: str, **params: Any):
+    def get_gif(self, id: str, **params: Any) -> Response[responses.GIF]:
         r = Route('GET', '/v2/gifs/{id}', id=id)
         return self.request(r, **params)
 
@@ -156,7 +169,7 @@ class AsyncHttp(HTTP):
         else:
             self._proxy_auth = None
 
-    async def request(self, route: Route, **kwargs: Any):
+    async def request(self, route: Route, **kwargs: Any) -> Any:
         url: str = route.url
         method: str = route.method
         async with self.__session.request(
@@ -170,5 +183,5 @@ class AsyncHttp(HTTP):
             else:
                 raise HTTPException(resp, js)
 
-    async def close(self):
+    async def close(self) -> None:
         await self.__session.close()
