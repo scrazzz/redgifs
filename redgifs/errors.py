@@ -64,7 +64,7 @@ class HTTPException(RedgifsError):
         elif isinstance(response, aiohttp.ClientResponse):
             self.status = response.status
 
-        self.error: Dict[str, Any] | str = json
+        self.error: Union[Dict[str, Any], str] = json
         if isinstance(json, dict):
             self.error = json.get('errorMessage', '')
 
