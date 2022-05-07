@@ -61,7 +61,7 @@ class Gif:
     ----------
     id: :class:`str`
         The GIF's ID.
-    create_date: :class:`datetime.datetime`
+    create_date: Optional[:class:`datetime.datetime`]
         The date when the GIF is published.
     has_audio: :class:`bool`
         Wheather the GIF has sound.
@@ -98,7 +98,7 @@ class Gif:
     )
 
     id: int
-    create_date: datetime.datetime
+    create_date: Optional[datetime.datetime]
     has_audio: bool
     width: int
     height: int
@@ -121,7 +121,7 @@ class User:
 
     Attributes
     ----------
-    creation_time: :class:`datetime.datetime`
+    creation_time: Optional[:class:`datetime.datetime`]
         The user's account creation time.
     description: :class:`str`
         The user's description on their profile.
@@ -169,7 +169,7 @@ class User:
         'views', 'poster', 'preview', 'thumbnail',
     )
 
-    creation_time: datetime.datetime
+    creation_time: Optional[datetime.datetime]
     description: Optional[str]
     followers: int
     following: int

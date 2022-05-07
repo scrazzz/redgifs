@@ -67,7 +67,11 @@ def parse_search(searched_for: str, json: Dict[str, Any]) -> SearchResult:
         ],
         users=[
             User(
-                creation_time=datetime.utcfromtimestamp(user.get('creationtime', 0)),
+                # I only had this occurrence once where redgifs did not
+                # send the response properly and messed up the entire JSON
+                # response, this is why I have used dict.get() here.
+                creation_time=datetime.utcfromtimestamp(user.get('creationtime'))
+                if user.get('creationtime') is not None else None,
                 description=user.get('description'),
                 followers=user.get('followers'),
                 following=user.get('following'),
