@@ -1,5 +1,7 @@
 .. currentmodule:: redgifs
 
+API
+---
 
 API Instance
 ============
@@ -8,9 +10,15 @@ API Instance
    :members:
    :member-order: bysource
 
+Proxy Auth
+==========
+A utility class to provide proxy authorization.
+
+.. autoclass:: redgifs.ProxyAuth
+
 Models
 ======
-RedGifs models.
+Models are classes that are received from Redgifs and are not meant to be created by the user of the library.
 
 .. autoclass:: redgifs.models.URL()
    :members:

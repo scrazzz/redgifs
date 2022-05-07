@@ -25,7 +25,7 @@ DEALINGS IN THE SOFTWARE.
 import requests
 import aiohttp
 
-from typing import Any, Dict, Union
+from typing import Any, Dict, Optional, Union
 
 class RedgifsError(BaseException):
     """Base class for all redgifs errors."""
@@ -64,8 +64,8 @@ class HTTPException(RedgifsError):
         elif isinstance(response, aiohttp.ClientResponse):
             self.status = response.status
 
-        self.error: Union[Dict[str, Any], str] = json
+        self.error: Optional[Union[Dict[str, Any], str]] = json
         if isinstance(json, dict):
-            self.error = json.get('errorMessage', '')
+            self.error = json.get('errorMessage')
 
         super().__init__(f'{self.status} (Error: {self.error})')

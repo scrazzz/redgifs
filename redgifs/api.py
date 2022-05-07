@@ -46,6 +46,10 @@ class API:
         A session object that can be provided to do the requests.
         If not provided, a new session object is created.
         See above note too.
+    proxy: Optional[:class:`str`]
+        A valid proxy URL.
+    proxy_auth: Optional[:class:`redgifs.ProxyAuth`]
+        The proxy auth to provide if the proxy requires it.
     """
 
     def __init__(
