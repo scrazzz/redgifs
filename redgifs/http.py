@@ -27,7 +27,7 @@ from __future__ import annotations
 import sys
 import logging
 from urllib.parse import quote
-from typing import Any, ClassVar, Coroutine, Dict, List, NamedTuple, Optional, TypeVar, Union, TYPE_CHECKING
+from typing import Any, ClassVar, Dict, List, NamedTuple, Optional, Union
 
 import requests
 import aiohttp
@@ -36,13 +36,6 @@ import yarl
 from . import __version__
 from .errors import HTTPException
 from .enums import Tags, Order
-
-if TYPE_CHECKING:
-    from .types import responses
-
-    T = TypeVar('T')
-    Response = Union[Coroutine[Any, Any, T], T]
-
 
 _log = logging.getLogger(__name__)
 
@@ -107,10 +100,14 @@ class HTTP:
         else:
             raise HTTPException(r, js)
 
-    def get_tags(self, **params: Any) -> Response[responses.TagsResult]:
+    def get_tags(self, **params: Any):
         return self.request(Route('GET', '/v1/tags'))
-    
-    def search(self, search_text: Union[str, Tags], order: Order, count: int, page: int, **params: Any) -> Response[responses.SearchResult]:
+
+    def get_gif(self, id: str, **params: Any):
+        r = Route('GET', '/v2/gifs/{id}', id=id)
+        return self.request(r, **params)
+
+    def search(self, search_text: Union[str, Tags], order: Order, count: int, page: int, **params: Any):
         r = Route(
             'GET',
             '/v2/gifs/search?search_text={search_text}&order={order}&count={count}&page={page}',
@@ -125,7 +122,7 @@ class HTTP:
         verified: bool,
         tags: Union[List[Tags], List[str], None],
         **params: Any
-    ) -> Response[responses.CreatorsResult]:
+    ):
         if tags:
             r = Route(
                 'GET', '/v1/creators/search?page={page}&order={order}&verified={verified}&tags={tags}',
@@ -137,10 +134,6 @@ class HTTP:
                 'GET', '/v1/creators/search?page={page}&order={order}&verified={verified}',
                 page=page, order=order.value, verified=verified
             )
-        return self.request(r, **params)
-
-    def get_gif(self, id: str, **params: Any) -> Response[responses.GIF]:
-        r = Route('GET', '/v2/gifs/{id}', id=id)
         return self.request(r, **params)
 
     def close(self) -> None:
