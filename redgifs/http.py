@@ -51,6 +51,12 @@ class Route:
         self.url: str = url
 
 class ProxyAuth(NamedTuple):
+    """
+    username: :class:`str`
+        The username.
+    password: :class:`str`
+        The password.
+    """
     username: str
     password: str
 
