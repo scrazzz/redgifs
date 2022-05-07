@@ -41,8 +41,8 @@ class API:
     ) -> None:
         self.http: AsyncHttp = AsyncHttp(session, proxy=proxy, proxy_auth=proxy_auth)
 
-    async def get_tags(self):
-        return (await self.http.get_tags())
+    async def get_tags(self) -> List[Dict[str, Union[str, int]]]:
+        return (await self.http.get_tags()['tags'])
 
     async def get_gif(self, id: str) -> Gif:
         json: Dict[str, Any] = await self.http.get_gif(id)['gif']

@@ -57,9 +57,14 @@ class API:
     ) -> None:
         self.http: HTTP = HTTP(session, proxy=proxy, proxy_auth=proxy_auth)
 
-    def get_tags(self):
-        """Get all available RedGifs Tags."""
-        return (self.http.get_tags())
+    def get_tags(self) -> List[Dict[str, Union[str, int]]]:
+        """Get all available RedGifs Tags.
+        
+        Returns
+        -------
+        A list of dicts.
+        """
+        return (self.http.get_tags()['tags'])
     
     def get_gif(self, id: str) -> Gif:
         """
