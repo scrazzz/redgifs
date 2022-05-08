@@ -109,7 +109,14 @@ class API:
             avg_color=json['avgColor'],
         )
 
-    def search(self, search_text: Union[str, Tags], *, order: Order = Order.recent, count: int = 80, page: int = 1) -> SearchResult:
+    def search(
+        self,
+        search_text: Union[str, Tags],
+        *,
+        order: Order = Order.recent,
+        count: int = 80,
+        page: int = 1
+    ) -> SearchResult:
         """
         Search for a GIF.
 
@@ -165,6 +172,41 @@ class API:
         """
         resp = self.http.search_creators(page=page, order=order, verified=verified, tags=tags)
         return parse_creators(resp)
+
+    def search_image(
+        self,
+        search_text: Union[str, Tags],
+        *,
+        order: Order = Order.trending,
+        count: int = 80,
+        page: int = 1
+    ) -> SearchResult:
+        """
+        Search for images on Redgifs.
+
+        Parameters
+        ----------
+        search_text: Union[:class:`str`, :class:`Tags`]
+            The images to search for. Can be a string or an instance of :class:`Tags`.
+        order: Optional[:class:`Order`]
+            The order of the images to return.
+        count: Optional[:class:`int`]
+            The amount of images to return.
+        page: Optional[:class:`int`]
+            The page number of the images to return.
+
+        Returns
+        -------
+        :py:class:`SearchResult <redgifs.models.SearchResult>` - The search result.
+        """
+        if isinstance(search_text, str):
+            # We are not going to use Tags.search() here because it doesn't matter
+            # whatever the search_text is, this API endpoints provides images nonetheless.
+            st = search_text
+        elif isinstance(search_text, Tags):
+            st = search_text.value
+        resp = self.http.search_image(st, order, count, page)
+        return parse_search(st, resp)
 
     def close(self) -> None:
         """Closes the API session."""

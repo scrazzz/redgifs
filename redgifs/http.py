@@ -106,6 +106,11 @@ class HTTP:
         else:
             raise HTTPException(r, js)
 
+    def close(self) -> None:
+        self.__session.close()
+
+    # GIF methods
+
     def get_tags(self, **params: Any):
         return self.request(Route('GET', '/v1/tags'))
 
@@ -115,8 +120,7 @@ class HTTP:
 
     def search(self, search_text: Union[str, Tags], order: Order, count: int, page: int, **params: Any):
         r = Route(
-            'GET',
-            '/v2/gifs/search?search_text={search_text}&order={order}&count={count}&page={page}',
+            'GET', '/v2/gifs/search?search_text={search_text}&order={order}&count={count}&page={page}',
             search_text=search_text, order=order.value, count=count, page=page
         )
         return self.request(r, **params)
@@ -142,8 +146,14 @@ class HTTP:
             )
         return self.request(r, **params)
 
-    def close(self) -> None:
-        self.__session.close()
+    # Pic methods
+
+    def search_image(self, search_text: Union[str, Tags], order: Order, count: int, page: int, **params: Any):
+        r = Route(
+            'GET', '/v2/gifs/search?search_text={search_text}&order={order}&count={count}&page={page}&type=i',
+            search_text=search_text, order=order.value, count=count, page=page
+        )
+        return self.request(r, **params)
 
 class AsyncHttp(HTTP):
     def __init__(

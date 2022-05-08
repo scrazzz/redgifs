@@ -89,5 +89,22 @@ class API:
         resp = await self.http.search_creators(page=page, order=order, verified=verified, tags=tags)
         return parse_creators(resp)
 
+    async def search_image(
+        self,
+        search_text: Union[str, Tags],
+        *,
+        order: Order = Order.trending,
+        count: int = 80,
+        page: int = 1
+    ) -> SearchResult:
+        if isinstance(search_text, str):
+            # We are not going to use Tags.search() here because it doesn't matter
+            # whatever the search_text is, this API endpoints provides images nonetheless.
+            st = search_text
+        elif isinstance(search_text, Tags):
+            st = search_text.value
+        resp = await self.http.search_image(st, order, count, page)
+        return parse_search(st, resp)
+
     async def close(self) -> None:
         return (await self.http.close())
