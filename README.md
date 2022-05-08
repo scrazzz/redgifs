@@ -1,8 +1,19 @@
-## redgifs
+<h1 align="center"> <code>redgifs</code> </h1>
 
-Async and Sync Python Wrapper for the RedGifs API.
+<div align="center">
+    <a href="https://pypi.org/project/redgifs">
+        <img src="https://img.shields.io/pypi/v/redgifs.svg" alt="pypi">
+    </a>
+    <a href="https://github.com/scrazzz/redgifs/actions/workflows/test.yml">
+        <img src="https://github.com/scrazzz/redgifs/actions/workflows/test.yml/badge.svg" alt="pytest">
+    </a>
+</div>
 
-> ⚠ **Note:** This project is still in development.
+<p align="center"> Async and Sync Python Wrapper for the Redgifs API. </p>
+
+```
+⚠ This project is still in development.
+```
 
 ### Installation
 ```
