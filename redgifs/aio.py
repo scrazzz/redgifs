@@ -42,10 +42,11 @@ class API:
         self.http: AsyncHttp = AsyncHttp(session, proxy=proxy, proxy_auth=proxy_auth)
 
     async def get_tags(self) -> List[Dict[str, Union[str, int]]]:
-        return (await self.http.get_tags()['tags'])
+        resp = await self.http.get_tags()
+        return resp['tags']
 
     async def get_gif(self, id: str) -> Gif:
-        json: Dict[str, Any] = await self.http.get_gif(id)['gif']
+        json: Dict[str, Any] = (await self.http.get_gif(id))['gif']
         return Gif(
             id=json['id'],
             create_date=json['createDate'],
