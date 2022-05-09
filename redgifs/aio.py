@@ -26,11 +26,10 @@ from typing import Any, Dict, List, Optional, Union
 
 import aiohttp
 
-from .enums import Order, Tags
 from .http import AsyncHttp, ProxyAuth
-from .models import URL, CreatorsResult, Gif, SearchResult
-from .parser import parse_creators, parse_search
-
+from .enums import Tags, Order
+from .parser import parse_search, parse_creators
+from .models import Gif, URL, SearchResult, CreatorsResult
 
 class API:
     def __init__(
@@ -43,7 +42,8 @@ class API:
         self.http: AsyncHttp = AsyncHttp(session, proxy=proxy, proxy_auth=proxy_auth)
 
     async def get_tags(self) -> List[Dict[str, Union[str, int]]]:
-        return (await self.http.get_tags()['tags'])
+        resp = await self.http.get_tags()
+        return resp['tags']
 
     async def get_gif(self, id: str) -> Gif:
         json: Dict[str, Any] = (await self.http.get_gif(id))['gif']
