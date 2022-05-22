@@ -23,3 +23,9 @@ API Reference
 
 .. toctree::
    api
+
+Changelogs
+----------
+
+.. toctree::
+   changelogs
