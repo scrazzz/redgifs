@@ -15,6 +15,8 @@
 ⚠ This project is still in development.
 ```
 
+⭐ _Please star this repo to support the developer and to encourage the development of this project!_
+
 ### Installation
 ```
 pip install -U redgifs
