@@ -26,10 +26,11 @@ import logging
 from datetime import datetime
 from typing import Any, Dict
 
-from .models import Gif, URL, User, SearchResult, CreatorsResult
+from .models import Gif, URL, Image, User, SearchResult, CreatorsResult
 
 _log = logging.getLogger(__name__)
 
+# For GIFs
 def parse_search(searched_for: str, json: Dict[str, Any]) -> SearchResult:
     _log.debug('Using `parse_search` for: {searched_for}')
     json_gifs = json['gifs']
@@ -39,6 +40,7 @@ def parse_search(searched_for: str, json: Dict[str, Any]) -> SearchResult:
         page=json['page'],
         pages=json['pages'],
         total=json['total'],
+        images=None,
         gifs=[
             Gif(
                 id=gif['id'],
@@ -70,6 +72,69 @@ def parse_search(searched_for: str, json: Dict[str, Any]) -> SearchResult:
                 # I only had this occurrence once where redgifs did not
                 # send the response properly and messed up the entire JSON
                 # response, this is why I have used dict.get() here.
+                creation_time=datetime.utcfromtimestamp(user.get('creationtime'))
+                if user.get('creationtime') is not None else None,
+                description=user.get('description'),
+                followers=user.get('followers'),
+                following=user.get('following'),
+                gifs=user.get('gifs'),
+                name=user.get('name'),
+                profile_image_url=user.get('profileImageUrl'),
+                profile_url=user.get('profileUrl'),
+                published_collections=user.get('publishedCollections'),
+                status=user.get('status'),
+                published_gifs=user.get('publishedGifs'),
+                subscription=user.get('subscription'),
+                url=user.get('url'),
+                username=user.get('username'),
+                verified=user.get('verified'),
+                views=user.get('views'),
+                poster=user.get('poster'),
+                preview=user.get('preview'),
+                thumbnail=user.get('thumbnail'),
+            )
+            for user in users
+        ],
+        tags=json['tags'],
+    )
+
+# For images
+def parse_search_image(searched_for: str, json: Dict[str, Any]) -> SearchResult:
+    _log.debug('Using `parse_search` for: {searched_for}')
+    json_gifs = json['gifs']
+    users = json['users']
+    return SearchResult(
+        searched_for=searched_for,
+        page=json['page'],
+        pages=json['pages'],
+        total=json['total'],
+        gifs=None,
+        images=[
+            Image(
+                id=gif['id'],
+                create_date=datetime.utcfromtimestamp(gif['createDate']),
+                width=gif['width'],
+                height=gif['height'],
+                likes=gif['likes'],
+                tags=gif['tags'],
+                verified=gif['verified'],
+                views=gif['views'],
+                published=gif['published'],
+                urls=URL(
+                    sd=gif['urls']['sd'],
+                    hd=gif['urls']['hd'],
+                    poster=gif['urls']['poster'],
+                    thumbnail=gif['urls']['thumbnail'],
+                    vthumbnail=gif['urls']['vthumbnail']
+                ),
+                username=gif['userName'],
+                type=gif['type'],
+                avg_color=gif['avgColor'],
+            )
+            for gif in json_gifs
+        ],
+        users=[
+            User(
                 creation_time=datetime.utcfromtimestamp(user.get('creationtime'))
                 if user.get('creationtime') is not None else None,
                 description=user.get('description'),

@@ -28,7 +28,7 @@ import aiohttp
 
 from .http import AsyncHttp, ProxyAuth
 from .enums import Tags, Order
-from .parser import parse_search, parse_creators
+from .parser import parse_search, parse_creators, parse_search_image
 from .models import Gif, URL, SearchResult, CreatorsResult
 
 class API:
@@ -71,14 +71,17 @@ class API:
             avg_color=json['avgColor'],
         )
 
-    async def search(self, search_text: Union[str, Tags], *, order: Order = Order.recent, count: int = 80, page: int = 1) -> SearchResult:
+    async def search(self, search_text: Union[str, Tags], *, order: Order = Order.recent, count: int = 80, page: int = 1) -> Optional[SearchResult]:
         if isinstance(search_text, str):
             st = Tags.search(search_text)
         elif isinstance(search_text, Tags):
             st = search_text.value
-        resp = await self.http.search(st, order, count, page)
-        return parse_search(st, resp)
-    
+        if st is not None:
+            resp = await self.http.search(st, order, count, page)
+            return parse_search(st, resp)
+
+    search_gif = search
+
     async def search_creators(
         self,
         *,
@@ -105,7 +108,7 @@ class API:
         elif isinstance(search_text, Tags):
             st = search_text.value
         resp = await self.http.search_image(st, order, count, page)
-        return parse_search(st, resp)
+        return parse_search_image(st, resp)
 
     async def close(self) -> None:
         return (await self.http.close())

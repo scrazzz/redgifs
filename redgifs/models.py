@@ -115,6 +115,61 @@ class Gif:
     # gallery
 
 @dataclass
+class Image:
+    # TODO: Document "type" and "avg_color"
+    """The image returned from RedGifs.
+
+    Attributes
+    ----------
+    id: :class:`str`
+        The image ID.
+    create_date: Optional[:class:`datetime.datetime`]
+        The date when the image is published.
+    width: :class:`int`
+        The image width.
+    height: :class:`int`
+        The image height.
+    likes: :class:`int`
+        The amount of likes the image has.
+    tags: List[:class:`str`]
+        A list of tags for the GIF.
+    verified: :class:`bool`
+        Wheather the publisher of the image is a verified creator.
+    views: :class:`int`
+        The amount of views the image has.
+    published: :class:`bool`
+        Wheather the image is published.
+    urls: :class:`URL`
+        The different types of URLs for the image.
+    username: :class:`str`
+        The username of the publisher.
+    type: :class:`int`
+
+    avg_color: :class:`str`
+
+    """
+
+    __slots__ = (
+        'id', 'create_date', 'width', 'height',
+        'likes', 'tags', 'verified', 'views',
+        'published', 'urls', 'username', 'type', 'avg_color',
+    )
+
+    id: int
+    create_date: Optional[datetime.datetime]
+    width: int
+    height: int
+    likes: int
+    tags: List[str]
+    verified: bool
+    views: int
+    published: bool
+    urls: URL
+    username: str
+    type: int
+    avg_color: str
+
+@dataclass
 class User:
     # TODO: Document "subscription"
     """The user's information returned from RedGifs.
@@ -207,6 +262,8 @@ class SearchResult:
         The total number of GIFs for the query.
     gifs: List[:class:`Gif`]
         The GIFs which was searched for.
+    images: List[:class:`Image`]
+        The images which was searched for.
     users: List[:class:`User`]
 
     tags: List[:class:`str`]
@@ -214,14 +271,15 @@ class SearchResult:
     """
 
     __slots__ = (
-        'searched_for', 'page', 'pages', 'total', 'gifs', 'users', 'tags',
+        'searched_for', 'page', 'pages', 'total', 'gifs', 'images', 'users', 'tags',
     )
 
     searched_for: str
     page: int
     pages: int
     total: int
-    gifs: List[Gif]
+    gifs: Optional[List[Gif]]
+    images: Optional[List[Image]]
     users: List[User]
     tags: List[str]
 

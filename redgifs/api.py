@@ -28,7 +28,7 @@ import requests
 
 from .http import HTTP, ProxyAuth
 from .enums import Order, Tags
-from .parser import parse_search, parse_creators
+from .parser import parse_search, parse_creators, parse_search_image
 from .models import URL, Gif, SearchResult, CreatorsResult
 
 class API:
@@ -116,7 +116,7 @@ class API:
         order: Order = Order.recent,
         count: int = 80,
         page: int = 1
-    ) -> SearchResult:
+    ) -> Optional[SearchResult]:
         """
         Search for a GIF.
 
@@ -140,8 +140,11 @@ class API:
             st = Tags.search(search_text)
         elif isinstance(search_text, Tags):
             st = search_text.value
-        resp = self.http.search(st, order, count, page)
-        return parse_search(st, resp)
+        if st is not None:
+            resp = self.http.search(st, order, count, page)
+            return parse_search(st, resp)
+
+    search_gif = search
 
     def search_creators(
         self,
@@ -206,7 +209,7 @@ class API:
         elif isinstance(search_text, Tags):
             st = search_text.value
         resp = self.http.search_image(st, order, count, page)
-        return parse_search(st, resp)
+        return parse_search_image(st, resp)
 
     def close(self) -> None:
         """Closes the API session."""
