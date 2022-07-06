@@ -3,6 +3,17 @@
 Changelogs
 ==========
 
+``[!]`` means it's a breaking change.
+
+1.2.0
+------
+- Added :py:class:`Image <redgifs.models.Image>`.
+- Added ``images`` as new attribute for :py:class:`SearchResult <redgifs.models.SearchResult>`.
+- Added ``search_gif()`` as an alias for :py:meth:`search() <redgifs.API.search()>`.
+- Fixed some ``typing`` related issues.
+- [!] Refactored :py:meth:`search_image <redgifs.API.search_image>` to return images in its proper dataclass.
+- [!] :py:meth:`search() <redgifs.API.search()>` now returns Optional[:py:class:`SearchResult <redgifs.models.SearchResult>`].
+
 1.1.0
 ------
 - Added :py:class:`search_image() <redgifs.API.search_image()>` method.
