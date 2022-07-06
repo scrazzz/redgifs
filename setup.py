@@ -7,7 +7,7 @@ with open('requirements.txt') as f:
 with open('redgifs/__init__.py') as f:
     version = re.search(r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]', f.read(), re.MULTILINE)[1] # type: ignore
 
-with open('README.md') as f:
+with open('README.md', encoding='utf-8') as f:
     readme = f.read()
 
 extras_require = {
