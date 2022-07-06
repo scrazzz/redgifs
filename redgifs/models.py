@@ -260,9 +260,9 @@ class SearchResult:
         The total number of pages for the query.
     total: :class:`int`
         The total number of GIFs for the query.
-    gifs: List[:class:`Gif`]
+    gifs: Optional[List[:class:`Gif`]]
         The GIFs which was searched for.
-    images: List[:class:`Image`]
+    images: Optional[List[:class:`Image`]]
         The images which was searched for.
     users: List[:class:`User`]
 
