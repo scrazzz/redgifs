@@ -61,6 +61,17 @@ class Tags(Enum):
         return random.choices([x for x in Tags.__members__.values()], k=count)
 
     @classmethod
+    def single_random(cls) -> "Tags":
+        """
+        A class method to get a random tag.
+
+        Returns
+        -------
+        :py:class:`Tags` - A tag.
+        """
+        return random.choice([x for x in Tags.__members__.values()])
+
+    @classmethod
     def search(cls, query: str) -> Optional[str]:
         """
         A friendly method to get the closest tag name. This is useful in searching for GIFs because RedGifs is case-sensitive (example: `cum` and `Cum` gives different results).
