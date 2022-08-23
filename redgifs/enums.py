@@ -63,7 +63,7 @@ class Tags(Enum):
     @classmethod
     def single_random(cls) -> "Tags":
         """
-        A class method to get a random tag.
+        A class method to get a single random tag.
 
         Returns
         -------
