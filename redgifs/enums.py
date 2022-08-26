@@ -25,7 +25,7 @@ DEALINGS IN THE SOFTWARE.
 import random
 import difflib
 from enum import Enum
-from typing import List, Optional
+from typing import List
 
 from .errors import InvalidTag
 
@@ -42,7 +42,7 @@ class Tags(Enum):
     """An enum representing available tags in RedGifs."""
 
     @classmethod
-    def random(cls, count: int = 1) -> Optional[List["Tags"]]:
+    def random(cls, count: int = 1) -> List["Tags"]:
         """
         A class method to get random tags.
 
@@ -53,11 +53,12 @@ class Tags(Enum):
 
         Returns
         -------
-        Optional[List[:py:class:`Tags`]] - A list of tags.
+        List[:py:class:`Tags`] - A list of tags.
         """
 
         if count > 4664:
-            raise ValueError('n cannot be more than 4664')
+            raise ValueError('count cannot be more than 4664')
+
         return random.choices([x for x in Tags.__members__.values()], k=count)
 
     @classmethod
@@ -72,9 +73,11 @@ class Tags(Enum):
         return random.choice([x for x in Tags.__members__.values()])
 
     @classmethod
-    def search(cls, query: str) -> Optional[str]:
+    def search(cls, query: str) -> str:
         """
-        A friendly method to get the closest tag name. This is useful in searching for GIFs because RedGifs is case-sensitive (example: `cum` and `Cum` gives different results).
+        A friendly method to get the closest tag name.
+        This is useful in searching for GIFs because RedGifs is case-sensitive
+        (example: `cum` and `Cum` gives different results).
 
         Parameters
         ----------
@@ -83,9 +86,8 @@ class Tags(Enum):
 
         Returns
         -------
-        Optional[:py:class:`str`] - The tag name.
+        :py:class:`str` - The tag name.
         """
-
         try:
             return difflib.get_close_matches(query.title(), [x.value for x in Tags.__members__.values()])[0]
         except IndexError:

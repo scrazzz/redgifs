@@ -76,9 +76,8 @@ class API:
             st = Tags.search(search_text)
         elif isinstance(search_text, Tags):
             st = search_text.value
-        if st is not None:
-            resp = await self.http.search(st, order, count, page)
-            return parse_search(st, resp)
+        resp = await self.http.search(st, order, count, page)
+        return parse_search(st, resp)
 
     search_gif = search
 
