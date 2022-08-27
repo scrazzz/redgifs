@@ -30,7 +30,7 @@ from yarl import URL
 
 import redgifs
 
-parser = argparse.ArgumentParser()
+parser = argparse.ArgumentParser(prog = 'redgifs')
 parser.add_argument('-dl', '--download', help = 'Download the GIF from given link', metavar = '')
 parser.add_argument('-l', '--list', help = 'Download GIFs from a list of URLs', metavar = '')
 args = parser.parse_args()
@@ -52,19 +52,19 @@ def start_dl(url: str):
     yarl_url = URL(url)
     if 'redgifs' not in str(yarl_url.host):
         raise TypeError(f'"{url}" is an invalid redgifs URL')
-    
+
     # Handle 'normal' URLs, i.e, a direct link from browser (eg: "https://redgifs.com/watch/deeznuts")
     if 'watch' in yarl_url.path:
         id = yarl_url.path.strip('/watch/')
         hd = client.get_gif(id).urls.hd
-        save_to_file(hd)
         print(f'Downloading {id}...')
-    
+        save_to_file(hd)
+
     # Handle direct MP4 URLs (eg: "https://thumbs2.redgifs.com/deeznuts.mp4")
     if yarl_url.host in ['thumbs', 'redgifs'] and str(yarl_url).endswith('.mp4'):
-        save_to_file(str(yarl_url))
         id = yarl_url.path.strip('/ .mp4')
         print(f'Downloading {id}...')
+        save_to_file(str(yarl_url))
 
 def main():
     if len(sys.argv) == 1:
@@ -73,7 +73,7 @@ def main():
 
     if args.download:
         start_dl(args.download)
-    
+
     if args.list:
         with open(args.list) as f:
             for url in f.readlines():
