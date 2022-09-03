@@ -39,7 +39,8 @@ session = requests.Session()
 client = redgifs.API(session=session)
 
 def save_to_file(mp4_link):
-    r = session.get(mp4_link, stream = True)
+    headers = client.http.headers
+    r = session.get(mp4_link, headers = headers, stream = True)
     file_name = mp4_link.split('/')[-1]
     with open(file_name, 'wb') as f:
         for chunk in r.iter_content(chunk_size = 1024 * 1024):
@@ -59,12 +60,6 @@ def start_dl(url: str):
         hd = client.get_gif(id).urls.hd
         print(f'Downloading {id}...')
         save_to_file(hd)
-
-    # Handle direct MP4 URLs (eg: "https://thumbs2.redgifs.com/deeznuts.mp4")
-    if yarl_url.host in ['thumbs', 'redgifs'] and str(yarl_url).endswith('.mp4'):
-        id = yarl_url.path.strip('/ .mp4')
-        print(f'Downloading {id}...')
-        save_to_file(str(yarl_url))
 
 def main():
     if len(sys.argv) == 1:
