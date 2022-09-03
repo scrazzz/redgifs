@@ -29,7 +29,6 @@ import os
 import re
 import sys
 import logging
-import pathlib
 from urllib.parse import quote
 from typing import Any, ClassVar, Dict, List, NamedTuple, Optional, Union
 
@@ -264,7 +263,7 @@ class AsyncHttp(HTTP):
             return (await dl(hd_url))
 
         # Shouldn't reach here
-        return 0
+        return 1
 
     async def close(self) -> None:
         await self.__session.close()
