@@ -21,7 +21,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 """
-
+import io
+import os
 from typing import Any, Dict, List, Optional, Union
 
 import requests
@@ -209,6 +210,27 @@ class API:
             st = search_text.value
         resp = self.http.search_image(st, order, count, page)
         return parse_search_image(st, resp)
+
+    def download(self, url: str, fp: Union[str, bytes, os.PathLike[Any], io.BufferedIOBase]):
+        """
+        A friendly method to download a RedGifs media.
+
+        .. note::
+            
+            You should use this method to download any media from RedGifs
+            because RedGifs does validation on User-Agents. If you try to download
+            it by using any other means, it may give you a 403 error.
+
+        Parameters
+        ----------
+        url: str
+            A valid RedGifs URL.
+        fp: Union[:class:`io.BufferedIOBase`, :class:`os.PathLike`]
+            The file-like object to save this asset to or the filename
+            to use. If a filename is passed then a file is created with that
+            filename and used instead.
+        """
+        return self.http.download(url, fp)
 
     def close(self) -> None:
         """Closes the API session."""

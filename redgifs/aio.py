@@ -22,6 +22,8 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 """
 
+import io
+import os
 from typing import Any, Dict, List, Optional, Union
 
 import aiohttp
@@ -108,6 +110,9 @@ class API:
             st = search_text.value
         resp = await self.http.search_image(st, order, count, page)
         return parse_search_image(st, resp)
+
+    async def download(self, url: str, fp: Union[str, bytes, os.PathLike[Any], io.BufferedIOBase]) -> int:
+        return (await self.http.download(url, fp))
 
     async def close(self) -> None:
         return (await self.http.close())

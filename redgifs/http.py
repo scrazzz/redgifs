@@ -24,8 +24,12 @@ DEALINGS IN THE SOFTWARE.
 
 from __future__ import annotations
 
+import io
+import os
+import re
 import sys
 import logging
+import pathlib
 from urllib.parse import quote
 from typing import Any, ClassVar, Dict, List, NamedTuple, Optional, Union
 
@@ -36,6 +40,7 @@ import yarl
 from . import __version__
 from .errors import HTTPException
 from .enums import Tags, Order
+from .const import REDGIFS_THUMBS_RE
 
 _log = logging.getLogger(__name__)
 
@@ -154,6 +159,42 @@ class HTTP:
             search_text=search_text, order=order.value, count=count, page=page
         )
         return self.request(r, **params)
+    
+    # download
+
+    def download(self, url: str, fp: Union[str, bytes, os.PathLike[Any], io.BufferedIOBase]) -> int:
+        """A friendly method to download a RedGifs media."""
+
+        yarl_url = yarl.URL(url)
+        str_url = str(yarl_url)
+
+        def dl(url: str) -> int:
+            r = self.__session.get(url, headers = self.headers)
+            _log.debug(f'GET {url} returned code: {r.status_code}')
+
+            data = r.content
+            if isinstance(fp, io.BufferedIOBase):
+                return (fp.write(data))
+            else:
+                with open(fp, 'wb') as f:
+                    return f.write(data)
+
+        # If it's a direct URL
+        if all([x in str(yarl_url.host) for x in ['thumbs', 'redgifs']]):
+            match = re.match(REDGIFS_THUMBS_RE, str_url)
+            if match:
+                return (dl(str_url))
+            raise TypeError(f'"{str_url}" is an invalid RedGifs URL.')
+
+        # If it's a 'watch' URL
+        if 'watch' in yarl_url.path:
+            id = yarl_url.path.strip('/watch/')
+            hd_url = self.get_gif(id)['gif']['urls']['hd']
+            return (dl(hd_url))
+
+        # Shouldn't reach here
+        return 1
+
 
 class AsyncHttp(HTTP):
     def __init__(
@@ -193,6 +234,37 @@ class AsyncHttp(HTTP):
                 return js
             else:
                 raise HTTPException(resp, js)
+
+    async def download(self, url: str, fp: Union[str, bytes, os.PathLike[Any], io.BufferedIOBase]) -> int:
+        yarl_url = yarl.URL(url)
+        str_url = str(yarl_url)
+
+        async def dl(url: str) -> int:
+            async with self.__session.get(url, headers = self.headers) as r:
+                _log.debug(f'GET {str_url} returned code: {r.status}')
+                
+                data = await r.read()
+                if isinstance(fp, io.BufferedIOBase):
+                    return (fp.write(data))
+                else:
+                    with open(fp, 'wb') as f:
+                        return f.write(data)
+
+        # If it's a direct URL
+        if all([x in str(yarl_url.host) for x in ['thumbs', 'redgifs']]):
+            match = re.match(REDGIFS_THUMBS_RE, str_url)
+            if match:
+                return (await dl(str_url))
+            raise TypeError(f'"{str_url}" is an invalid RedGifs URL.')
+
+        # If it's a 'watch' URL
+        if 'watch' in yarl_url.path:
+            id = yarl_url.path.strip('/watch/')
+            hd_url = self.get_gif(id)['gif']['urls']['hd']
+            return (await dl(hd_url))
+
+        # Shouldn't reach here
+        return 0
 
     async def close(self) -> None:
         await self.__session.close()
