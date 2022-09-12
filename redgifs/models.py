@@ -53,7 +53,7 @@ class URL:
     vthumbnail: str
 
 @dataclass
-class Gif:
+class GIF:
     # TODO: Document "type" and "avg_color"
     """The GIF returned from RedGifs.
 
@@ -278,7 +278,7 @@ class SearchResult:
     page: int
     pages: int
     total: int
-    gifs: Optional[List[Gif]]
+    gifs: Optional[List[GIF]]
     images: Optional[List[Image]]
     users: List[User]
     tags: List[str]

@@ -33,7 +33,7 @@ import aiohttp
 from .http import AsyncHttp, ProxyAuth
 from .enums import Tags, Order
 from .parser import parse_search, parse_creators, parse_search_image
-from .models import Gif, URL, SearchResult, CreatorsResult
+from .models import GIF, URL, SearchResult, CreatorsResult
 
 class API:
     def __init__(
@@ -49,9 +49,9 @@ class API:
         resp = await self.http.get_tags()
         return resp['tags']
 
-    async def get_gif(self, id: str) -> Gif:
+    async def get_gif(self, id: str) -> GIF:
         json: Dict[str, Any] = (await self.http.get_gif(id))['gif']
-        return Gif(
+        return GIF(
             id=json['id'],
             create_date=json['createDate'],
             has_audio=json['hasAudio'],

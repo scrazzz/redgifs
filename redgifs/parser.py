@@ -26,7 +26,7 @@ import logging
 from datetime import datetime
 from typing import Any, Dict
 
-from .models import Gif, URL, Image, User, SearchResult, CreatorsResult
+from .models import GIF, URL, Image, User, SearchResult, CreatorsResult
 
 _log = logging.getLogger(__name__)
 
@@ -42,7 +42,7 @@ def parse_search(searched_for: str, json: Dict[str, Any]) -> SearchResult:
         total=json['total'],
         images=None,
         gifs=[
-            Gif(
+            GIF(
                 id=gif['id'],
                 create_date=datetime.utcfromtimestamp(gif['createDate']),
                 has_audio=gif['hasAudio'],

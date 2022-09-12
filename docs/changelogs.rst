@@ -11,6 +11,7 @@ Changelogs
 - Added :py:meth:`Tags.single_random() <redgifs.Tags.single_random()>` to get a single random tag.
 - Added CLI support to download GIFs.
 - Fixed some ``typing`` related errors.
+- Renamed ``Gif`` dataclass to :py:meth:`GIF <redgifs.models.GIF()>`.
 
 1.2.0
 ------

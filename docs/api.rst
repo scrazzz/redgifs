@@ -23,7 +23,7 @@ Models are classes that are received from Redgifs and are not meant to be create
 .. autoclass:: redgifs.models.URL()
    :members:
 
-.. autoclass:: redgifs.models.Gif()
+.. autoclass:: redgifs.models.GIF()
    :members:
 
 .. autoclass:: redgifs.models.Image()

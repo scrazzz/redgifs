@@ -33,7 +33,7 @@ import requests
 from .http import HTTP, ProxyAuth
 from .enums import Order, Tags
 from .parser import parse_search, parse_creators, parse_search_image
-from .models import URL, Gif, SearchResult, CreatorsResult
+from .models import URL, GIF, SearchResult, CreatorsResult
 
 class API:
     """The API Instance to get information from the RedGifs API.
@@ -74,7 +74,7 @@ class API:
         """
         return (self.http.get_tags()['tags'])
     
-    def get_gif(self, id: str) -> Gif:
+    def get_gif(self, id: str) -> GIF:
         """
         Get details of a GIF with its ID.
 
@@ -89,7 +89,7 @@ class API:
         """
 
         json: Dict[str, Any] = self.http.get_gif(id)['gif']
-        return Gif(
+        return GIF(
             id=json['id'],
             create_date=json['createDate'],
             has_audio=json['hasAudio'],
