@@ -15,11 +15,19 @@
 ⚠ This project is still in development.
 ```
 
-⭐ _Please star this repo to support the developer and to encourage the development of this project!_
+> ⭐ _Please star this repo to support the developer and to encourage the development of this project!_
 
 ### Installation
 ```
 pip install -U redgifs
+```
+
+#### Development version
+- Not recommended.
+- May contain breaking code.
+- Get latest features before final release.
+```
+pip install -U git+https://github.com/scrazzz/redgifs
 ```
 
 `redgifs` works on Python versions 3.7 and above.
