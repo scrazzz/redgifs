@@ -18,7 +18,7 @@ from redgifs import Tags
     ]
 )
 def test_tags_search(test_input, expected):
-    searched = Tags.search(test_input)
+    searched = Tags.search(test_input)[0]
     assert searched == expected
 
 def test_tags_single_random():
