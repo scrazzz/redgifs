@@ -7,6 +7,7 @@ Changelogs
 
 1.3.0
 ------
+- [!] `Tags.search() <redgifs.Tags.search()>` now returns a list of closest tag names.
 - Added :py:meth:`download() <redgifs.API.download()>` to download media from redgifs (GH `#7 <https://github.com/scrazzz/redgifs/issues/7>`_).
 - Added :py:meth:`Tags.single_random() <redgifs.Tags.single_random()>` to get a single random tag.
 - Added CLI support to download GIFs.
@@ -15,12 +16,12 @@ Changelogs
 
 1.2.0
 ------
+- [!] Refactored :py:meth:`search_image() <redgifs.API.search_image()>` to return images in its proper dataclass.
+- [!] :py:meth:`search() <redgifs.API.search()>` now returns Optional[:py:class:`SearchResult <redgifs.models.SearchResult>`].
 - Added :py:class:`Image <redgifs.models.Image>`.
 - Added ``images`` as new attribute for :py:class:`SearchResult <redgifs.models.SearchResult>`.
 - Added :py:meth:`search_gif() <redgifs.API.search_gif()>` as an alias for :py:meth:`search() <redgifs.API.search()>`.
 - Fixed some ``typing`` related errors.
-- [!] Refactored :py:meth:`search_image() <redgifs.API.search_image()>` to return images in its proper dataclass.
-- [!] :py:meth:`search() <redgifs.API.search()>` now returns Optional[:py:class:`SearchResult <redgifs.models.SearchResult>`].
 
 1.1.0
 ------

@@ -77,7 +77,7 @@ class API:
 
     async def search(self, search_text: Union[str, Tags], *, order: Order = Order.recent, count: int = 80, page: int = 1) -> Optional[SearchResult]:
         if isinstance(search_text, str):
-            st = Tags.search(search_text)
+            st = Tags.search(search_text)[0]
         elif isinstance(search_text, Tags):
             st = search_text.value
         resp = await self.http.search(st, order, count, page)

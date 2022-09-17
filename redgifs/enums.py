@@ -73,11 +73,11 @@ class Tags(Enum):
         return random.choice([x for x in Tags.__members__.values()])
 
     @classmethod
-    def search(cls, query: str) -> str:
+    def search(cls, query: str) -> List[str]:
         """
         A friendly method to get the closest tag name.
-        This is useful in searching for GIFs because RedGifs is case-sensitive
-        (example: `cum` and `Cum` gives different results).
+
+        This is useful in searching for GIFs because RedGifs is case-sensitive.
 
         Parameters
         ----------
@@ -86,12 +86,14 @@ class Tags(Enum):
 
         Returns
         -------
-        :py:class:`str` - The tag name.
+        List[:py:class:`str`] - The tag names as a list.
         """
-        try:
-            return difflib.get_close_matches(query.title(), [x.value for x in Tags.__members__.values()])[0]
-        except IndexError:
-            raise InvalidTag(query) from None
+        ret = difflib.get_close_matches(query.title(), [x.value for x in Tags.__members__.values()])
+
+        if len(ret) == 0:
+            raise InvalidTag(query)
+
+        return ret
 
     big_tits = 'Big Tits'
     blowjob = 'Blowjob'

@@ -141,7 +141,7 @@ class API:
         """
 
         if isinstance(search_text, str):
-            st = Tags.search(search_text)
+            st = Tags.search(search_text)[0]
         elif isinstance(search_text, Tags):
             st = search_text.value
         resp = self.http.search(st, order, count, page)
