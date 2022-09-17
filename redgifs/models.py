@@ -97,7 +97,7 @@ class GIF:
         'published', 'urls', 'username', 'type', 'avg_color',
     )
 
-    id: int
+    id: str
     create_date: Optional[datetime.datetime]
     has_audio: bool
     width: int
@@ -155,7 +155,7 @@ class Image:
         'published', 'urls', 'username', 'type', 'avg_color',
     )
 
-    id: int
+    id: str
     create_date: Optional[datetime.datetime]
     width: int
     height: int
