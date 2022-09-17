@@ -32,6 +32,7 @@ import requests
 
 from .http import HTTP, ProxyAuth
 from .enums import Order, Tags
+from .utils import _to_web_url
 from .parser import parse_search, parse_creators, parse_search_image
 from .models import URL, GIF, SearchResult, CreatorsResult
 
@@ -106,7 +107,8 @@ class API:
                 hd=json['urls']['hd'],
                 poster=json['urls']['poster'],
                 thumbnail=json['urls']['thumbnail'],
-                vthumbnail=json['urls']['vthumbnail']
+                vthumbnail=json['urls']['vthumbnail'],
+                web_url=_to_web_url(json['id'])
             ),
             username=json['userName'],
             type=json['type'],

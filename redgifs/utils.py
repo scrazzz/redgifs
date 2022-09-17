@@ -24,6 +24,18 @@ DEALINGS IN THE SOFTWARE.
 
 import re
 
-REDGIFS_THUMBS_RE = re.compile(
-    r'https:\/\/thumbs\d?\.redgifs\.com\/(?P<id>\w+)(?P<type>\-\w+)?\.(?P<ext>\w+)(\?.+(\d|\w))?'
-)
+from .const import REDGIFS_THUMBS_RE
+
+def _to_web_url(id_or_url: str, use_regex: bool = False) -> str:
+    if not use_regex:
+        return f'https://redgifs.com/watch/{id_or_url.lower()}'
+
+    match = re.match(REDGIFS_THUMBS_RE, id_or_url)
+    if not match:
+        return ''
+
+    try:
+        id = match.group('id')
+        return f'https://redgifs.com/watch/{id.lower()}'
+    except IndexError:
+        return ''

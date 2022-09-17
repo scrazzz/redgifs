@@ -8,6 +8,7 @@ Changelogs
 1.3.0
 ------
 - [!] `Tags.search() <redgifs.Tags.search()>` now returns a list of closest tag names.
+- Added ``web_url`` attribute to :py:meth:`GIF <redgifs.models.GIF()>`.
 - Added :py:meth:`download() <redgifs.API.download()>` to download media from redgifs (GH `#7 <https://github.com/scrazzz/redgifs/issues/7>`_).
 - Added :py:meth:`Tags.single_random() <redgifs.Tags.single_random()>` to get a single random tag.
 - Added CLI support to download GIFs.

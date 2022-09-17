@@ -26,6 +26,7 @@ import logging
 from datetime import datetime
 from typing import Any, Dict
 
+from .utils import _to_web_url
 from .models import GIF, URL, Image, User, SearchResult, CreatorsResult
 
 _log = logging.getLogger(__name__)
@@ -59,7 +60,8 @@ def parse_search(searched_for: str, json: Dict[str, Any]) -> SearchResult:
                     hd=gif['urls']['hd'],
                     poster=gif['urls']['poster'],
                     thumbnail=gif['urls']['thumbnail'],
-                    vthumbnail=gif['urls']['vthumbnail']
+                    vthumbnail=gif['urls']['vthumbnail'],
+                    web_url=_to_web_url(gif['id']),
                 ),
                 username=gif['userName'],
                 type=gif['type'],
@@ -125,7 +127,8 @@ def parse_search_image(searched_for: str, json: Dict[str, Any]) -> SearchResult:
                     hd=gif['urls']['hd'],
                     poster=gif['urls']['poster'],
                     thumbnail=gif['urls']['thumbnail'],
-                    vthumbnail=gif['urls']['vthumbnail']
+                    vthumbnail=gif['urls']['vthumbnail'],
+                    web_url=_to_web_url(gif['id']),
                 ),
                 username=gif['userName'],
                 type=gif['type'],

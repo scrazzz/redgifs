@@ -32,6 +32,7 @@ import aiohttp
 
 from .http import AsyncHttp, ProxyAuth
 from .enums import Tags, Order
+from .utils import _to_web_url
 from .parser import parse_search, parse_creators, parse_search_image
 from .models import GIF, URL, SearchResult, CreatorsResult
 
@@ -68,7 +69,8 @@ class API:
                 hd=json['urls']['hd'],
                 poster=json['urls']['poster'],
                 thumbnail=json['urls']['thumbnail'],
-                vthumbnail=json['urls']['vthumbnail']
+                vthumbnail=json['urls']['vthumbnail'],
+                web_url=_to_web_url(json['id'])
             ),
             username=json['userName'],
             type=json['type'],

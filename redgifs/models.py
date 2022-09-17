@@ -42,15 +42,18 @@ class URL:
 
     vthumbnail: :class:`str`
 
+    web_url: :class:`str`
+        The website URL of the GIF.
     """
 
-    __slots__ = ('sd', 'hd', 'poster', 'thumbnail', 'vthumbnail')
+    __slots__ = ('sd', 'hd', 'poster', 'thumbnail', 'vthumbnail', 'web_url')
 
     sd: str
     hd: str
     poster: str
     thumbnail: str
     vthumbnail: str
+    web_url: str
 
 @dataclass
 class GIF:
