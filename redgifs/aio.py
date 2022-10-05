@@ -77,7 +77,7 @@ class API:
             avg_color=json['avgColor'],
         )
 
-    async def search(self, search_text: Union[str, Tags], *, order: Order = Order.recent, count: int = 80, page: int = 1) -> Optional[SearchResult]:
+    async def search(self, search_text: Union[str, Tags], *, order: Order = Order.recent, count: int = 80, page: int = 1) -> SearchResult:
         if isinstance(search_text, str):
             st = Tags.search(search_text)[0]
         elif isinstance(search_text, Tags):

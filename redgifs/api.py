@@ -122,7 +122,7 @@ class API:
         order: Order = Order.recent,
         count: int = 80,
         page: int = 1
-    ) -> Optional[SearchResult]:
+    ) -> SearchResult:
         """
         Search for a GIF.
 

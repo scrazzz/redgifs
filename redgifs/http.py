@@ -92,7 +92,7 @@ class HTTP:
         # Set proxy auth
         if self.proxy_auth and self._proxy:
             self._proxy_auth = (self.proxy_auth.username, self.proxy_auth.password)
-        # Don't provide proxy authorization if no proxy URL given (self._proxy)
+        # Don't set proxy authorization if no proxy URL given (self._proxy)
         else:
             self._proxy_auth = None
 
@@ -100,7 +100,7 @@ class HTTP:
         url: str = route.url
         method: str = route.method
         r: requests.Response = self.__session.request(
-            method, url, headers=self.headers, proxies=self._proxy, auth=self._proxy_auth, **kwargs
+            method, url, headers=self.headers, proxies=self._proxy, auth=self._proxy_auth, timeout=60.0, **kwargs
         )
         _log.debug(f'{method} {url} returned code: {r.status_code}')
         js = r.json()
@@ -134,7 +134,7 @@ class HTTP:
         page: int,
         order: Order,
         verified: bool,
-        tags: Union[List[Tags], List[str], None],
+        tags: Optional[Union[List[Tags], List[str]]],
         **params: Any
     ):
         if tags:
