@@ -1,0 +1,58 @@
+name: Bug Report
+description: Report broken or incorrect behaviour
+labels: bug
+body:
+
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for taking your time to fill out this form.
+
+        Please note that this form is for bug reports only!
+
+  - type: input
+    attributes:
+      label: Summary
+      description: A short summary of the bug report.
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Reproduction Steps
+      description: What you did to make it happen.
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Expected Result
+      description: What you expected to happen.
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Actual Result
+      description: What actually happened.
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: System Information
+      description: Run `python -m redgifs -v` and paste this information below.
+    validations:
+      required: true
+
+  - type: checkboxes
+    attributes:
+      label: Checklist
+      options:
+        - label: I have searched all open and closed issues for any duplicates.
+          required: true
+
+  - type: textarea
+    attributes:
+      label: Additional Information
+      description: If there is anything else to say, please do so here.
