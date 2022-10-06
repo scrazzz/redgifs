@@ -1,0 +1,47 @@
+name: Feature Request
+description: Suggest a feature
+labels: enhancement
+body:
+
+  - type: markdown
+    attributes:
+      value: |
+        Please make sure you have checked all issues in the issues section before requesting. The feature you may be requesting might have been accepted/declined already.
+        Also take your time to go through the [projects](https://github.com/scrazzz/redgifs/projects?type=classic) too. If it's already there then please don't make a duplicate feature request.
+
+  - type: input
+    attributes:
+      label: Summary
+      description: A short summary of what your feature request is.
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: The Problem
+      description: >
+        What problem is your feature trying to solve?
+        What becomes easier or possible when this feature is implemented?
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: The Ideal Solution
+      description: >
+        What is your ideal solution to the problem?
+        What would you like this feature to do?
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: The Current Solution
+      description: What is the current solution to the problem, if any?
+    validations:
+      required: false
+  
+  - type: textarea
+    attributes:
+      label: Additional Context
+      description: If there is anything else to say, please do so here.
