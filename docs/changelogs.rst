@@ -12,6 +12,7 @@ Changelogs
 - Added :py:meth:`download() <redgifs.API.download()>` to download media from redgifs (GH `#7 <https://github.com/scrazzz/redgifs/issues/7>`_).
 - Added :py:meth:`Tags.single_random() <redgifs.Tags.single_random()>` to get a single random tag.
 - Added CLI support to download GIFs.
+- Fixed an issue with HTTP timeout (GH `#9 <https://github.com/scrazzz/redgifs/issues/9>`_).
 - Fixed some ``typing`` related errors.
 - Renamed ``Gif`` dataclass to :py:meth:`GIF <redgifs.models.GIF()>`.
 
