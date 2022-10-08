@@ -24,21 +24,41 @@ DEALINGS IN THE SOFTWARE.
 
 import sys
 import argparse
+import platform
+import importlib.metadata
 
+import aiohttp
 import requests
 from yarl import URL
 
 import redgifs
 
-parser = argparse.ArgumentParser(prog = 'redgifs')
-parser.add_argument('-dl', '--download', help = 'Download the GIF from given link', metavar = '')
-parser.add_argument('-l', '--list', help = 'Download GIFs from a list of URLs', metavar = '')
+parser = argparse.ArgumentParser(prog='redgifs')
+parser.add_argument('-dl', '--download', help='Download the GIF from given link', metavar='')
+parser.add_argument('-l', '--list', help='Download GIFs from a list of URLs', metavar='')
+parser.add_argument('-v', '--version', help='Show redgifs version info.', action='store_true')
 args = parser.parse_args()
 
 session = requests.Session()
 client = redgifs.API(session=session)
 
-def save_to_file(mp4_link):
+def show_version() -> None:
+    entries = []
+
+    entries.append('- Python v{0.major}.{0.minor}.{0.micro}-{0.releaselevel}'.format(sys.version_info))
+    version_info = redgifs.version_info
+    entries.append('- redgifs v{0.major}.{0.minor}.{0.micro}-{0.releaselevel}'.format(version_info))
+    if version_info.releaselevel != 'final':
+        version = importlib.metadata.version('redgifs')
+        if version:
+            entries.append(f'    - redgifs metadata: v{version}')
+    
+    entries.append(f'- aiohttp v{aiohttp.__version__}')
+    uname = platform.uname()
+    entries.append('- system info: {0.system} {0.release} {0.version}'.format(uname))
+    print('\n'.join(entries))
+
+def save_to_file(mp4_link) -> None:
     headers = client.http.headers
     r = session.get(mp4_link, headers = headers, stream = True)
     file_name = mp4_link.split('/')[-1]
@@ -49,7 +69,7 @@ def save_to_file(mp4_link):
     
     print(f'\nDownloaded: {file_name}')
 
-def start_dl(url: str):
+def start_dl(url: str) -> None:
     yarl_url = URL(url)
     if 'redgifs' not in str(yarl_url.host):
         raise TypeError(f'"{url}" is an invalid redgifs URL')
@@ -61,7 +81,7 @@ def start_dl(url: str):
         print(f'Downloading {id}...')
         save_to_file(hd)
 
-def main():
+def main() -> None:
     if len(sys.argv) == 1:
         parser.print_help()
         sys.exit(1)
@@ -73,6 +93,9 @@ def main():
         with open(args.list) as f:
             for url in f.readlines():
                 start_dl(url)
+
+    if args.version:
+        show_version()
 
 if __name__ == '__main__':
     main()

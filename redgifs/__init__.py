@@ -22,11 +22,23 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 """
 
-__version__ = '1.3.0'
+__version__ = '1.3.1'
 __license__ = 'MIT'
 __copyright__ = 'Copyright (c) 2022-present scrazzz'
+
+from typing import Literal, NamedTuple
 
 from .api import API
 from .http import ProxyAuth
 from .enums import Order, Tags
 from .errors import *
+
+class VersionInfo(NamedTuple):
+    major: int
+    minor: int
+    micro: int
+    releaselevel: Literal['alpha', 'beta', 'final']
+
+version_info: VersionInfo = VersionInfo(major=1, minor=3, micro=1, releaselevel='final')    
+
+del NamedTuple, Literal, VersionInfo
