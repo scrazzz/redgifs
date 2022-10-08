@@ -5,9 +5,17 @@ Changelogs
 
 ``[!]`` means it's a breaking change.
 
+1.4.0
+-----
+- [!] Dropped support for Python version 3.7.
+
+1.3.1
+-----
+- Added ``--version`` argument in ``__main__.py`` file.
+
 1.3.0
 ------
-- [!] `Tags.search() <redgifs.Tags.search()>` now returns a list of closest tag names.
+- [!] :py:meth:`Tags.search() <redgifs.Tags.search()>` now returns a list of closest tag names.
 - Added ``web_url`` attribute to :py:meth:`GIF <redgifs.models.GIF()>`.
 - Added :py:meth:`download() <redgifs.API.download()>` to download media from redgifs (GH `#7 <https://github.com/scrazzz/redgifs/issues/7>`_).
 - Added :py:meth:`Tags.single_random() <redgifs.Tags.single_random()>` to get a single random tag.

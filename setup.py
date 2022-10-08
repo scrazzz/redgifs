@@ -32,10 +32,10 @@ setup(
     packages=['redgifs'],
     extras_require=extras_require,
     license='MIT',
-    description='Async and Sync Python Wrapper for the RedGifs API.',
+    description='Async and Sync Python Wrapper for the RedGIFs API.',
     long_description=readme,
     long_description_content_type='text/markdown',
     include_package_data=True,
     install_requires=requirements,
-    python_requires='>=3.7.0'
+    python_requires='>=3.8.0'
 )

@@ -9,7 +9,7 @@
     </a>
 </div>
 
-<p align="center"> Async and Sync Python Wrapper for the Redgifs API. </p>
+<p align="center"> Async and Sync Python Wrapper for the RedGIFs API. </p>
 
 ```
 ⚠ This project is still in development.
@@ -23,14 +23,11 @@ pip install -U redgifs
 ```
 
 #### Development version
-- Not recommended.
-- May contain breaking code.
-- Get latest features before final release.
 ```
 pip install -U git+https://github.com/scrazzz/redgifs
 ```
 
-`redgifs` works on Python versions 3.7 and above.
+`redgifs` works on Python versions 3.8 and above.
 
 ### Quickstart
 Synchronous usage
