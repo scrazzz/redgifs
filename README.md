@@ -11,11 +11,11 @@
 
 <p align="center"> Async and Sync Python Wrapper for the RedGIFs API. </p>
 
-```
-⚠ This project is still in development.
-```
+-----
 
 > ⭐ _Please star this repo to support the developer and to encourage the development of this project!_
+
+-----
 
 ### Installation
 ```
@@ -28,6 +28,8 @@ pip install -U git+https://github.com/scrazzz/redgifs
 ```
 
 `redgifs` works on Python versions 3.8 and above.
+
+-----
 
 ### Quickstart
 Synchronous usage
@@ -57,5 +59,8 @@ loop.run_until_complete(main())
 
 More examples can be found in the examples directory.
 
-### Documentation
-https://redgifs.readthedocs.io
+-----
+
+### Links
+- [Documentation](https://redgifs.readthedocs.io)
+- [Discord](https://discord.gg/MANaPpkNbE)
