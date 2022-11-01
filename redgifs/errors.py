@@ -66,6 +66,6 @@ class HTTPException(RedgifsError):
 
         self.error: Optional[Union[Dict[str, Any], str]] = json
         if isinstance(json, dict):
-            self.error = json.get('errorMessage')
+            self.error = json.get('errorMessage') or json.get('error')
 
         super().__init__(f'{self.status} (Error: {self.error})')
