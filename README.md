@@ -37,6 +37,7 @@ Synchronous usage
 import redgifs
 
 api = redgifs.API()
+api.login() # Login with temporary token
 response = api.search('3D')
 print(response)
 api.close()
@@ -49,6 +50,7 @@ from redgifs.aio import API
 
 async def main():
     api = API()
+    await api.login() # Login with teporary token
     response = await api.search('3D')
     print(response)
     await api.close()

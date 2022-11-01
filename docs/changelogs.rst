@@ -8,6 +8,9 @@ Changelogs
 1.4.0
 -----
 - [!] Dropped support for Python version 3.7.
+- Added :py:meth:`login() <redgifs.API.login>` for logging in with a temporary token.
+- Fixed errors with API requiring a token. See above added feature.
+- Fixed error message sometimes returning "None".
 
 1.3.1
 -----
