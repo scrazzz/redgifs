@@ -66,6 +66,9 @@ class API:
     ) -> None:
         self.http: HTTP = HTTP(session, proxy=proxy, proxy_auth=proxy_auth)
 
+    def login(self, username: Optional[str] = None, password: Optional[str] = None) -> bool:
+        return self.http.login(username, password)
+
     def get_tags(self) -> List[Dict[str, Union[str, int]]]:
         """Get all available RedGifs Tags.
         

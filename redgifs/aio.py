@@ -46,6 +46,9 @@ class API:
     ) -> None:
         self.http: AsyncHttp = AsyncHttp(session, proxy=proxy, proxy_auth=proxy_auth)
 
+    async def login(self, username: Optional[str] = None, password: Optional[str] = None) -> bool:
+        return (await self.http.login(username, password))
+
     async def get_tags(self) -> List[Dict[str, Union[str, int]]]:
         resp = await self.http.get_tags()
         return resp['tags']

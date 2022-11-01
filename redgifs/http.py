@@ -113,6 +113,18 @@ class HTTP:
     def close(self) -> None:
         self.__session.close()
 
+    # TODO: Implement OAuth login support
+    def login(self, username: Optional[str] = None, password: Optional[str] = None) -> bool:
+        if (username and password) is None:
+            temp_token = self.get_temp_token()['token']
+            self.headers['authorization'] = f'Bearer {temp_token}'
+            return True
+        else:
+            raise NotImplementedError
+
+    def get_temp_token(self):
+        return self.request(Route('GET', '/v2/auth/temporary'))
+
     # GIF methods
 
     def get_tags(self, **params: Any):
@@ -220,6 +232,15 @@ class AsyncHttp(HTTP):
         else:
             self._proxy_auth = None
 
+    # TODO: Implement OAuth login support
+    async def login(self, username: Optional[str] = None, password: Optional[str] = None) -> bool:
+        if (username and password) is None:
+            temp_token = await self.get_temp_token()
+            self.headers['authorization'] = f'Bearer {temp_token["token"]}'
+            return True
+        else:
+            raise NotImplementedError
+
     async def request(self, route: Route, **kwargs: Any) -> Any:
         url: str = route.url
         method: str = route.method
@@ -233,6 +254,9 @@ class AsyncHttp(HTTP):
                 return js
             else:
                 raise HTTPException(resp, js)
+
+    async def get_temp_token(self):
+        return (await self.request(Route('GET', '/v2/auth/temporary')))
 
     async def download(self, url: str, fp: Union[str, bytes, os.PathLike[Any], io.BufferedIOBase]) -> int:
         yarl_url = yarl.URL(url)
