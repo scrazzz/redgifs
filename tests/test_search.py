@@ -3,6 +3,7 @@ import pytest
 from redgifs import API
 
 api = API()
+api.login()
 
 @pytest.mark.parametrize(
     "search_text, searched_for",
