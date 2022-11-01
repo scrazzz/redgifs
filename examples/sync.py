@@ -6,6 +6,7 @@ import redgifs
 from redgifs import Order
 
 api = redgifs.API()
+api.login()
 result = api.search(
     'japanese',
     order=Order.trending, # Order it according to "trending" (default: "recent")
@@ -14,9 +15,9 @@ result = api.search(
 )
 
 # Get the first gif from the results (if any)
-try:
+if result.gifs is not None:
     gif = result.gifs[0]
-except IndexError:
+else:
     print(f'No gifs found for "{result.searched_for}"')
     exit(1)
 

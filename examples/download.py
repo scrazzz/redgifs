@@ -5,6 +5,7 @@ This example shows how you can download GIFs from RedGIFs using this library.
 from redgifs import API
 
 api = API()
+api.login()
 
 # Here we are searching for a GIF and only returning 15 of it.
 count = 10

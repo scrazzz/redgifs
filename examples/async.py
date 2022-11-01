@@ -9,6 +9,7 @@ import asyncio
 
 async def main():
     api = API()
+    await api.login()
     result = await api.search(
         'ass',
         order=Order.best, # Order it according to "best" (default: "recent")
@@ -17,9 +18,9 @@ async def main():
     )
 
     # Get the first gif from the results (if any)
-    try:
+    if result.gifs is not None:
         gif = result.gifs[0]
-    except IndexError:
+    else:
         return print(f'No results found for "{result.searched_for}"')
 
     # Print some information of the gif

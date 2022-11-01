@@ -6,6 +6,7 @@ for searching for gifs. Not the best way to search.
 from redgifs import API, Tags
 
 api = API()
+api.login()
 
 # Helpful to find a tag if you're using an IDE with autocomplete.
 result = api.search(Tags.brunette)

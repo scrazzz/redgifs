@@ -12,5 +12,5 @@ api = redgifs.API(
     # If your proxy server requires auth
     proxy_auth=redgifs.ProxyAuth('myusername', 'mypasswd')
 )
-
+api.login()
 api.search('agent')
