@@ -80,6 +80,14 @@ class API:
             avg_color=json['avgColor'],
         )
 
+    async def get_trending_tags(self) -> List[Dict[str, Union[str, int]]]:
+        result = (await self.http.get_trending_tags())['tags']
+        return result
+
+    async def fetch_tag_suggestions(self, query: str) -> List[str]:
+        result = await self.http.get_tag_suggestions(query)
+        return [d['text'] for d in result]
+
     async def search(self, search_text: Union[str, Tags], *, order: Order = Order.recent, count: int = 80, page: int = 1) -> SearchResult:
         if isinstance(search_text, str):
             st = Tags.search(search_text)[0]

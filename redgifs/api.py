@@ -118,6 +118,50 @@ class API:
             avg_color=json['avgColor'],
         )
 
+    def get_trending_tags(self) -> List[Dict[str, Union[str, int]]]:
+        """Gets the trending searches on RedGifs.
+
+        Returns
+        -------
+        ``List[Dict[str, Union[str, int]]]``
+            A list of dicts containing the tag name and count::
+
+                [
+                    {
+                        "name": "r/CaughtPublic",
+                        "count": 2034
+                    },
+                    {
+                        "name": "Vintage",
+                        "count": 19051
+                    },
+                    ...
+                ]
+        """
+        resp = self.http.get_trending_tags()['tags']
+        return resp
+
+    def fetch_tag_suggestions(self, query: str) -> List[str]:
+        """Get tag suggestions from RedGifs.
+
+        .. note::
+
+            This is an API call. See :func:`~redgifs.Tags.search` for an internal lookup
+            of available tags.
+
+        Parameters
+        ----------
+        query: :class:`str`
+            The tag name to look for.
+
+        Returns
+        -------
+        ``List[str]``
+            A list of tag names.
+        """
+        result = self.http.get_tag_suggestions(query)
+        return [d['text'] for d in result]
+
     def search(
         self,
         search_text: Union[str, Tags],

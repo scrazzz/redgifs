@@ -170,7 +170,22 @@ class HTTP:
             search_text=search_text, order=order.value, count=count, page=page
         )
         return self.request(r, **params)
+
+    # Tag methods
+
+    def get_trending_tags(self):
+        r = Route(
+            'GET', '/v2/search/trending'
+        )
+        return self.request(r)
     
+    def get_tag_suggestions(self, query: str):
+        r = Route(
+            'GET', '/v2/search/suggest?query={query}',
+            query=query
+        )
+        return self.request(r)
+
     # download
 
     def download(self, url: str, fp: Union[str, bytes, os.PathLike[Any], io.BufferedIOBase]) -> int:
