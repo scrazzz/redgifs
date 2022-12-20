@@ -267,6 +267,15 @@ class API:
         """
         A friendly method to download a RedGifs media.
 
+        Example:
+
+        .. code-block:: python
+
+            api = API()
+            api.login()
+            hd_url = api.search("query").gifs[0].urls.hd
+            api.download(hd_url, "video.mp4")
+
         .. note::
             
             You should use this method to download any media from RedGifs
