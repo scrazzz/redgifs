@@ -298,7 +298,7 @@ class AsyncHttp(HTTP):
         # If it's a 'watch' URL
         if 'watch' in yarl_url.path:
             id = yarl_url.path.strip('/watch/')
-            hd_url = self.get_gif(id)['gif']['urls']['hd']
+            hd_url = (await self.get_gif(id))['gif']['urls']['hd']
             return (await dl(hd_url))
 
         # Shouldn't reach here
