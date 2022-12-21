@@ -33,7 +33,7 @@ import requests
 from .http import HTTP, ProxyAuth
 from .enums import Order, Tags
 from .utils import _to_web_url
-from .parser import parse_search, parse_creators, parse_search_image
+from .parser import parse_creator, parse_search, parse_creators, parse_search_image
 from .models import URL, GIF, SearchResult, CreatorsResult
 
 class API:
@@ -227,6 +227,29 @@ class API:
         """
         resp = self.http.search_creators(page=page, order=order, verified=verified, tags=tags)
         return parse_creators(resp)
+
+    def search_creator(self, username: str, *, page: int = 1, order: Order = Order.recent) -> CreatorsResult:
+        """
+        Search for a RedGifs creator/user.
+
+        Parameters
+        ----------
+        username: :class:`str`
+            The username of the creator/user.
+        page: :class:`int`
+            The page number of GIFs.
+            There is a total of 80 GIFs in one page.
+        order: :class:`Order`
+            The order to return creator/user's GIFs.
+
+        Returns
+        -------
+        :py:class`User <redgifs.models.User>` - The creator/user searched for.
+        """
+        resp = self.http.search_creator(username, page=page, order=order)
+        return parse_creator(resp)
+
+    search_user = search_creator
 
     def search_image(
         self,

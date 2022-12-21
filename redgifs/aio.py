@@ -33,7 +33,7 @@ import aiohttp
 from .http import AsyncHttp, ProxyAuth
 from .enums import Tags, Order
 from .utils import _to_web_url
-from .parser import parse_search, parse_creators, parse_search_image
+from .parser import parse_search, parse_creator, parse_creators, parse_search_image
 from .models import GIF, URL, SearchResult, CreatorsResult
 
 class API:
@@ -108,6 +108,18 @@ class API:
     ) -> CreatorsResult:
         resp = await self.http.search_creators(page=page, order=order, verified=verified, tags=tags)
         return parse_creators(resp)
+
+    async def search_creator(
+        self,
+        username: str,
+        *,
+        page: int = 1,
+        order: Order = Order.recent
+    ) -> CreatorsResult:
+        resp = await self.http.search_creator(username, page, order)
+        return parse_creator(resp)
+
+    search_user = search_creator
 
     async def search_image(
         self,

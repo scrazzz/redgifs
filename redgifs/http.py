@@ -140,6 +140,8 @@ class HTTP:
             search_text=search_text, order=order.value, count=count, page=page
         )
         return self.request(r, **params)
+    
+    # User/Creator methods
 
     def search_creators(
         self,
@@ -160,6 +162,13 @@ class HTTP:
                 'GET', '/v1/creators/search?page={page}&order={order}&verified={verified}',
                 page=page, order=order.value, verified=verified
             )
+        return self.request(r, **params)
+
+    def search_creator(self, username: str, page: int, order: Order, **params):
+        r = Route(
+            'GET', '/v2/users/{username}/search?page={page}&order={order}',
+            username=username, page=page, order=order.value
+        )
         return self.request(r, **params)
 
     # Pic methods
