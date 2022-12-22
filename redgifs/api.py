@@ -244,7 +244,7 @@ class API:
 
         Returns
         -------
-        :py:class`CreatorResult <redgifs.models.CreatorResult>` - The creator/user searched for.
+        :py:class:`CreatorResult <redgifs.models.CreatorResult>` - The creator/user searched for.
         """
         resp = self.http.search_creator(username, page=page, order=order)
         return parse_creator(resp)
