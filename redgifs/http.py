@@ -128,11 +128,10 @@ class HTTP:
     # GIF methods
 
     def get_tags(self, **params: Any):
-        return self.request(Route('GET', '/v1/tags'))
+        return self.request(Route('GET', '/v1/tags'), **params)
 
     def get_gif(self, id: str, **params: Any):
-        r = Route('GET', '/v2/gifs/{id}', id=id)
-        return self.request(r, **params)
+        return self.request(Route('GET', '/v2/gifs/{id}', id=id), **params)
 
     def search(self, search_text: Union[str, Tags], order: Order, count: int, page: int, **params: Any):
         r = Route(
@@ -187,7 +186,7 @@ class HTTP:
             'GET', '/v2/search/trending'
         )
         return self.request(r)
-    
+
     def get_tag_suggestions(self, query: str):
         r = Route(
             'GET', '/v2/search/suggest?query={query}',
@@ -289,7 +288,7 @@ class AsyncHttp(HTTP):
         async def dl(url: str) -> int:
             async with self.__session.get(url, headers = self.headers) as r:
                 _log.debug(f'GET {str_url} returned code: {r.status}')
-                
+
                 data = await r.read()
                 if isinstance(fp, io.BufferedIOBase):
                     return (fp.write(data))
