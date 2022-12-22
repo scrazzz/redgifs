@@ -256,14 +256,14 @@ class SearchResult:
     ----------
     searched_for: :class:`str`
         The result of what you have searched for.
-        This may differ from what you have provided for ``query`` in :py:meth:`search <redgifs.API.search()>`.
+        This may differ from what you have provided for ``query`` in :py:meth:`API.search() <redgifs.API.search()>`.
     page: :class:`int`
         The current page number.
     pages: :class:`int`
         The total number of pages for the query.
     total: :class:`int`
         The total number of GIFs for the query.
-    gifs: Optional[List[:class:`Gif`]]
+    gifs: Optional[List[:class:`GIF`]]
         The GIFs which was searched for.
     images: Optional[List[:class:`Image`]]
         The images which was searched for.
@@ -289,25 +289,46 @@ class SearchResult:
 @dataclass
 class CreatorsResult:
     # TODO: Document "total"
-    """The creator result you have searched.
+    """The creator results searched for.
 
     Attributes
     ----------
     items: List[:class:`User`]
         The list of creators.
-    pages: :class:`int`
-        The total number of pages.
     page: :class:`int`
         The current page number.
+    pages: :class:`int`
+        The total number of pages available.
     total: :class:`int`
 
     """
 
-    __slots__ = (
-        'items', 'pages', 'page', 'total'
-    )
+    __slots__ = ('items', 'page', 'pages', 'total')
 
     items: List[User]
-    pages: int
     page: int
+    pages: int
+    total: int
+
+@dataclass
+class CreatorResult:
+    """The creator result searched for.
+
+    Attributes
+    ----------
+    creator: :class:`User`
+        The creator/user details.
+    page: :class:`int`
+        The current page number.
+    pages: :class:`int`
+        The total number of pages available.
+    total: :class:`int`
+        The total number of GIFs this creator/user has created.
+    """
+
+    __slots__ = ('creator', 'page', 'pages', 'total')
+
+    creator: User
+    page: int
+    pages: int
     total: int

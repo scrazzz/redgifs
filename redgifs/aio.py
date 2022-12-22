@@ -34,7 +34,7 @@ from .http import AsyncHttp, ProxyAuth
 from .enums import Tags, Order
 from .utils import _to_web_url
 from .parser import parse_search, parse_creator, parse_creators, parse_search_image
-from .models import GIF, URL, SearchResult, CreatorsResult
+from .models import GIF, URL, CreatorResult, SearchResult, CreatorsResult
 
 class API:
     def __init__(
@@ -115,7 +115,7 @@ class API:
         *,
         page: int = 1,
         order: Order = Order.recent
-    ) -> CreatorsResult:
+    ) -> CreatorResult:
         resp = await self.http.search_creator(username, page, order)
         return parse_creator(resp)
 

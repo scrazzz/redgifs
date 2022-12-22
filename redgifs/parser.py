@@ -27,7 +27,7 @@ from datetime import datetime
 from typing import Any, Dict
 
 from .utils import _to_web_url
-from .models import GIF, URL, Image, User, SearchResult, CreatorsResult
+from .models import GIF, URL, CreatorResult, Image, User, SearchResult, CreatorsResult
 
 _log = logging.getLogger(__name__)
 
@@ -197,35 +197,32 @@ def parse_creators(json: Dict[str, Any]) -> CreatorsResult:
         total=json['total'],
     )
 
-def parse_creator(json: Dict[str, Any]) -> CreatorsResult:
-    _log.debug('Using `parse_creators`')
-    users = json['users']
-    return CreatorsResult(
-        items=[
-            User(
-                creation_time=datetime.utcfromtimestamp(user['creationtime']),
-                description=user['description'],
-                followers=user['followers'],
-                following=user['following'],
-                gifs=json['gifs'],
-                name=user['name'],
-                profile_image_url=user['profileImageUrl'],
-                profile_url=user['profileUrl'],
-                published_collections=user['publishedCollections'],
-                status=user['status'],
-                published_gifs=user['publishedGifs'],
-                subscription=user['subscription'],
-                url=user['url'],
-                username=user['username'],
-                verified=user['verified'],
-                views=user['views'],
-                poster=user['poster'],
-                preview=user['preview'],
-                thumbnail=user['thumbnail'],
-            )
-            for user in users
-        ],
-        pages=json['pages'],
+def parse_creator(json: Dict[str, Any]) -> CreatorResult:
+    _log.debug('Using `parse_creator`')
+    user = json['users'][0]
+    return CreatorResult(
+        creator=User(
+            creation_time=datetime.utcfromtimestamp(user['creationtime']),
+            description=user['description'],
+            followers=user['followers'],
+            following=user['following'],
+            gifs=json['gifs'],
+            name=user['name'],
+            profile_image_url=user['profileImageUrl'],
+            profile_url=user['profileUrl'],
+            published_collections=user['publishedCollections'],
+            status=user['status'],
+            published_gifs=user['publishedGifs'],
+            subscription=user['subscription'],
+            url=user['url'],
+            username=user['username'],
+            verified=user['verified'],
+            views=user['views'],
+            poster=user['poster'],
+            preview=user['preview'],
+            thumbnail=user['thumbnail'],
+        ),
         page=json['page'],
-        total=json['total'],
+        pages=json['pages'],
+        total=json['total']
     )
