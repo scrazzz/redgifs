@@ -150,18 +150,23 @@ class HTTP:
         tags: Optional[Union[List[Tags], List[str]]],
         **params: Any
     ):
+        url = '/v1/creators/search?page={page}&order={order}'
+        if verified:
+            url += '&verified={verified}'
         if tags:
+            url += '&tags={tags}'
             r = Route(
-                'GET', '/v1/creators/search?page={page}&order={order}&verified={verified}&tags={tags}',
-                page=page, order=order.value, verified=verified,
+                'GET', url,
+                page=page, order=order.value, verified='y' if verified else 'n',
                 tags=','.join(t.value for t in tags) if isinstance(tags[0], Tags) else ','.join(t for t in tags) # type: ignore
             )
+            return self.request(r, **params)
         else:
             r = Route(
-                'GET', '/v1/creators/search?page={page}&order={order}&verified={verified}',
-                page=page, order=order.value, verified=verified
+                'GET', url,
+                page=page, order=order.value, verified='y' if verified else 'n'
             )
-        return self.request(r, **params)
+            return self.request(r, **params)
 
     def search_creator(self, username: str, page: int, order: Order, **params):
         r = Route(
@@ -182,9 +187,7 @@ class HTTP:
     # Tag methods
 
     def get_trending_tags(self):
-        r = Route(
-            'GET', '/v2/search/trending'
-        )
+        r = Route('GET', '/v2/search/trending')
         return self.request(r)
 
     def get_tag_suggestions(self, query: str):
