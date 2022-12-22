@@ -5,10 +5,19 @@ Changelogs
 
 ``[!]`` means it's a breaking change.
 
+1.5.0
+-----
+- Added new method: :py:meth:`get_trending_tags() <redgifs.API.get_trending_tags()>`
+- Added new method: :py:meth:`fetch_tag_suggestions() <redgifs.API.fetch_tag_suggestions()>`.
+- Added new method: :py:meth:`search_creator() <redgifs.API.search_creator>`. Alias: :py:meth:`search_user() <redgifs.API.search_user()>`
+- Added new dataclass :py:class:`CreatorResult <redgifs.models.CreatorResult>`.
+- Fixed :py:meth:`download() <redgifs.API.download()>` method not working in async context.
+- Fixed :py:meth:`search_creators() <redgifs.API.search_creators()>` method error.
+
 1.4.0
 -----
 - [!] Dropped support for Python version 3.7.
-- Added :py:meth:`login() <redgifs.API.login>` for logging in with a temporary token.
+- Added :py:meth:`login() <redgifs.API.login()>` for logging in with a temporary token.
 - Fixed errors with API requiring a token. See above added feature.
 - Fixed error message sometimes returning "None".
 
