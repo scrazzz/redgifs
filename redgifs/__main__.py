@@ -61,10 +61,10 @@ def show_version() -> None:
 
 def save_to_file(mp4_link) -> None:
     headers = client.http.headers
-    r = session.get(mp4_link, headers = headers, stream = True)
-    file_name = mp4_link.split('/')[-1]
+    r = session.get(mp4_link, headers=headers, stream=True)
+    file_name = mp4_link.split('/')[3].split('?')[0]
     with open(file_name, 'wb') as f:
-        for chunk in r.iter_content(chunk_size = 1024 * 1024):
+        for chunk in r.iter_content(chunk_size=1024 * 1024):
             if chunk:
                 f.write(chunk)
     
@@ -77,7 +77,7 @@ def start_dl(url: str) -> None:
 
     # Handle 'normal' URLs, i.e, a direct link from browser (eg: "https://redgifs.com/watch/deeznuts")
     if 'watch' in yarl_url.path:
-        id = yarl_url.path.strip('/watch/')
+        id = yarl_url.path.split('/')[-1]
         hd = client.get_gif(id).urls.hd
         print(f'Downloading {id}...')
         save_to_file(hd)
