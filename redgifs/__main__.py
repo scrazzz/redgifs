@@ -41,6 +41,7 @@ args = parser.parse_args()
 
 session = requests.Session()
 client = redgifs.API(session=session)
+client.login()
 
 def show_version() -> None:
     entries = []
