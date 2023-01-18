@@ -13,6 +13,7 @@ Changelogs
 - Added new dataclass :py:class:`CreatorResult <redgifs.models.CreatorResult>`.
 - Fixed :py:meth:`download() <redgifs.API.download()>` method not working in async context.
 - Fixed :py:meth:`search_creators() <redgifs.API.search_creators()>` method error.
+- Fixed an error regarding authorization for CLI.
 
 1.4.0
 -----
