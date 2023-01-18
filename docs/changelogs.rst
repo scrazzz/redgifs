@@ -5,6 +5,10 @@ Changelogs
 
 ``[!]`` means it's a breaking change.
 
+1.5.1
+-----
+- Properly fixed an issue with CLI downloads.
+
 1.5.0
 -----
 - Added new method: :py:meth:`get_trending_tags() <redgifs.API.get_trending_tags()>`
