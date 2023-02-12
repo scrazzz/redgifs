@@ -53,7 +53,7 @@ def parse_search(searched_for: str, json: Dict[str, Any]) -> SearchResult:
                 tags=gif['tags'],
                 verified=gif['verified'],
                 views=gif['views'],
-                duration=gif['duration'],
+                duration=int(gif['duration']),
                 published=gif['published'],
                 urls=URL(
                     sd=gif['urls']['sd'],
