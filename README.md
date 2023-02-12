@@ -32,12 +32,13 @@ pip install -U git+https://github.com/scrazzz/redgifs
 -----
 
 ### Quickstart
-Command Line usage. See `redgifs -h` for help.
+Command Line usage:
 ```console
 redgifs [url]
 ```
+See `redgifs -h` for help.
 
-Synchronous usage
+Synchronous usage:
 ```py
 import redgifs
 
@@ -48,7 +49,7 @@ print(response)
 api.close()
 ```
 
-Asynchronous usage
+Asynchronous usage:
 ```py
 import asyncio
 from redgifs.aio import API
