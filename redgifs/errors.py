@@ -27,11 +27,11 @@ import aiohttp
 
 from typing import Any, Dict, Optional, Union
 
-class RedgifsError(BaseException):
+class RedGifsError(BaseException):
     """Base class for all redgifs errors."""
     pass
 
-class InvalidTag(RedgifsError):
+class InvalidTag(RedGifsError):
     """Exception raised when no match was found for a tag.
 
     Attributes
@@ -43,7 +43,7 @@ class InvalidTag(RedgifsError):
         self.tag: str = tag
         super().__init__(f'Tag for "{tag}" was not found.')
 
-class HTTPException(RedgifsError):
+class HTTPException(RedGifsError):
     """Exception raised when an HTTP Exception occurs.
 
     Attributes

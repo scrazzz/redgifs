@@ -61,7 +61,7 @@ Enums
 Exceptions
 ==========
 
-.. autoexception:: RedgifsError
+.. autoexception:: RedGifsError
 
 .. autoexception:: InvalidTag
 
