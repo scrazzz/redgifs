@@ -32,6 +32,11 @@ pip install -U git+https://github.com/scrazzz/redgifs
 -----
 
 ### Quickstart
+Command Line usage. See `redgifs -h` for help.
+```console
+redgifs [url]
+```
+
 Synchronous usage
 ```py
 import redgifs

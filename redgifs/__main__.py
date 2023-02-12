@@ -29,19 +29,23 @@ import importlib.metadata
 
 import aiohttp
 import requests
+from requests.exceptions import ConnectionError
 from yarl import URL
 
 import redgifs
 
 parser = argparse.ArgumentParser(prog='redgifs')
-parser.add_argument('-dl', '--download', help='Download the GIF from given link', metavar='')
+parser.add_argument('link', nargs='?', help='Enter a RedGifs URL to download it')
 parser.add_argument('-l', '--list', help='Download GIFs from a list of URLs', metavar='')
 parser.add_argument('-v', '--version', help='Show redgifs version info.', action='store_true')
 args = parser.parse_args()
 
 session = requests.Session()
 client = redgifs.API(session=session)
-client.login()
+try:
+    client.login()
+except ConnectionError as CE:
+    raise redgifs.RedGifsError(f'\n\n[!] An error occured when trying to access redgifs.com\n[!] Error: "{str(CE)}"\n[!] Make sure you are able to connect to redgifs.com') from None
 
 def show_version() -> None:
     entries = []
@@ -73,7 +77,7 @@ def save_to_file(mp4_link) -> None:
 def start_dl(url: str) -> None:
     yarl_url = URL(url)
     if 'redgifs' not in str(yarl_url.host):
-        raise TypeError(f'"{url}" is an invalid redgifs URL')
+        raise TypeError(f'"{url}" is not a valid redgifs URL')
 
     # Handle 'normal' URLs, i.e, a direct link from browser (eg: "https://redgifs.com/watch/deeznuts")
     if 'watch' in yarl_url.path:
@@ -87,8 +91,8 @@ def main() -> None:
         parser.print_help()
         sys.exit(1)
 
-    if args.download:
-        start_dl(args.download)
+    if args.link:
+        start_dl(args.link)
 
     if args.list:
         with open(args.list) as f:
