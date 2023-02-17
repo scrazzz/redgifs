@@ -40,7 +40,7 @@ setup(
     python_requires='>=3.8.0',
     entry_points={
         'console_scripts': [
-            'redgifs = redgifs__main__:main'
+            'redgifs = redgifs.__main__:main'
         ]
     },
 )
