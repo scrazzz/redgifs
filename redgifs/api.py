@@ -74,7 +74,7 @@ class API:
         
         Returns
         -------
-        A list of dicts.
+        ``List[Dict[str, Union[str, int]]]``
         """
         return (self.http.get_tags()['tags'])
     
@@ -89,7 +89,7 @@ class API:
 
         Returns
         -------
-        :py:class:`GIF <redgifs.models.Gif>` - The GIF's info.
+        :py:class:`GIF <redgifs.models.GIF>` - The GIF's info.
         """
 
         json: Dict[str, Any] = self.http.get_gif(id)['gif']
@@ -294,7 +294,7 @@ class API:
 
         .. code-block:: python
 
-            api = API()
+            api = redgifs.API()
             api.login()
             hd_url = api.search("query").gifs[0].urls.hd
             api.download(hd_url, "video.mp4")
