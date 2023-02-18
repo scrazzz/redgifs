@@ -42,10 +42,6 @@ args = parser.parse_args()
 
 session = requests.Session()
 client = redgifs.API(session=session)
-try:
-    client.login()
-except ConnectionError as CE:
-    raise redgifs.RedGifsError(f'\n\n[!] An error occured when trying to access redgifs.com\n[!] Error: "{str(CE)}"\n[!] Make sure you are able to connect to redgifs.com') from None
 
 def show_version() -> None:
     entries = []
@@ -92,9 +88,11 @@ def main() -> None:
         sys.exit(1)
 
     if args.link:
+        client.login()
         start_dl(args.link)
 
     if args.list:
+        client.login()
         with open(args.list) as f:
             for url in f.readlines():
                 start_dl(url)
