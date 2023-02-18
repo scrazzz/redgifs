@@ -15,8 +15,9 @@ Changelogs
 
 - Improved CLI.
 
-Now you can run ``redgifs`` in your terminal to use the redgifs CLI easily. See ``redgifs -h`` for help.
+Now you can run ``redgifs`` in your terminal to use the CLI. See ``redgifs -h`` for help.
 
+- Fixed thumbnail regex (`4c3606b <https://github.com/scrazzz/redgifs/commit/4c3606b>`_).
 
 1.5.1
 -----
