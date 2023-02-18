@@ -25,5 +25,5 @@ DEALINGS IN THE SOFTWARE.
 import re
 
 REDGIFS_THUMBS_RE = re.compile(
-    r'https:\/\/thumbs\d?\.redgifs\.com\/(?P<id>\w+)(?P<type>\-\w+)?\.(?P<ext>\w+)(\?.+(\d|\w))?'
+    r'https:\/\/thumbs\d+?\.redgifs\.com\/(?P<id>\w+)(?P<type>-\w+)?\.(?P<ext>\w+)(\?.+(\d|\w))?'
 )
