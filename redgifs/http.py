@@ -40,6 +40,7 @@ from . import __version__
 from .errors import HTTPException
 from .enums import Tags, Order
 from .const import REDGIFS_THUMBS_RE
+from .utils import strip_ip
 
 _log = logging.getLogger(__name__)
 
@@ -221,7 +222,7 @@ class HTTP:
             match = re.match(REDGIFS_THUMBS_RE, str_url)
             if match:
                 return (dl(str_url))
-            raise TypeError(f'"{str_url}" is an invalid RedGifs URL.')
+            raise TypeError(f'"{strip_ip(str_url)}" is an invalid RedGifs URL.')
 
         # If it's a 'watch' URL
         if 'watch' in yarl_url.path:
@@ -304,7 +305,7 @@ class AsyncHttp(HTTP):
             match = re.match(REDGIFS_THUMBS_RE, str_url)
             if match:
                 return (await dl(str_url))
-            raise TypeError(f'"{str_url}" is an invalid RedGifs URL.')
+            raise TypeError(f'"{strip_ip(str_url)}" is an invalid RedGifs URL.')
 
         # If it's a 'watch' URL
         if 'watch' in yarl_url.path:
