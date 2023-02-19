@@ -206,6 +206,9 @@ class HTTP:
         yarl_url = yarl.URL(url)
         str_url = str(yarl_url)
 
+        if (yarl_url.host and 'redgifs.com' not in yarl_url.host):
+            raise TypeError(f'"{strip_ip(str_url)}" is not a valid RedGifs URL')
+
         def dl(url: str) -> int:
             r = self.__session.get(url, headers = self.headers)
             _log.debug(f'GET {url} returned code: {r.status_code}')
@@ -230,8 +233,7 @@ class HTTP:
             hd_url = self.get_gif(id)['gif']['urls']['hd']
             return (dl(hd_url))
 
-        # Shouldn't reach here
-        return 1
+        raise TypeError(f'"{strip_ip(str_url)}" is not a valid RedGifs URL')
 
 
 class AsyncHttp(HTTP):
@@ -289,6 +291,9 @@ class AsyncHttp(HTTP):
         yarl_url = yarl.URL(url)
         str_url = str(yarl_url)
 
+        if (yarl_url.host and 'redgifs.com' not in yarl_url.host):
+            raise TypeError(f'"{strip_ip(str_url)}" is not a valid RedGifs URL')
+
         async def dl(url: str) -> int:
             async with self.__session.get(url, headers = self.headers) as r:
                 _log.debug(f'GET {str_url} returned code: {r.status}')
@@ -313,8 +318,7 @@ class AsyncHttp(HTTP):
             hd_url = (await self.get_gif(id))['gif']['urls']['hd']
             return (await dl(hd_url))
 
-        # Shouldn't reach here
-        return 1
+        raise TypeError(f'"{strip_ip(str_url)}" is not a valid RedGifs URL')
 
     async def close(self) -> None:
         await self.__session.close()
