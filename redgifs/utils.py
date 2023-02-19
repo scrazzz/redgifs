@@ -23,8 +23,9 @@ DEALINGS IN THE SOFTWARE.
 """
 
 import re
+import yarl
 
-from .const import REDGIFS_THUMBS_RE
+from .const import REDGIFS_THUMBS_RE, IP_ADDR_RE
 
 def _to_web_url(id_or_url: str, use_regex: bool = False) -> str:
     if not use_regex:
@@ -39,3 +40,10 @@ def _to_web_url(id_or_url: str, use_regex: bool = False) -> str:
         return f'https://redgifs.com/watch/{id.lower()}'
     except IndexError:
         return ''
+
+def strip_ip(url: str) -> str:
+    u = yarl.URL(url)
+    if u.query.get('for'):
+        for_value = re.sub(IP_ADDR_RE, 'REDACTED', u.query['for'])
+        return u % {'for': for_value}
+    return url

@@ -27,3 +27,8 @@ import re
 REDGIFS_THUMBS_RE = re.compile(
     r'https:\/\/thumbs\d+?\.redgifs\.com\/(?P<id>\w+)(?P<type>-\w+)?\.(?P<ext>\w+)(\?.+(\d|\w))?'
 )
+
+# https://stackoverflow.com/a/36760050
+IP_ADDR_RE = re.compile(
+    r'((25[0-5]|(2[0-4]|1[0-9]|[1-9]|)[0-9])(\.(?!$)|$)){4}$'
+)
