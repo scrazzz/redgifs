@@ -88,7 +88,7 @@ class API:
         result = await self.http.get_tag_suggestions(query)
         return [d['text'] for d in result]
 
-    async def search(self, search_text: Union[str, Tags], *, order: Order = Order.recent, count: int = 80, page: int = 1) -> SearchResult:
+    async def search(self, search_text: Union[str, Tags], *, order: Order = Order.trending, count: int = 80, page: int = 1) -> SearchResult:
         if isinstance(search_text, str):
             st = Tags.search(search_text)[0]
         elif isinstance(search_text, Tags):

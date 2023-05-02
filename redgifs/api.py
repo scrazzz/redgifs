@@ -166,7 +166,7 @@ class API:
         self,
         search_text: Union[str, Tags],
         *,
-        order: Order = Order.recent,
+        order: Order = Order.trending,
         count: int = 80,
         page: int = 1
     ) -> SearchResult:
