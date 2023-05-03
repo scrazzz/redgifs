@@ -37,6 +37,7 @@ class Order(Enum):
     best = "best"
     trending = "trending"
     top28 = "top28"
+    new = "new"
 
 class Tags(Enum):
     """An enum representing available tags in RedGifs."""
