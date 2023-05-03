@@ -72,7 +72,7 @@ class API:
                 hd=json['urls']['hd'],
                 poster=json['urls']['poster'],
                 thumbnail=json['urls']['thumbnail'],
-                vthumbnail=json['urls']['vthumbnail'],
+                vthumbnail=json['urls'].get('vthumbnail'),
                 web_url=_to_web_url(json['id'])
             ),
             username=json['userName'],
