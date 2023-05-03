@@ -169,10 +169,10 @@ class HTTP:
             )
             return self.request(r, **params)
 
-    def search_creator(self, username: str, page: int, order: Order, **params):
+    def search_creator(self, username: str, page: int, count: int, order: Order, **params):
         r = Route(
-            'GET', '/v2/users/{username}/search?page={page}&order={order}',
-            username=username, page=page, order=order.value
+            'GET', '/v2/users/{username}/search?page={page}&count={count}&order={order}',
+            username=username, page=page, count=count, order=order.value
         )
         return self.request(r, **params)
 

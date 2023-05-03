@@ -114,9 +114,10 @@ class API:
         username: str,
         *,
         page: int = 1,
+        count: int = 80,
         order: Order = Order.recent
     ) -> CreatorResult:
-        resp = await self.http.search_creator(username, page, order)
+        resp = await self.http.search_creator(username=username, page=page, count=count, order=order)
         return parse_creator(resp)
 
     search_user = search_creator

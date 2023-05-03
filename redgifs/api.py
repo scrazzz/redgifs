@@ -228,7 +228,7 @@ class API:
         resp = self.http.search_creators(page=page, order=order, verified=verified, tags=tags)
         return parse_creators(resp)
 
-    def search_creator(self, username: str, *, page: int = 1, order: Order = Order.recent) -> CreatorResult:
+    def search_creator(self, username: str, *, page: int = 1, count: int = 80, order: Order = Order.recent) -> CreatorResult:
         """
         Search for a RedGifs creator/user.
 
@@ -237,8 +237,9 @@ class API:
         username: :class:`str`
             The username of the creator/user.
         page: :class:`int`
-            The page number of GIFs.
-            There is a total of 80 GIFs in one page.
+            The current page number of the creator/user's profile.
+        count: :class:`int`
+            The total amount of GIFs to return.
         order: :class:`Order`
             The order to return creator/user's GIFs.
 
@@ -246,7 +247,7 @@ class API:
         -------
         :py:class:`CreatorResult <redgifs.models.CreatorResult>` - The creator/user searched for.
         """
-        resp = self.http.search_creator(username, page=page, order=order)
+        resp = self.http.search_creator(username, page=page, count=count, order=order)
         return parse_creator(resp)
 
     search_user = search_creator
