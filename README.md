@@ -71,4 +71,4 @@ More examples can be found in the examples directory.
 
 ### Links
 - [Documentation](https://redgifs.readthedocs.io)
-- [Discord](https://discord.gg/MANaPpkNbE)
+- [Discord](https://discord.gg/yNsUTuXvzn)
