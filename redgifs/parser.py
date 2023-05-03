@@ -224,5 +224,32 @@ def parse_creator(json: Dict[str, Any]) -> CreatorResult:
         ),
         page=json['page'],
         pages=json['pages'],
-        total=json['total']
+        total=json['total'],
+        gifs=[
+            GIF(
+                id=gif['id'],
+                create_date=datetime.utcfromtimestamp(gif['createDate']),
+                has_audio=gif['hasAudio'],
+                width=gif['width'],
+                height=gif['height'],
+                likes=gif['likes'],
+                tags=gif['tags'],
+                verified=gif['verified'],
+                views=gif['views'],
+                duration=int(gif['duration']) if gif['duration'] is not None else gif['duration'],
+                published=gif['published'],
+                urls=URL(
+                    sd=gif['urls']['sd'],
+                    hd=gif['urls']['hd'],
+                    poster=gif['urls']['poster'],
+                    thumbnail=gif['urls']['thumbnail'],
+                    vthumbnail=gif['urls']['vthumbnail'],
+                    web_url=_to_web_url(gif['id']),
+                ),
+                username=gif['userName'],
+                type=gif['type'],
+                avg_color=gif['avgColor'],
+            )
+            for gif in json['gifs']
+        ]
     )

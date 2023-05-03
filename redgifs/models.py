@@ -326,9 +326,10 @@ class CreatorResult:
         The total number of GIFs this creator/user has created.
     """
 
-    __slots__ = ('creator', 'page', 'pages', 'total')
+    __slots__ = ('creator', 'page', 'pages', 'total', 'gifs')
 
     creator: User
     page: int
     pages: int
     total: int
+    gifs: List[GIF]
