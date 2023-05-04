@@ -22,26 +22,35 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 """
 
+# TODO: Cleanup code, add typehints.
+# TODO: Switch to using a CLI library like typer.
+# TODO: Use rich for pretty console messages.
+
+import re
 import sys
 import argparse
 import platform
 import importlib.metadata
+from typing import Optional
 
 import aiohttp
 import requests
-from requests.exceptions import ConnectionError
 from yarl import URL
 
 import redgifs
 
 parser = argparse.ArgumentParser(prog='redgifs')
 parser.add_argument('link', nargs='?', help='Enter a RedGifs URL to download it')
+parser.add_argument('--folder', help='Folder to download the video(s) to.', metavar='')
 parser.add_argument('-l', '--list', help='Download GIFs from a list of URLs', metavar='')
 parser.add_argument('-v', '--version', help='Show redgifs version info.', action='store_true')
 args = parser.parse_args()
 
 session = requests.Session()
 client = redgifs.API(session=session)
+
+# TODO: Check allowed chars in usernames
+USERNAME_RE = re.compile(r'https:\/\/(www\.)?redgifs\.com\/users\/(?P<username>\w+)')
 
 def show_version() -> None:
     entries = []
@@ -70,7 +79,7 @@ def save_to_file(mp4_link) -> None:
     
     print(f'\nDownloaded: {file_name}')
 
-def start_dl(url: str) -> None:
+def start_dl(url: str, *, folder: Optional[str]) -> None:
     yarl_url = URL(url)
     if 'redgifs' not in str(yarl_url.host):
         raise TypeError(f'"{url}" is not a valid redgifs URL')
@@ -81,6 +90,60 @@ def start_dl(url: str) -> None:
         hd = client.get_gif(id).urls.hd
         print(f'Downloading {id}...')
         save_to_file(hd)
+    
+    # Handle /users/ URLs
+    if '/users/' in yarl_url.path:
+        match = re.match(USERNAME_RE, str(yarl_url))
+        if not match:
+            raise TypeError(f'Not a valid /users/ URL: {yarl_url}')
+        user = match.groupdict()['username']
+        data = client.search_creator(user)
+        curr_page = data.page
+        total_pages = data.pages
+        total_gifs = data.gifs
+        total = data.total
+        done = 0
+
+        # Case where there is only 1 page
+        if curr_page == total_pages:
+            for gif in total_gifs:
+                try:
+                    client.download(gif.urls.hd, f'{folder}/{gif.urls.hd.split("/")[3].split(".")[0]}.mp4')
+                    done += 1
+                    print(f'Downloaded {done}/{total} GIFs')
+                except Exception as e:
+                    if isinstance(e, FileNotFoundError):
+                        print(f'[!] An error occured while downloading: {e}\nMake sure you have a folder called "{folder}" in the current working directory.')
+                        exit(1)
+                    else:
+                        print(f'[!] Error occurred when downloading {url}:\n{e}. Continuing...')
+                        continue
+            
+            print(f'\nDownloaded {done}/{total} videos of "{user}" to "{folder}" folder successfully!')
+            exit(0)
+
+        # If there's more than 1 page
+        while curr_page != total_pages:
+            for gif in total_gifs:
+                try:
+                    client.download(gif.urls.hd, f'{folder}/{gif.urls.hd.split("/")[3].split(".")[0]}.mp4')
+                    done += 1
+                    print(f'Downloaded {done}/{total} GIFs')
+                except Exception as e:
+                    if isinstance(e, FileNotFoundError):
+                        print(f'[!] An error occured while downloading: {e}\nMake sure you have a folder called "{folder}" in the current working directory.')
+                        exit(1)
+                    else:
+                        print(f'[!] Error occurred when downloading {url}:\n{e}. Continuing...')
+                        continue
+            curr_page += 1
+            total_gifs.clear()
+            data = client.search_creator(user, page=curr_page)
+            total_gifs.extend(data.gifs)
+            
+        print(f'\nDownloaded {done}/{total} videos of "{user}" to "{folder}" folder successfully!')
+        exit(0)
+
 
 def main() -> None:
     if len(sys.argv) == 1:
@@ -89,13 +152,13 @@ def main() -> None:
 
     if args.link:
         client.login()
-        start_dl(args.link)
+        start_dl(args.link, folder=args.folder)
 
     if args.list:
         client.login()
         with open(args.list) as f:
             for url in f.readlines():
-                start_dl(url)
+                start_dl(url, folder=args.folder)
 
     if args.version:
         show_version()
