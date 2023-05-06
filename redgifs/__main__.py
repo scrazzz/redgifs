@@ -40,16 +40,15 @@ from yarl import URL
 import redgifs
 
 parser = argparse.ArgumentParser(prog='redgifs')
-parser.add_argument('link', nargs='?', help='Enter a RedGifs URL to download it')
-parser.add_argument('--folder', help='Folder to download the video(s) to.', metavar='')
-parser.add_argument('-l', '--list', help='Download GIFs from a list of URLs', metavar='')
+parser.add_argument('link', nargs='?', help='Enter a RedGifs URL')
+parser.add_argument('-f', '--folder', help='Folder to download the video(s) to.', metavar='')
+parser.add_argument('-l', '--list', help='Download GIFs from a list of URLs.', metavar='')
 parser.add_argument('-v', '--version', help='Show redgifs version info.', action='store_true')
 args = parser.parse_args()
 
 session = requests.Session()
 client = redgifs.API(session=session)
 
-# TODO: Check allowed chars in usernames
 USERNAME_RE = re.compile(r'https:\/\/(www\.)?redgifs\.com\/users\/(?P<username>\w+)')
 
 def show_version() -> None:
@@ -62,22 +61,11 @@ def show_version() -> None:
         version = importlib.metadata.version('redgifs')
         if version:
             entries.append(f'    - redgifs metadata: v{version}')
-    
+
     entries.append(f'- aiohttp v{aiohttp.__version__}')
     uname = platform.uname()
     entries.append('- system info: {0.system} {0.release} {0.version}'.format(uname))
     print('\n'.join(entries))
-
-def save_to_file(mp4_link) -> None:
-    headers = client.http.headers
-    r = session.get(mp4_link, headers=headers, stream=True)
-    file_name = mp4_link.split('/')[3].split('?')[0]
-    with open(file_name, 'wb') as f:
-        for chunk in r.iter_content(chunk_size=1024 * 1024):
-            if chunk:
-                f.write(chunk)
-    
-    print(f'\nDownloaded: {file_name}')
 
 def start_dl(url: str, *, folder: Optional[str]) -> None:
     yarl_url = URL(url)
@@ -87,11 +75,15 @@ def start_dl(url: str, *, folder: Optional[str]) -> None:
     # Handle 'normal' URLs, i.e, a direct link from browser (eg: "https://redgifs.com/watch/deeznuts")
     if 'watch' in yarl_url.path:
         id = yarl_url.path.split('/')[-1]
-        hd = client.get_gif(id).urls.hd
+        gif = client.get_gif(id)
+        filename = f'{gif.urls.hd.split("/")[3].split(".")[0]}.mp4'
         print(f'Downloading {id}...')
-        save_to_file(hd)
-    
-    # Handle /users/ URLs
+        if folder:
+            client.download(gif.urls.hd, f'{folder}/{filename}')
+        else:
+            client.download(gif.urls.hd, f'{filename}')
+
+    # Handle /users/ URLs (eg: https://redgifs.com/users/redgifs)
     if '/users/' in yarl_url.path:
         match = re.match(USERNAME_RE, str(yarl_url))
         if not match:
@@ -107,8 +99,12 @@ def start_dl(url: str, *, folder: Optional[str]) -> None:
         # Case where there is only 1 page
         if curr_page == total_pages:
             for gif in total_gifs:
+                filename = f'{gif.urls.hd.split("/")[3].split(".")[0]}.mp4'
                 try:
-                    client.download(gif.urls.hd, f'{folder}/{gif.urls.hd.split("/")[3].split(".")[0]}.mp4')
+                    if folder:
+                        client.download(gif.urls.hd, f'{folder}/{filename}')
+                    else:
+                        client.download(gif.urls.hd, f'{filename}')
                     done += 1
                     print(f'Downloaded {done}/{total} GIFs')
                 except Exception as e:
@@ -118,15 +114,19 @@ def start_dl(url: str, *, folder: Optional[str]) -> None:
                     else:
                         print(f'[!] Error occurred when downloading {url}:\n{e}. Continuing...')
                         continue
-            
-            print(f'\nDownloaded {done}/{total} videos of "{user}" to "{folder}" folder successfully!')
+
+            print(f'\nDownloaded {done}/{total} videos of "{user}" {f"to {folder} folder" if folder else ""} sucessfully')
             exit(0)
 
         # If there's more than 1 page
         while curr_page != total_pages:
             for gif in total_gifs:
+                filename = f'{gif.urls.hd.split("/")[3].split(".")[0]}.mp4'
                 try:
-                    client.download(gif.urls.hd, f'{folder}/{gif.urls.hd.split("/")[3].split(".")[0]}.mp4')
+                    if folder:
+                        client.download(gif.urls.hd, f'{folder}/{filename}')
+                    else:
+                        client.download(gif.urls.hd, filename)
                     done += 1
                     print(f'Downloaded {done}/{total} GIFs')
                 except Exception as e:
@@ -140,10 +140,9 @@ def start_dl(url: str, *, folder: Optional[str]) -> None:
             total_gifs.clear()
             data = client.search_creator(user, page=curr_page)
             total_gifs.extend(data.gifs)
-            
-        print(f'\nDownloaded {done}/{total} videos of "{user}" to "{folder}" folder successfully!')
-        exit(0)
 
+        print(f'\nDownloaded {done}/{total} videos of "{user}" {f"to {folder} folder" if folder else ""} sucessfully')
+        exit(0)
 
 def main() -> None:
     if len(sys.argv) == 1:
