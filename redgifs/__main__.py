@@ -22,8 +22,6 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 """
 
-# TODO: Cleanup code, add typehints.
-# TODO: Switch to using a CLI library like typer.
 # TODO: Use rich for pretty console messages.
 
 import re
@@ -38,12 +36,14 @@ import requests
 from yarl import URL
 
 import redgifs
+from redgifs.models import GIF
 
 parser = argparse.ArgumentParser(prog='redgifs')
-parser.add_argument('link', nargs='?', help='Enter a RedGifs URL')
-parser.add_argument('-f', '--folder', help='Folder to download the video(s) to.', metavar='')
-parser.add_argument('-l', '--list', help='Download GIFs from a list of URLs.', metavar='')
-parser.add_argument('-v', '--version', help='Show redgifs version info.', action='store_true')
+parser.add_argument('link', nargs='?', help='Enter a RedGifs URL', metavar='URL')
+parser.add_argument('--folder', help='Folder to download the video(s) to.', metavar='FOLDER')
+parser.add_argument('--list', help='Download GIFs from a txt file containing URLs seperated by a newline.', metavar='FILE')
+parser.add_argument('--version', help='Show redgifs version info.', action='store_true')
+parser.add_argument('--quality', help='The video quality of the GIF to download. Available options are: "sd" and "hd".', metavar='QUALITY', default="hd")
 args = parser.parse_args()
 
 session = requests.Session()
@@ -67,7 +67,18 @@ def show_version() -> None:
     entries.append('- system info: {0.system} {0.release} {0.version}'.format(uname))
     print('\n'.join(entries))
 
-def start_dl(url: str, *, folder: Optional[str]) -> None:
+def get_quality(q: str, gif: GIF) -> str:
+    if q.lower() not in ['sd', 'hd']:
+        raise TypeError('Valid quality options are "sd" or "hd"')
+    if q.lower() == 'sd':
+        return gif.urls.sd
+    if q.lower() == 'hd':
+        return gif.urls.hd
+    # Shouldn't reach here
+    else:
+        return gif.urls.hd
+
+def start_dl(url: str, *, folder: Optional[str], quality: str) -> None:
     yarl_url = URL(url)
     if 'redgifs' not in str(yarl_url.host):
         raise TypeError(f'"{url}" is not a valid redgifs URL')
@@ -76,12 +87,13 @@ def start_dl(url: str, *, folder: Optional[str]) -> None:
     if 'watch' in yarl_url.path:
         id = yarl_url.path.split('/')[-1]
         gif = client.get_gif(id)
-        filename = f'{gif.urls.hd.split("/")[3].split(".")[0]}.mp4'
+        gif = get_quality(quality, gif)
+        filename = f'{gif.split("/")[3].split(".")[0]}.mp4'
         print(f'Downloading {id}...')
         if folder:
-            client.download(gif.urls.hd, f'{folder}/{filename}')
+            client.download(gif, f'{folder}/{filename}')
         else:
-            client.download(gif.urls.hd, f'{filename}')
+            client.download(gif, f'{filename}')
 
     # Handle /users/ URLs (eg: https://redgifs.com/users/redgifs)
     if '/users/' in yarl_url.path:
@@ -99,12 +111,13 @@ def start_dl(url: str, *, folder: Optional[str]) -> None:
         # Case where there is only 1 page
         if curr_page == total_pages:
             for gif in total_gifs:
-                filename = f'{gif.urls.hd.split("/")[3].split(".")[0]}.mp4'
+                gif = get_quality(quality, gif)
+                filename = f'{gif.split("/")[3].split(".")[0]}.mp4'
                 try:
                     if folder:
-                        client.download(gif.urls.hd, f'{folder}/{filename}')
+                        client.download(gif, f'{folder}/{filename}')
                     else:
-                        client.download(gif.urls.hd, f'{filename}')
+                        client.download(gif, f'{filename}')
                     done += 1
                     print(f'Downloaded {done}/{total} GIFs')
                 except Exception as e:
@@ -121,12 +134,13 @@ def start_dl(url: str, *, folder: Optional[str]) -> None:
         # If there's more than 1 page
         while curr_page != total_pages:
             for gif in total_gifs:
-                filename = f'{gif.urls.hd.split("/")[3].split(".")[0]}.mp4'
+                gif = get_quality(quality, gif)
+                filename = f'{gif.split("/")[3].split(".")[0]}.mp4'
                 try:
                     if folder:
-                        client.download(gif.urls.hd, f'{folder}/{filename}')
+                        client.download(gif, f'{folder}/{filename}')
                     else:
-                        client.download(gif.urls.hd, filename)
+                        client.download(gif, filename)
                     done += 1
                     print(f'Downloaded {done}/{total} GIFs')
                 except Exception as e:
@@ -151,13 +165,13 @@ def main() -> None:
 
     if args.link:
         client.login()
-        start_dl(args.link, folder=args.folder)
+        start_dl(args.link, folder=args.folder, quality=args.quality)
 
     if args.list:
         client.login()
         with open(args.list) as f:
             for url in f.readlines():
-                start_dl(url, folder=args.folder)
+                start_dl(url, folder=args.folder, quality=args.quality)
 
     if args.version:
         show_version()
