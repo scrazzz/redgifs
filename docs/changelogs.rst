@@ -3,6 +3,21 @@
 Changelogs
 ==========
 
+1.6.1
+-----
+- Changed default ``order`` paramter of :py:meth:`search() <redgifs.API.search()>` to :py:attr:`Order.trending <redgifs.Order.trending>`.
+- Added ``count`` paramter to :py:meth:`search_creator() <redgifs.API.search_creator()>`.
+- Added ``new`` value to :py:class:`Order <redgifs.Order>` enum.
+- Added ``gifs`` attribute to :py:class:`CreatorResult <redgifs.models.CreatorResult>`.
+- Added an example to download all GIFs from a RedGifs profile. 
+- Added new ``--folder`` option in redgifs CLI.
+
+Use this option to download the video(s) to a folder/directory.
+
+- Added new feature to download all videos from a RedGifs profile using redgifs CLI.
+- Added new ``--quality`` option in redgifs CLI.
+- Removed shortcuts for redgifs CLI options.
+
 1.6.0
 -----
 
