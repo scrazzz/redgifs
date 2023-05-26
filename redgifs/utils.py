@@ -44,5 +44,5 @@ def _to_web_url(id_or_url: str, use_regex: bool = False) -> str:
 def strip_ip(url: str) -> str:
     u = yarl.URL(url)
     if u.query.get('for'):
-        return u % {'for': 'REDACTED'}
+        return str(u % {'for': 'REDACTED'})
     return url
