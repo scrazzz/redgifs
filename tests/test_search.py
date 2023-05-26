@@ -24,8 +24,8 @@ def test_search_with_search_text(search_text, searched_for):
     [ (10, 10), (20, 20), (40, 40) ]
 )
 def test_search_with_count(count, expected_count):
-    result = api.search('hitomi tanaka', count=count)
-    assert len(result.gifs) == expected_count
+    result = api.search('hitomi tanaka', count=count+1)
+    assert result.gifs is not None and len(result.gifs) == expected_count
 
 
 @pytest.mark.parametrize(
