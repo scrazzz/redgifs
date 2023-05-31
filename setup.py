@@ -16,7 +16,7 @@ extras_require = {
         'furo==2022.2.23'
     ],
     'test': [
-        'pytest==7.1.1'
+        'pytest==7.3.1'
     ],
 }
 
