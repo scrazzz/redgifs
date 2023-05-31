@@ -24,7 +24,7 @@ def test_search_with_search_text(search_text, searched_for):
     [ (10, 10), (20, 20), (40, 40) ]
 )
 def test_search_with_count(count, expected_count):
-    result = api.search('hitomi tanaka', count=count+1)
+    result = api.search('hitomi tanaka', count=count)
     assert result.gifs is not None and len(result.gifs) == expected_count
 
 
