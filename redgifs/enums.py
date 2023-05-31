@@ -248,6 +248,7 @@ class Tags(Enum):
     legs = 'Legs'
     strip = 'Strip'
     double_penetration = 'Double Penetration'
+    triple_penetration = 'Triple Penetration'
     fitness = 'Fitness'
     bareback = 'Bareback'
     feet_fetish = 'Feet Fetish'
@@ -351,6 +352,7 @@ class Tags(Enum):
     gamer_girl = 'Gamer Girl'
     sensual = 'Sensual'
     standing_doggy = 'Standing Doggy'
+    r_standing_carry_fuck = 'r/StandingCarryFuck'
     upskirt = 'Upskirt'
     swallowing = 'Swallowing'
     softcore = 'Softcore'
@@ -2303,6 +2305,7 @@ class Tags(Enum):
     brook_ultra = 'Brook Ultra'
     killer_katrin = 'Killer Katrin'
     rebel_lynn = 'Rebel Lynn'
+    rebel_rhyder = "Rebel Rhyder"
     lika_star = 'Lika Star'
     nana = 'Nana'
     kylie_minogue = 'Kylie Minogue'
