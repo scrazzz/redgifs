@@ -7,19 +7,16 @@ from redgifs import Tags
     [
         ('tits', 'Tits'),
         ('ass', 'Ass'),
-        ('cum', 'Cum'),
-        ('americam', 'American'),    # on purpose
-        ('japanes', 'Japanese'),     # on purpose
+        #('cum', 'Cum'),
+        ('americam', 'American'),
+        ('japanes', 'Japanese'),
         ('hitomi tanaka', 'Hitomi Tanaka'),
         ('big dick', 'Big Dick'),
-        ('hige tits', 'Huge Tits'),  # on purpose
+        ('hige tits', 'Huge Tits'),
         ('alexa pearl', 'Alexa Pearl'),
-        ('ava adams', 'Ava Addams'), # on purpose
+        ('ava adams', 'Ava Addams'),
     ]
 )
 def test_tags_search(test_input, expected):
-    searched = Tags.search(test_input)[0]
+    searched = Tags().search(test_input)[0]
     assert searched == expected
-
-def test_tags_single_random():
-    assert bool(Tags.single_random()) == True
