@@ -38,4 +38,3 @@ class Order(Enum):
     trending = "trending"
     top28 = "top28"
     new = "new"
-
