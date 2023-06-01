@@ -31,8 +31,10 @@ from typing import Any, Dict, List, Optional, Union
 import aiohttp
 
 from .http import AsyncHttp, ProxyAuth
-from .enums import Tags, Order
+from .tags import Tags
+from .enums import Order
 from .utils import _to_web_url
+from .utils import _async_read_tags_json
 from .parser import parse_search, parse_creator, parse_creators, parse_search_image
 from .models import GIF, URL, CreatorResult, SearchResult, CreatorsResult
 
@@ -45,6 +47,7 @@ class API:
         proxy_auth: Optional[ProxyAuth] = None
     ) -> None:
         self.http: AsyncHttp = AsyncHttp(session, proxy=proxy, proxy_auth=proxy_auth)
+        self._tags = Tags()
 
     async def login(self, username: Optional[str] = None, password: Optional[str] = None) -> bool:
         return (await self.http.login(username, password))
@@ -88,11 +91,19 @@ class API:
         result = await self.http.get_tag_suggestions(query)
         return [d['text'] for d in result]
 
-    async def search(self, search_text: Union[str, Tags], *, order: Order = Order.trending, count: int = 80, page: int = 1) -> SearchResult:
-        if isinstance(search_text, str):
-            st = Tags.search(search_text)[0]
-        elif isinstance(search_text, Tags):
-            st = search_text.value
+    async def search(
+        self,
+        search_text: str,
+        *,
+        order: Order = Order.trending,
+        count: int = 80,
+        page: int = 1
+    ) -> SearchResult:
+        if len(self._tags.tags_mapping) == 0:
+            tags = await _async_read_tags_json()
+            self._tags._set(tags)
+
+        st = self._tags.search(search_text)[0]
         resp = await self.http.search(st, order, count, page)
         return parse_search(st, resp)
 
@@ -104,7 +115,7 @@ class API:
         page: int = 1,
         order: Order = Order.recent,
         verified: bool = False,
-        tags: Optional[Union[List[Tags], List[str]]] = None
+        tags: Optional[List[str]] = None
     ) -> CreatorsResult:
         resp = await self.http.search_creators(page=page, order=order, verified=verified, tags=tags)
         return parse_creators(resp)
@@ -124,20 +135,17 @@ class API:
 
     async def search_image(
         self,
-        search_text: Union[str, Tags],
+        search_text: str,
         *,
         order: Order = Order.trending,
         count: int = 80,
         page: int = 1
     ) -> SearchResult:
-        if isinstance(search_text, str):
-            # We are not going to use Tags.search() here because it doesn't matter
-            # whatever the search_text is, this API endpoints provides images nonetheless.
-            st = search_text
-        elif isinstance(search_text, Tags):
-            st = search_text.value
-        resp = await self.http.search_image(st, order, count, page)
-        return parse_search_image(st, resp)
+        # TODO: Check if below comment is still true
+        # We are not going to use Tags.search() here because it doesn't matter
+        # whatever the search_text is, this API endpoints provides images nonetheless.
+        resp = await self.http.search_image(search_text, order, count, page)
+        return parse_search_image(search_text, resp)
 
     async def download(self, url: str, fp: Union[str, bytes, os.PathLike[Any], io.BufferedIOBase]) -> int:
         return (await self.http.download(url, fp))

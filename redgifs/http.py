@@ -38,7 +38,7 @@ import yarl
 
 from . import __version__
 from .errors import HTTPException
-from .enums import Tags, Order
+from .enums import Order
 from .const import REDGIFS_THUMBS_RE
 from .utils import strip_ip
 
@@ -134,7 +134,7 @@ class HTTP:
     def get_gif(self, id: str, **params: Any):
         return self.request(Route('GET', '/v2/gifs/{id}', id=id), **params)
 
-    def search(self, search_text: Union[str, Tags], order: Order, count: int, page: int, **params: Any):
+    def search(self, search_text: str, order: Order, count: int, page: int, **params: Any):
         r = Route(
             'GET', '/v2/gifs/search?search_text={search_text}&order={order}&count={count}&page={page}',
             search_text=search_text, order=order.value, count=count, page=page
@@ -148,7 +148,7 @@ class HTTP:
         page: int,
         order: Order,
         verified: bool,
-        tags: Optional[Union[List[Tags], List[str]]],
+        tags: Optional[List[str]],
         **params: Any
     ):
         url = '/v1/creators/search?page={page}&order={order}'
@@ -159,7 +159,7 @@ class HTTP:
             r = Route(
                 'GET', url,
                 page=page, order=order.value, verified='y' if verified else 'n',
-                tags=','.join(t.value for t in tags) if isinstance(tags[0], Tags) else ','.join(t for t in tags) # type: ignore
+                tags=','.join(t for t in tags)
             )
             return self.request(r, **params)
         else:
@@ -178,7 +178,7 @@ class HTTP:
 
     # Pic methods
 
-    def search_image(self, search_text: Union[str, Tags], order: Order, count: int, page: int, **params: Any):
+    def search_image(self, search_text: str, order: Order, count: int, page: int, **params: Any):
         r = Route(
             'GET', '/v2/gifs/search?search_text={search_text}&order={order}&count={count}&page={page}&type=i',
             search_text=search_text, order=order.value, count=count, page=page

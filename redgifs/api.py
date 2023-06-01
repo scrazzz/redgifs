@@ -30,9 +30,10 @@ from typing import Any, Dict, List, Optional, Union
 
 import requests
 
+from .tags import Tags
+from .enums import Order
 from .http import HTTP, ProxyAuth
-from .enums import Order, Tags
-from .utils import _to_web_url
+from .utils import _to_web_url, _read_tags_json
 from .parser import parse_creator, parse_search, parse_creators, parse_search_image
 from .models import URL, GIF, CreatorResult, SearchResult, CreatorsResult
 
@@ -65,6 +66,7 @@ class API:
         proxy_auth: Optional[ProxyAuth] = None
     ) -> None:
         self.http: HTTP = HTTP(session, proxy=proxy, proxy_auth=proxy_auth)
+        self._tags = Tags()
 
     def login(self, username: Optional[str] = None, password: Optional[str] = None) -> bool:
         return self.http.login(username, password)
@@ -164,7 +166,7 @@ class API:
 
     def search(
         self,
-        search_text: Union[str, Tags],
+        search_text: str,
         *,
         order: Order = Order.trending,
         count: int = 80,
@@ -175,7 +177,7 @@ class API:
 
         Parameters
         ----------
-        search_text: Union[:class:`str`, :class:`Tags`]
+        search_text: :class:`str`
             The GIFs to search for. Can be a string or an instance of :class:`Tags`.
         order: Optional[:class:`Order`]
             The order of the GIFs to return.
@@ -188,11 +190,11 @@ class API:
         -------
         :py:class:`SearchResult <redgifs.models.SearchResult>` - The search result.
         """
+        if len(self._tags.tags_mapping) == 0:
+            tags = _read_tags_json()
+            self._tags._set(tags)
 
-        if isinstance(search_text, str):
-            st = Tags.search(search_text)[0]
-        elif isinstance(search_text, Tags):
-            st = search_text.value
+        st = self._tags.search(search_text)[0]
         resp = self.http.search(st, order, count, page)
         return parse_search(st, resp)
 
@@ -204,7 +206,7 @@ class API:
         page: int = 1,
         order: Order = Order.recent,
         verified: bool = False,
-        tags: Optional[Union[List[Tags], List[str]]] = None
+        tags: Optional[List[str]] = None
     ) -> CreatorsResult:
         """
         Search for RedGifs Creators.
@@ -217,7 +219,7 @@ class API:
             The order of the creators to return.
         verified: Optional[:class:`bool`]
             Wheather to only return verified creators.
-        tags: Optional[Union[List[:class:`Tags`], List[:class:`str`]]]
+        tags: Optional[List[:class:`str`]]
             A list of tags to look for.
             Narrows down the results to content creators that have contents with all the given tags.
 
@@ -254,7 +256,7 @@ class API:
 
     def search_image(
         self,
-        search_text: Union[str, Tags],
+        search_text: str,
         *,
         order: Order = Order.trending,
         count: int = 80,
@@ -265,7 +267,7 @@ class API:
 
         Parameters
         ----------
-        search_text: Union[:class:`str`, :class:`Tags`]
+        search_text: :class:`str`
             The images to search for. Can be a string or an instance of :class:`Tags`.
         order: Optional[:class:`Order`]
             The order of the images to return.
@@ -278,14 +280,11 @@ class API:
         -------
         :py:class:`SearchResult <redgifs.models.SearchResult>` - The search result.
         """
-        if isinstance(search_text, str):
-            # We are not going to use Tags.search() here because it doesn't matter
-            # whatever the search_text is, this API endpoints provides images nonetheless.
-            st = search_text
-        elif isinstance(search_text, Tags):
-            st = search_text.value
-        resp = self.http.search_image(st, order, count, page)
-        return parse_search_image(st, resp)
+        # TODO: Check if below comment is still true
+        # We are not going to use Tags.search() here because it doesn't matter
+        # whatever the search_text is, this API endpoints provides images nonetheless.
+        resp = self.http.search_image(search_text, order, count, page)
+        return parse_search_image(search_text, resp)
 
     def download(self, url: str, fp: Union[str, bytes, os.PathLike[Any], io.BufferedIOBase]):
         """

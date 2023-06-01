@@ -23,6 +23,10 @@ DEALINGS IN THE SOFTWARE.
 """
 
 import re
+import json
+import asyncio
+from typing import Dict
+
 import yarl
 
 from .const import REDGIFS_THUMBS_RE
@@ -46,3 +50,11 @@ def strip_ip(url: str) -> str:
     if u.query.get('for'):
         return str(u % {'for': 'REDACTED'})
     return url
+
+def _read_tags_json() -> Dict[str, str]:
+    with open('redgifs/tags.json') as f:
+        return json.load(f)
+
+async def _async_read_tags_json() -> Dict[str, str]:
+    r = await asyncio.get_event_loop().run_in_executor(None, _read_tags_json)
+    return r

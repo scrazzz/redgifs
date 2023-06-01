@@ -32,7 +32,8 @@ from typing import Literal, NamedTuple
 
 from .api import API
 from .http import ProxyAuth
-from .enums import Order, Tags
+from .enums import Order
+from .tags import Tags
 from .errors import *
 
 class VersionInfo(NamedTuple):
