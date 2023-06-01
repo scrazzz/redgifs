@@ -137,11 +137,10 @@ class API:
         self,
         search_text: str,
         *,
-        order: Order = Order.trending,
+        order: Order = Order.new,
         count: int = 80,
         page: int = 1
     ) -> SearchResult:
-        # TODO: Check if below comment is still true
         # We are not going to use Tags.search() here because it doesn't matter
         # whatever the search_text is, this API endpoints provides images nonetheless.
         resp = await self.http.search_image(search_text, order, count, page)

@@ -258,7 +258,7 @@ class API:
         self,
         search_text: str,
         *,
-        order: Order = Order.trending,
+        order: Order = Order.new,
         count: int = 80,
         page: int = 1
     ) -> SearchResult:
@@ -280,7 +280,6 @@ class API:
         -------
         :py:class:`SearchResult <redgifs.models.SearchResult>` - The search result.
         """
-        # TODO: Check if below comment is still true
         # We are not going to use Tags.search() here because it doesn't matter
         # whatever the search_text is, this API endpoints provides images nonetheless.
         resp = self.http.search_image(search_text, order, count, page)
