@@ -10,6 +10,14 @@ API Instance
    :members:
    :member-order: bysource
 
+Tags
+====
+A utility class for all things related to RedGifs tags.
+
+.. autoclass:: Tags
+   :members:
+   :member-order: bysource
+
 Proxy Auth
 ==========
 A utility class to provide proxy authorization.
@@ -46,14 +54,6 @@ Enums
 =====
 
 .. autoclass:: Order
-   :members:
-   :undoc-members:
-
-.. autoclass:: Tags
-   :noindex:
-   :members:
-
-.. autoclass:: Tags
    :members:
    :undoc-members:
 

@@ -148,8 +148,8 @@ class API:
 
         .. note::
 
-            This is an API call. See :func:`~redgifs.Tags.search` for an internal lookup
-            of available tags.
+            This is an API call. See :func:`Tags.search() <redgifs.Tags.search()>` for an internal lookup
+            of all available tags.
 
         Parameters
         ----------

@@ -250,7 +250,7 @@ class User:
 @dataclass
 class SearchResult:
     # TODO: Document "users"
-    """The result you have searched. This is returned in :py:meth:`search() <redgifs.API.search()>`.
+    """The result you have searched. This is returned in :py:meth:`API.search() <redgifs.API.search()>`.
 
     Attributes
     ----------

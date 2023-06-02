@@ -72,4 +72,16 @@ class Tags:
             return results
 
     def random(self, count: int = 1) -> List[str]:
+        """
+        Search for random RedGifs tags.
+
+        Parameters
+        ----------
+        count: :class:`int`
+            The amount of tags to return.
+
+        Returns
+        -------
+        List[:class:`str`] - A list of random tags.
+        """
         return choices(list(self.tags_mapping.values()), k=count)
