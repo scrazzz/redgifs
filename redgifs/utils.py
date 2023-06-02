@@ -22,6 +22,7 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 """
 
+import os
 import re
 import json
 import asyncio
@@ -52,7 +53,9 @@ def strip_ip(url: str) -> str:
     return url
 
 def _read_tags_json() -> Dict[str, str]:
-    with open('redgifs/tags.json') as f:
+    dir = os.path.dirname(os.path.abspath(__file__))
+    file_ = os.path.join(dir, 'tags.json')
+    with open(file_) as f:
         return json.load(f)
 
 async def _async_read_tags_json() -> Dict[str, str]:
