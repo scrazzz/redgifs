@@ -22,12 +22,7 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 """
 
-import random
-import difflib
 from enum import Enum
-from typing import List
-
-from .errors import InvalidTag
 
 class Order(Enum):
     """An enum representing the Order."""

@@ -33,8 +33,7 @@ import aiohttp
 from .http import AsyncHttp, ProxyAuth
 from .tags import Tags
 from .enums import Order
-from .utils import _to_web_url
-from .utils import _async_read_tags_json
+from .utils import _to_web_url, _async_read_tags_json
 from .parser import parse_search, parse_creator, parse_creators, parse_search_image
 from .models import GIF, URL, CreatorResult, SearchResult, CreatorsResult
 
