@@ -22,9 +22,9 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 """
 
-import os
 import re
 import json
+import pkgutil
 import asyncio
 from typing import Dict
 
@@ -53,10 +53,8 @@ def strip_ip(url: str) -> str:
     return url
 
 def _read_tags_json() -> Dict[str, str]:
-    dir = os.path.dirname(os.path.abspath(__file__))
-    file_ = os.path.join(dir, 'tags.json')
-    with open(file_) as f:
-        return json.load(f)
+    file_ = pkgutil.get_data(__name__, 'tags.json') # type: ignore - We know this won't be None
+    return json.loads(file_) # type: ignore - same reason above
 
 async def _async_read_tags_json() -> Dict[str, str]:
     r = await asyncio.get_event_loop().run_in_executor(None, _read_tags_json)
