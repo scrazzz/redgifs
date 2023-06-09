@@ -44,7 +44,7 @@ class Tags:
 
         .. note::
 
-            This method is synchronous, a.k.a "blocking".
+            This method is synchronous, a.k.a "blocking", when used alone.
 
         Parameters
         ----------
