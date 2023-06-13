@@ -3,6 +3,20 @@
 Changelogs
 ==========
 
+1.7.0
+-----
+
+**Breaking changes**
+
+- Removed ``Tags`` enum class.
+
+The ``Tag`` enum has been removed in place of a new :py:class:`Tag <redgifs.tags.Tags>` class.
+This makes it easier to use the newest tags that are available on RedGifs instead of updating the enum everytime.
+
+**Updates**
+
+- Changed the default ``order`` paramter of :py:meth:`search_image() <redgifs.API.search_image()>` from ``Order.trending`` to ``Order.new``.
+
 1.6.1
 -----
 - Changed default ``order`` paramter of :py:meth:`search() <redgifs.API.search()>` to :py:attr:`Order.trending <redgifs.Order.trending>`.
