@@ -94,6 +94,8 @@ def start_dl(url: str, *, folder: Optional[str], quality: str) -> None:
             client.download(gif, f'{folder}/{filename}')
         else:
             client.download(gif, f'{filename}')
+        print('Download complete.\n')
+        exit(0)
 
     # Handle /users/ URLs (eg: https://redgifs.com/users/redgifs)
     if '/users/' in yarl_url.path:
