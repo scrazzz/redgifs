@@ -1,8 +1,4 @@
-<!-- <h1 align="center"> <code>redgifs</code> </h1> -->
-
-<h1 align="center">
-    <img src="https://bigbits.eu.org/cdn/i/vyyv" alt="redgifspy-logo" width=200>
-</h1>
+<h1 align="center"> <code>redgifs</code> </h1>
 
 <div align="center">
     <a href="https://pypi.org/project/redgifs">
