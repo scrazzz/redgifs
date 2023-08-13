@@ -46,7 +46,7 @@ class URL:
         The website URL of the GIF.
     """
 
-    __slots__ = ('sd', 'hd', 'poster', 'thumbnail', 'vthumbnail', 'web_url')
+    __slots__ = ('sd', 'hd', 'poster', 'thumbnail', 'vthumbnail', 'web_url', 'file_url')
 
     sd: str
     hd: str
@@ -54,6 +54,7 @@ class URL:
     thumbnail: str
     vthumbnail: str
     web_url: str
+    file_url: Optional[str]
 
 @dataclass
 class GIF:
