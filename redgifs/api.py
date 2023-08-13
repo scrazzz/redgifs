@@ -33,7 +33,7 @@ import requests
 from .tags import Tags
 from .enums import Order
 from .http import HTTP, ProxyAuth
-from .utils import _to_web_url, _read_tags_json
+from .utils import _to_web_url, _read_tags_json, build_file_url
 from .parser import parse_creator, parse_search, parse_creators, parse_search_image
 from .models import URL, GIF, CreatorResult, SearchResult, CreatorsResult
 
@@ -95,6 +95,7 @@ class API:
         """
 
         json: Dict[str, Any] = self.http.get_gif(id)['gif']
+        urls = json['urls']
         return GIF(
             id=json['id'],
             create_date=json['createDate'],
@@ -108,12 +109,13 @@ class API:
             duration=json['duration'],
             published=json['published'],
             urls=URL(
-                sd=json['urls']['sd'],
-                hd=json['urls']['hd'],
-                poster=json['urls']['poster'],
-                thumbnail=json['urls']['thumbnail'],
-                vthumbnail=json['urls'].get('vthumbnail'),
-                web_url=_to_web_url(json['id'])
+                sd=urls['sd'],
+                hd=urls['hd'],
+                poster=urls['poster'],
+                thumbnail=urls['thumbnail'],
+                vthumbnail=urls.get('vthumbnail'),
+                web_url=_to_web_url(json['id']),
+                file_url=build_file_url(urls['sd'])
             ),
             username=json['userName'],
             type=json['type'],

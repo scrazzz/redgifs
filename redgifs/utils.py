@@ -28,7 +28,7 @@ import pkgutil
 import asyncio
 from typing import Dict
 
-import yarl
+from yarl import URL
 
 from .const import REDGIFS_THUMBS_RE
 
@@ -47,10 +47,16 @@ def _to_web_url(id_or_url: str, use_regex: bool = False) -> str:
         return ''
 
 def strip_ip(url: str) -> str:
-    u = yarl.URL(url)
+    u = URL(url)
     if u.query.get('for'):
         return str(u % {'for': 'REDACTED'})
     return url
+
+def build_file_url(url: str) -> str:
+    # use the 'sd' url here
+    u = URL(url)
+    filename = u.path.replace('/', '').replace('-mobile.mp4', '')
+    return f'https://api.redgifs.com/v2/gifs/{filename.lower()}/files/{filename}.mp4'
 
 def _read_tags_json() -> Dict[str, str]:
     file_ = pkgutil.get_data(__name__, 'tags.json') # type: ignore - We know this won't be None

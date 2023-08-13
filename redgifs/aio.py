@@ -33,7 +33,7 @@ import aiohttp
 from .http import AsyncHttp, ProxyAuth
 from .tags import Tags
 from .enums import Order
-from .utils import _to_web_url, _async_read_tags_json
+from .utils import _to_web_url, _async_read_tags_json, build_file_url
 from .parser import parse_search, parse_creator, parse_creators, parse_search_image
 from .models import GIF, URL, CreatorResult, SearchResult, CreatorsResult
 
@@ -57,6 +57,7 @@ class API:
 
     async def get_gif(self, id: str) -> GIF:
         json: Dict[str, Any] = (await self.http.get_gif(id))['gif']
+        urls = json['urls']
         return GIF(
             id=json['id'],
             create_date=json['createDate'],
@@ -70,12 +71,13 @@ class API:
             duration=json['duration'],
             published=json['published'],
             urls=URL(
-                sd=json['urls']['sd'],
-                hd=json['urls']['hd'],
-                poster=json['urls']['poster'],
-                thumbnail=json['urls']['thumbnail'],
-                vthumbnail=json['urls'].get('vthumbnail'),
-                web_url=_to_web_url(json['id'])
+                sd=urls['sd'],
+                hd=urls['hd'],
+                poster=urls['poster'],
+                thumbnail=urls['thumbnail'],
+                vthumbnail=urls.get('vthumbnail'),
+                web_url=_to_web_url(json['id']),
+                file_url=build_file_url(urls['sd'])
             ),
             username=json['userName'],
             type=json['type'],
