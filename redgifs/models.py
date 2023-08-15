@@ -30,6 +30,11 @@ from typing import List, Optional
 class URL:
     """The different types of URLs.
 
+    .. warning::
+
+        ``sd``, ``hd``, ``poster``, ``thumbnail``, and ``vthumbnail`` leaks your IP address in the URL.
+        If you want to display the URLs to the end user consider using ``web_url`` or ``file_url`` instead.
+
     Attributes
     ----------
     sd: :class:`str`
@@ -44,6 +49,9 @@ class URL:
 
     web_url: :class:`str`
         The website URL of the GIF.
+
+    file_url: :class:`str`
+        The file URL of the GIF.
     """
 
     __slots__ = ('sd', 'hd', 'poster', 'thumbnail', 'vthumbnail', 'web_url', 'file_url')

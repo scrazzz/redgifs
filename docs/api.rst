@@ -40,6 +40,9 @@ Models are classes that are received from Redgifs and are not meant to be create
 .. autoclass:: redgifs.models.User()
    :members:
 
+.. autoclass:: redgifs.models.Feeds()
+   :members:
+
 .. autoclass:: redgifs.models.SearchResult()
    :members:
 

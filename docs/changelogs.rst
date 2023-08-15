@@ -3,6 +3,15 @@
 Changelogs
 ==========
 
+1.7.1
+-----
+- Added new :py:attr:`file_url <redgifs.models.URL.file_url>` attribute.
+
+This can be displayed to the end user since it doesn't have any IP or signature info in the URL.
+
+- Added new RedGifs :py:class:`Feeds <redgifs.models.Feeds>`.
+- Added new :py:meth:`get_feeds() <redgifs.API.get_feeds()>` method.
+
 1.7.0
 -----
 
