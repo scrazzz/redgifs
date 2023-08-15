@@ -34,8 +34,8 @@ from .http import AsyncHttp, ProxyAuth
 from .tags import Tags
 from .enums import Order
 from .utils import _to_web_url, _async_read_tags_json, build_file_url
-from .parser import parse_search, parse_creator, parse_creators, parse_search_image
-from .models import GIF, URL, CreatorResult, SearchResult, CreatorsResult
+from .parser import parse_feeds, parse_search, parse_creator, parse_creators, parse_search_image
+from .models import GIF, URL, CreatorResult, Feeds, SearchResult, CreatorsResult
 
 class API:
     def __init__(
@@ -50,6 +50,10 @@ class API:
 
     async def login(self, username: Optional[str] = None, password: Optional[str] = None) -> bool:
         return (await self.http.login(username, password))
+
+    async def get_feeds(self) -> Feeds:
+        feeds = await self.http.get_feeds()
+        return parse_feeds(feeds)
 
     async def get_tags(self) -> List[Dict[str, Union[str, int]]]:
         resp = await self.http.get_tags()

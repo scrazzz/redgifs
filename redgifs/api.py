@@ -34,8 +34,8 @@ from .tags import Tags
 from .enums import Order
 from .http import HTTP, ProxyAuth
 from .utils import _to_web_url, _read_tags_json, build_file_url
-from .parser import parse_creator, parse_search, parse_creators, parse_search_image
-from .models import URL, GIF, CreatorResult, SearchResult, CreatorsResult
+from .parser import parse_creator, parse_feeds, parse_search, parse_creators, parse_search_image
+from .models import URL, GIF, CreatorResult, Feeds, SearchResult, CreatorsResult
 
 class API:
     """The API Instance to get information from the RedGifs API.
@@ -70,6 +70,16 @@ class API:
 
     def login(self, username: Optional[str] = None, password: Optional[str] = None) -> bool:
         return self.http.login(username, password)
+
+    def get_feeds(self) -> Feeds:
+        """Get RedGifs homepage feeds.
+        
+        Returns
+        -------
+        :py:class:`Feeds <redgifs.models.Feeds>` - The Feed info.
+        """
+        feeds = self.http.get_feeds()
+        return parse_feeds(feeds)
 
     def get_tags(self) -> List[Dict[str, Union[str, int]]]:
         """Get all available RedGifs Tags.

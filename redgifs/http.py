@@ -128,6 +128,9 @@ class HTTP:
 
     # GIF methods
 
+    def get_feeds(self):
+        return self.request(Route('GET', '/v2/home/feeds'))
+
     def get_tags(self, **params: Any):
         return self.request(Route('GET', '/v1/tags'), **params)
 

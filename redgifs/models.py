@@ -334,3 +334,39 @@ class CreatorResult:
     pages: int
     total: int
     gifs: List[GIF]
+
+@dataclass
+class Feeds:
+    """The RedGifs home feeds.
+
+    Attributes
+    ----------
+    horizontal_gifs: List[:class:`GIF`]
+    vertical_gifs: List[:class:`GIF`]
+    hot_creators: List[:class:`User`]
+    new_creators: List[:class:`User`]
+    hot_gifs: List[:class:`GIF`]
+    long_gifs: List[:class:`GIF`]
+    verified_gifs: List[:class:`GIF`]
+    sound_gifs: List[:class:`GIF`]
+    hot_images: List[:class:`Image`]
+    verified_images: List[:class:`Image`]
+    """
+
+    __slots__ = (
+        'horizontal_gifs', 'vertical_gifs',
+        'hot_creators', 'new_creators',
+        'hot_gifs', 'long_gifs', 'verified_gifs', 'sound_gifs',
+        'hot_images', 'verified_images'
+    )
+
+    horizontal_gifs: List[GIF]
+    vertical_gifs: List[GIF]
+    hot_creators: List[User]
+    new_creators: List[User]
+    hot_gifs: List[GIF]
+    long_gifs: List[GIF]
+    verified_gifs: List[GIF]
+    sound_gifs: List[GIF]
+    hot_images: List[Image]
+    verified_images: List[Image]

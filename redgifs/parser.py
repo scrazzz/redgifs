@@ -26,10 +26,35 @@ import logging
 from datetime import datetime
 from typing import Any, Dict
 
-from .utils import _to_web_url, build_file_url
-from .models import GIF, URL, CreatorResult, Image, User, SearchResult, CreatorsResult
+from .utils import _to_web_url, _gifs_iter, _images_iter, _users_iter, build_file_url
+from .models import GIF, URL, CreatorResult, Feeds, Image, User, SearchResult, CreatorsResult
 
 _log = logging.getLogger(__name__)
+
+def parse_feeds(json: Dict[str, Any]) -> Feeds:
+    _log.debug('Parsing feeds')
+    hgifs = json['horizontalGifs']
+    vgifs = json['verticalGifs']
+    hotcreators = json['hotCreators']
+    newcreators = json['newCreators']
+    longgifs = json['longGifs']
+    verifiedgifs = json['verifiedGifs']
+    soundgifs = json['soundGifs']
+    hotgifs = json['hotGifs']
+    hotimages = json['hotImages']
+    verifiedimages = json['verifiedImages']
+    return Feeds(
+        horizontal_gifs=_gifs_iter(hgifs),
+        vertical_gifs=_gifs_iter(vgifs),
+        hot_creators=_users_iter(hotcreators),
+        new_creators=_users_iter(newcreators),
+        long_gifs=_gifs_iter(longgifs),
+        verified_gifs=_gifs_iter(verifiedgifs),
+        sound_gifs=_gifs_iter(soundgifs),
+        hot_gifs=_gifs_iter(hotgifs),
+        hot_images=_images_iter(hotimages),
+        verified_images=_images_iter(verifiedimages),
+    )
 
 # For GIFs
 def parse_search(searched_for: str, json: Dict[str, Any]) -> SearchResult:
@@ -138,31 +163,7 @@ def parse_search_image(searched_for: str, json: Dict[str, Any]) -> SearchResult:
             )
             for gif in json_gifs
         ],
-        users=[
-            User(
-                creation_time=datetime.utcfromtimestamp(user.get('creationtime'))
-                if user.get('creationtime') is not None else None,
-                description=user.get('description'),
-                followers=user.get('followers'),
-                following=user.get('following'),
-                gifs=user.get('gifs'),
-                name=user.get('name'),
-                profile_image_url=user.get('profileImageUrl'),
-                profile_url=user.get('profileUrl'),
-                published_collections=user.get('publishedCollections'),
-                status=user.get('status'),
-                published_gifs=user.get('publishedGifs'),
-                subscription=user.get('subscription'),
-                url=user.get('url'),
-                username=user.get('username'),
-                verified=user.get('verified'),
-                views=user.get('views'),
-                poster=user.get('poster'),
-                preview=user.get('preview'),
-                thumbnail=user.get('thumbnail'),
-            )
-            for user in users
-        ],
+        users=_users_iter(users),
         tags=json['tags'],
     )
 
@@ -170,30 +171,7 @@ def parse_creators(json: Dict[str, Any]) -> CreatorsResult:
     _log.debug('Using `parse_creators`')
     items = json['items']
     return CreatorsResult(
-        items=[
-            User(
-                creation_time=datetime.utcfromtimestamp(user['creationtime']),
-                description=user['description'],
-                followers=user['followers'],
-                following=user['following'],
-                gifs=user['gifs'],
-                name=user['name'],
-                profile_image_url=user['profileImageUrl'],
-                profile_url=user['profileUrl'],
-                published_collections=user['publishedCollections'],
-                status=user['status'],
-                published_gifs=user['publishedGifs'],
-                subscription=user['subscription'],
-                url=user['url'],
-                username=user['username'],
-                verified=user['verified'],
-                views=user['views'],
-                poster=user['poster'],
-                preview=user['preview'],
-                thumbnail=user['thumbnail'],
-            )
-            for user in items
-        ],
+        items=_users_iter(items),
         pages=json['pages'],
         page=json['page'],
         total=json['total'],
