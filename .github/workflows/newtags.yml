@@ -1,0 +1,29 @@
+name: Update redgifs/tags.json
+
+on:
+  workflow_dispatch:
+  schedule:
+    # First day of every month
+    - cron: '0 0 1 * *'
+
+jobs:
+  update_tags:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Install package
+        run: pip install -U -r requirements.txt -e .
+
+      - name: Run newtags.py
+        run: python newtags.py
+
+      - name: Auto commit
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "Cron: Update tags.json"
+          file_pattern: '*.json'
+          skip_fetch: false
