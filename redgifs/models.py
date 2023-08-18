@@ -24,7 +24,7 @@ DEALINGS IN THE SOFTWARE.
 
 import datetime
 from dataclasses import dataclass
-from typing import List, Optional
+from typing import Dict, List, Optional
 
 @dataclass
 class URL:
@@ -190,7 +190,7 @@ class User:
     ----------
     creation_time: Optional[:class:`datetime.datetime`]
         The user's account creation time.
-    description: :class:`str`
+    description: Optional[:class:`str`]
         The user's description on their profile.
     followers: :class:`int`
         The user's amount of followers.
@@ -203,8 +203,8 @@ class User:
     profile_image_url: Optional[:class:`str`]
         The user's profile image URL.
     profile_url: :class:`str`
-        The user's profile URL.
-        This is not the user's URL on ``redgifs.com``.
+        The user's "profile URL".
+        This is NOT the user's URL on ``redgifs.com``, see :py:attr:`url <redgifs.models.User.url>` for that.
     published_collections: :class:`int`
         The user's amount of published collections.
     published_gifs: :class:`int`
@@ -220,20 +220,22 @@ class User:
     verified: :class:`bool`
         Wheather the user is a verified creator.
     views: :class:`int`
-        The user's total amount of views of the GIFs published.
+        The user's total amount of views of all the GIFs published.
     poster: Optional[:class:`str`]
-        The user's poster.
+        The user's poster URL.
     preview: Optional[:class:`str`]
-        The user's preview.
+        The user's preview URL.
     thumbnail: Optional[:class:`str`]
-        The user's thumbnail.
+        The user's thumbnail URL.
+    links: Optional[List[Dict[:class:`str`, :class:`str`]]]
+        The linked websites on the user's profile.
     """
 
     __slots__ = (
         'creation_time', 'description', 'followers', 'following', 'gifs',
         'name', 'profile_image_url', 'profile_url', 'published_collections', 'published_gifs',
         'status', 'subscription', 'url', 'username', 'verified',
-        'views', 'poster', 'preview', 'thumbnail',
+        'views', 'poster', 'preview', 'thumbnail', 'links'
     )
 
     creation_time: Optional[datetime.datetime]
@@ -255,6 +257,7 @@ class User:
     poster: Optional[str]
     preview: Optional[str]
     thumbnail: Optional[str]
+    links: Optional[List[Dict[str, str]]]
 
 @dataclass
 class SearchResult:

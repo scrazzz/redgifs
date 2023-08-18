@@ -120,6 +120,7 @@ def parse_search(searched_for: str, json: Dict[str, Any]) -> SearchResult:
                 poster=user.get('poster'),
                 preview=user.get('preview'),
                 thumbnail=user.get('thumbnail'),
+                links=user.get('links'),
             )
             for user in users
         ],
@@ -201,6 +202,7 @@ def parse_creator(json: Dict[str, Any]) -> CreatorResult:
             poster=user['poster'],
             preview=user['preview'],
             thumbnail=user['thumbnail'],
+            links=user.get('links'),
         ),
         page=json['page'],
         pages=json['pages'],
