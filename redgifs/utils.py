@@ -152,6 +152,7 @@ def _users_iter(users: List[Dict[str, Any]]) -> List[User]:
             poster=user.get('poster'),
             preview=user.get('preview'),
             thumbnail=user.get('thumbnail'),
+            links=user.get('links')
         )
         for user in users
     ]
