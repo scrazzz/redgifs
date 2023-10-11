@@ -3,9 +3,16 @@
 Changelogs
 ==========
 
+1.7.2
+-----
+- Updated tags.json.
+- Added new :py:attr:`links <redgifs.models.User.links>` attribute to :py:class:`User <redgifs.models.User>`.
+- Added new :py:meth:`get_trending_gifs() <redgifs.API.get_trending_gifs()>` method.
+- Added new :py:meth:`get_trending_images() <redgifs.API.get_trending_images()>` method.
+
 1.7.1
 -----
-- Added new :py:attr:`file_url <redgifs.models.URL.file_url>` attribute.
+- Added new :py:attr:`file_url <redgifs.models.URL.file_url>` attribute to :py:class:`URL <redgifs.models.URL>`.
 
 This can be displayed to the end user since it doesn't have any IP or signature info in the URL.
 

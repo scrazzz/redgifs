@@ -33,9 +33,9 @@ import requests
 from .tags import Tags
 from .enums import Order
 from .http import HTTP, ProxyAuth
-from .utils import _to_web_url, _read_tags_json, build_file_url
+from .utils import _to_web_url, _read_tags_json, build_file_url, _gifs_iter, _images_iter
 from .parser import parse_creator, parse_feeds, parse_search, parse_creators, parse_search_image
-from .models import URL, GIF, CreatorResult, Feeds, SearchResult, CreatorsResult
+from .models import URL, GIF, CreatorResult, Feeds, Image, SearchResult, CreatorsResult
 
 class API:
     """The API Instance to get information from the RedGifs API.
@@ -131,6 +131,28 @@ class API:
             type=json['type'],
             avg_color=json['avgColor'],
         )
+    
+    def get_trending_gifs(self) -> List[GIF]:
+        """
+        Gets the top 10 trending GIFs on RedGifs.
+
+        Returns
+        -------
+        List[:py:class:`GIF <redgifs.models.GIF>`]
+        """
+        r = self.http.get_trending_gifs()['gifs']
+        return _gifs_iter(r)
+
+    def get_trending_images(self) -> List[Image]:
+        """
+        Gets the top 10 trending images on RedGifs.
+
+        Returns
+        -------
+        List[:py:class:`Image <redgifs.models.Image>`]
+        """
+        r = self.http.get_trending_images()['gifs']
+        return _images_iter(r)
 
     def get_trending_tags(self) -> List[Dict[str, Union[str, int]]]:
         """Gets the trending searches on RedGifs.

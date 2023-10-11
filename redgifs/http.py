@@ -179,6 +179,10 @@ class HTTP:
         )
         return self.request(r, **params)
 
+    def get_trending_gifs(self):
+        r = Route('GET', '/v2/explore/trending-gifs')
+        return self.request(r)
+
     # Pic methods
 
     def search_image(self, search_text: str, order: Order, count: int, page: int, **params: Any):
@@ -187,6 +191,10 @@ class HTTP:
             search_text=search_text, order=order.value, count=count, page=page
         )
         return self.request(r, **params)
+
+    def get_trending_images(self):
+        r = Route('GET', '/v2/explore/trending-images')
+        return self.request(r)
 
     # Tag methods
 

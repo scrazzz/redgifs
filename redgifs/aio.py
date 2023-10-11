@@ -33,9 +33,9 @@ import aiohttp
 from .http import AsyncHttp, ProxyAuth
 from .tags import Tags
 from .enums import Order
-from .utils import _to_web_url, _async_read_tags_json, build_file_url
+from .utils import _to_web_url, _async_read_tags_json, build_file_url, _gifs_iter, _images_iter
 from .parser import parse_feeds, parse_search, parse_creator, parse_creators, parse_search_image
-from .models import GIF, URL, CreatorResult, Feeds, SearchResult, CreatorsResult
+from .models import GIF, URL, CreatorResult, Feeds, Image, SearchResult, CreatorsResult
 
 class API:
     def __init__(
@@ -91,6 +91,14 @@ class API:
     async def get_trending_tags(self) -> List[Dict[str, Union[str, int]]]:
         result = (await self.http.get_trending_tags())['tags']
         return result
+
+    async def get_trending_gifs(self) -> List[GIF]:
+        r = (await self.http.get_trending_gifs())['gifs']
+        return _gifs_iter(r)
+
+    async def get_trending_images(self) -> List[Image]:
+        r = (await self.http.get_trending_images())['gifs']
+        return _images_iter(r)
 
     async def fetch_tag_suggestions(self, query: str) -> List[str]:
         result = await self.http.get_tag_suggestions(query)
