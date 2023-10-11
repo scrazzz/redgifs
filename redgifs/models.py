@@ -38,18 +38,17 @@ class URL:
     Attributes
     ----------
     sd: :class:`str`
-
+        The sd URL of the GIF.
     hd: :class:`str`
-
+        The hd URL of the GIF.
     poster: :class:`str`
-
+        The poster URL of the GIF.
     thumbnail: :class:`str`
-
+        The thumbnail URL of the GIF.
     vthumbnail: :class:`str`
-
+        The vthumbnail URL of the GIF.
     web_url: :class:`str`
         The website URL of the GIF.
-
     file_url: :class:`str`
         The file URL of the GIF.
     """
@@ -62,7 +61,7 @@ class URL:
     thumbnail: str
     vthumbnail: str
     web_url: str
-    file_url: Optional[str]
+    file_url: str
 
 @dataclass
 class GIF:
