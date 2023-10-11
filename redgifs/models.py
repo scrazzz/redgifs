@@ -49,7 +49,7 @@ class URL:
         The vthumbnail URL of the GIF.
     web_url: :class:`str`
         The website URL of the GIF.
-    file_url: :class:`str`
+    file_url: Optional[:class:`str`]
         The file URL of the GIF.
     """
 
@@ -61,7 +61,7 @@ class URL:
     thumbnail: str
     vthumbnail: str
     web_url: str
-    file_url: str
+    file_url: Optional[str]
 
 @dataclass
 class GIF:
