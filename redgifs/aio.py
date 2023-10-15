@@ -48,8 +48,9 @@ class API:
         self.http: AsyncHttp = AsyncHttp(session, proxy=proxy, proxy_auth=proxy_auth)
         self._tags = Tags()
 
-    async def login(self, username: Optional[str] = None, password: Optional[str] = None) -> bool:
-        return (await self.http.login(username, password))
+    async def login(self) -> 'API':
+        await self.http.login()
+        return self
 
     async def get_feeds(self) -> Feeds:
         feeds = await self.http.get_feeds()

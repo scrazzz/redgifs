@@ -3,21 +3,25 @@
 Changelogs
 ==========
 
+1.8.0
+-----
+
+**Breaking changes**
+
+- Removed ``username`` and ``password`` params from :py:meth:`login() <redgifs.API.login()>` method.
+- Changed return type of :py:meth:`login() <redgifs.API.login()>` method from :py:class:`bool` to :py:class:`API <redgifs.API>`.
+
 1.7.2
 -----
-- Updated tags.json.
 - Added new :py:attr:`links <redgifs.models.User.links>` attribute to :py:class:`User <redgifs.models.User>`.
 - Added new :py:meth:`get_trending_gifs() <redgifs.API.get_trending_gifs()>` method.
 - Added new :py:meth:`get_trending_images() <redgifs.API.get_trending_images()>` method.
 
 1.7.1
 -----
-- Added new :py:attr:`file_url <redgifs.models.URL.file_url>` attribute to :py:class:`URL <redgifs.models.URL>`.
-
-This can be displayed to the end user since it doesn't have any IP or signature info in the URL.
-
-- Added new RedGifs :py:class:`Feeds <redgifs.models.Feeds>`.
+- Added new :py:attr:`file_url <redgifs.models.URL.file_url>` attribute to :py:class:`URL <redgifs.models.URL>`. This can be displayed to the end user since it doesn't have any IP or signature info in the URL.
 - Added new :py:meth:`get_feeds() <redgifs.API.get_feeds()>` method.
+- Added new :py:class:`Feeds <redgifs.models.Feeds>` dataclass.
 
 1.7.0
 -----
@@ -37,11 +41,11 @@ This makes it easier to use the newest tags that are available on RedGifs instea
 -----
 - Changed default ``order`` paramter of :py:meth:`search() <redgifs.API.search()>` to :py:attr:`Order.trending <redgifs.Order.trending>`.
 - Added ``count`` paramter to :py:meth:`search_creator() <redgifs.API.search_creator()>`.
-- Added ``new`` value to :py:class:`Order <redgifs.Order>` enum.
-- Added ``gifs`` attribute to :py:class:`CreatorResult <redgifs.models.CreatorResult>`.
+- Added :py:attr:`new <redgifs.Order.new>` value to :py:class:`Order <redgifs.Order>` enum.
+- Added :py:attr:`gifs <redgifs.models.CreatorResult.gifs>` attribute to :py:class:`CreatorResult <redgifs.models.CreatorResult>`.
 - Added new ``--folder`` option in redgifs CLI. Use this option to download the video(s) to a folder/directory.
 - Added new feature to download all videos from a RedGifs profile using redgifs CLI. Just enter the user's profile URL to the ``[URL]`` paramter. 
-- Added new ``--quality`` option in redgifs CLI.
+- Added new ``--quality`` option to redgifs CLI.
 
 1.6.0
 -----
@@ -53,10 +57,7 @@ This makes it easier to use the newest tags that are available on RedGifs instea
 
 **Updates**
 
-- Improved CLI.
-
-Now you can run ``redgifs`` in your terminal to use the CLI. See ``redgifs -h`` for help.
-
+- Improved CLI. Now you can run ``redgifs`` in your terminal to use the CLI. See ``redgifs -h`` for help.
 - Fixed thumbnail regex (`4c3606b <https://github.com/scrazzz/redgifs/commit/4c3606b>`_).
 
 1.5.1
@@ -67,7 +68,7 @@ Now you can run ``redgifs`` in your terminal to use the CLI. See ``redgifs -h`` 
 -----
 - Added new method: :py:meth:`get_trending_tags() <redgifs.API.get_trending_tags()>`
 - Added new method: :py:meth:`fetch_tag_suggestions() <redgifs.API.fetch_tag_suggestions()>`.
-- Added new method: :py:meth:`search_creator() <redgifs.API.search_creator>`. Alias: :py:meth:`search_user() <redgifs.API.search_user()>`
+- Added new method: :py:meth:`search_creator() <redgifs.API.search_creator>` and alias :py:meth:`search_user() <redgifs.API.search_user()>`
 - Added new dataclass :py:class:`CreatorResult <redgifs.models.CreatorResult>`.
 - Fixed :py:meth:`download() <redgifs.API.download()>` method not working in async context.
 - Fixed :py:meth:`search_creators() <redgifs.API.search_creators()>` method error.
@@ -82,19 +83,20 @@ Now you can run ``redgifs`` in your terminal to use the CLI. See ``redgifs -h`` 
 
 **Updates**
 
-- Added :py:meth:`login() <redgifs.API.login()>` for logging in with a temporary token.
+- Added :py:meth:`login() <redgifs.API.login()>` method for logging in with a temporary token.
 - Fixed errors with API requiring a token. See above added feature.
 - Fixed error message sometimes returning "None".
 
 1.3.1
 -----
-- Added ``--version`` argument in ``__main__.py`` file.
+- Added ``--version`` argument in ``__main__.py`` file (for CLI usage).
 
 1.3.0
 ------
 
 **Breaking changes**
 
+- Renamed ``Gif`` dataclass to :py:class:`GIF <redgifs.models.GIF>`.
 - :py:meth:`Tags.search() <redgifs.Tags.search()>` now returns a list of closest tag names.
 
 **Updates**
@@ -105,27 +107,26 @@ Now you can run ``redgifs`` in your terminal to use the CLI. See ``redgifs -h`` 
 - Added CLI support to download GIFs.
 - Fixed an issue with HTTP timeout (GH `#9 <https://github.com/scrazzz/redgifs/issues/9>`_).
 - Fixed some ``typing`` related errors.
-- Renamed ``Gif`` dataclass to :py:class:`GIF <redgifs.models.GIF>`.
 
 1.2.0
 ------
 
 **Breaking changes**
 
-- Refactored :py:meth:`search_image() <redgifs.API.search_image()>` to return images in its proper dataclass.
+- Refactored :py:meth:`search_image() <redgifs.API.search_image()>` method to return images in its proper dataclass.
 - :py:meth:`search() <redgifs.API.search()>` now returns Optional[:py:class:`SearchResult <redgifs.models.SearchResult>`].
 
 **Updates**
 
-- Added :py:class:`Image <redgifs.models.Image>`.
-- Added ``images`` as new attribute for :py:class:`SearchResult <redgifs.models.SearchResult>`.
-- Added :py:meth:`search_gif() <redgifs.API.search_gif()>` as an alias for :py:meth:`search() <redgifs.API.search()>`.
+- Added new :py:class:`Image <redgifs.models.Image>` dataclass.
+- Added new :py:attr:`images <redgifs.models.SearchResult.images>` attribute for :py:class:`SearchResult <redgifs.models.SearchResult>`.
+- Added :py:meth:`search_gif() <redgifs.API.search_gif()>` method as an alias for :py:meth:`search() <redgifs.API.search()>`.
 - Fixed some ``typing`` related errors.
 
 1.1.0
 ------
-- Added :py:meth:`search_image() <redgifs.API.search_image()>` method.
-- Added :py:class:`ProxyAuth <redgifs.http.ProxyAuth>` for proxy authentication.
+- Added new :py:meth:`search_image() <redgifs.API.search_image()>` method.
+- Added :py:class:`ProxyAuth <redgifs.http.ProxyAuth>` for proxy authentication. Check the examples in the repo for use.
 - Fixed ``await`` calls (`#3 <https://github.com/scrazzz/redgifs/pull/3>`_).
 - Fixed errors with Python 3.7.
 - Refactored ``create_date`` and ``creation_time`` (`c95d8 <https://github.com/scrazzz/redgifs/commit/c95d8>`_).

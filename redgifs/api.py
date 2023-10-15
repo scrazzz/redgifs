@@ -68,8 +68,14 @@ class API:
         self.http: HTTP = HTTP(session, proxy=proxy, proxy_auth=proxy_auth)
         self._tags = Tags()
 
-    def login(self, username: Optional[str] = None, password: Optional[str] = None) -> bool:
-        return self.http.login(username, password)
+    def login(self) -> 'API':
+        """
+        A method to login to RedGifs with a temporary token.
+        You must use this method after constructing the :py:class:`API <redgifs.API>` class 
+        for this library to function properly.
+        """
+        self.http.login()
+        return self
 
     def get_feeds(self) -> Feeds:
         """Get RedGifs homepage feeds.
