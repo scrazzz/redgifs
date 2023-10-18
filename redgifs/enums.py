@@ -27,9 +27,10 @@ from enum import Enum
 class Order(Enum):
     """An enum representing the Order."""
 
-    recent = "recent"
-    followers = "followers"
-    best = "best"
-    trending = "trending"
-    top28 = "top28"
-    new = "new"
+    recent = 'recent'
+    best = 'best'
+    trending = 'trending'
+    top28 = 'top28'
+    new = 'new'
+    latest = 'latest'
+    oldest = 'oldest'
