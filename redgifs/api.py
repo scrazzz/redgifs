@@ -71,8 +71,13 @@ class API:
     def login(self) -> 'API':
         """
         A method to login to RedGifs with a temporary token.
-        You must use this method after constructing the :py:class:`API <redgifs.API>` class 
+        You must use this method after initialising the :py:class:`API <redgifs.API>` class 
         for this library to function properly.
+
+        Returns
+        -------
+        :py:class:`API <redgifs.API>`
+            The already initialised API class.
         """
         self.http.login()
         return self
