@@ -23,8 +23,8 @@ DEALINGS IN THE SOFTWARE.
 """
 
 import difflib
-from random import choices
-from typing import Dict, List
+from random import choice, choices
+from typing import Dict, List, Literal, overload
 
 from .utils import _read_tags_json
 from .errors import InvalidTag
@@ -71,7 +71,15 @@ class Tags:
 
             return results
 
-    def random(self, count: int = 1) -> List[str]:
+    @overload
+    def random(self, count: Literal[1] = ...) -> str:
+        ...
+    
+    @overload
+    def random(self, count: int = ...) -> List[str]:
+        ...
+
+    def random(self, count: int = 1):
         """
         Search for random RedGifs tags.
 
@@ -82,6 +90,9 @@ class Tags:
 
         Returns
         -------
-        List[:class:`str`] - A list of random tags.
+        Union[:class:`str`, List[:class:`str`]]
+            If the ``count`` specified is ``1`` then a single random tag is returned
+            or else a list of tags are returned.
         """
-        return choices(list(self.tags_mapping.values()), k=count)
+        return choices(list(self.tags_mapping.values()), k=count) if count != 1 \
+        else choice(list(self.tags_mapping.values()))
