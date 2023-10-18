@@ -31,8 +31,7 @@ from typing import Any, Dict, List
 
 import yarl
 
-from redgifs.models import GIF, URL, Image, User
-
+from .models import GIF, URL, Image, User
 from .const import REDGIFS_THUMBS_RE
 
 def _to_web_url(id_or_url: str, use_regex: bool = False) -> str:
