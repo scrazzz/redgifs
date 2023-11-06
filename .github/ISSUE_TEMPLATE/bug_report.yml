@@ -41,7 +41,7 @@ body:
   - type: textarea
     attributes:
       label: System Information
-      description: Run `python -m redgifs -v` and paste this information below.
+      description: Run `python -m redgifs --version` and paste this information below.
     validations:
       required: true
 
