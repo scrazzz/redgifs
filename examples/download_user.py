@@ -17,7 +17,7 @@ current_page = data.page
 # This is the total gifs in the `current_page`
 total_gifs = data.gifs
 
-while current_page != total_pages:
+while current_page <= total_pages:
     for i, gifs in enumerate(total_gifs, start=1):
         try:
             # We do the downloading here.
