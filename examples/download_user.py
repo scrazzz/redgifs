@@ -8,7 +8,7 @@ api = API()
 api.login()
 
 # Search for the user
-USERNAME = 'username_here'
+USERNAME = 'enter_username_here'
 data = api.search_creator(USERNAME)
 
 total_pages = data.pages
@@ -29,6 +29,12 @@ while current_page <= total_pages:
 
         except Exception as e:
             raise Exception(f'An error occured while donwloading:\n{e}')
+
+    # If we are in the last page, break the while loop
+    if current_page == total_pages:
+        break
+
+    # otherwise, we continue...
 
     # Update the current page number
     current_page += 1
