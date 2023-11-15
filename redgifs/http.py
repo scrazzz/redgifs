@@ -87,15 +87,10 @@ class HTTP:
         # Set proxy
         if self.proxy:
             self._proxy = {self.proxy.scheme: str(self.proxy)}
-        else:
-            self._proxy = None
 
         # Set proxy auth
         if self.proxy_auth and self._proxy:
             self._proxy_auth = (self.proxy_auth.username, self.proxy_auth.password)
-        # Don't set proxy authorization if no proxy URL given (self._proxy)
-        else:
-            self._proxy_auth = None
 
     def request(self, route: Route, **kwargs: Any) -> Any:
         url: str = route.url
@@ -115,11 +110,10 @@ class HTTP:
         self.__session.close()
 
     # TODO: Implement OAuth login support
-    def login(self, username: Optional[str] = None, password: Optional[str] = None) -> bool:
+    def login(self, username: Optional[str] = None, password: Optional[str] = None) -> None:
         if (username and password) is None:
             temp_token = self.get_temp_token()['token']
             self.headers['authorization'] = f'Bearer {temp_token}'
-            return True
         else:
             raise NotImplementedError
 
@@ -269,15 +263,12 @@ class AsyncHttp(HTTP):
         # Set proxy auth
         if self.proxy_auth and self.proxy:
             self._proxy_auth = aiohttp.BasicAuth(self.proxy_auth.username, self.proxy_auth.password)
-        else:
-            self._proxy_auth = None
 
     # TODO: Implement OAuth login support
-    async def login(self, username: Optional[str] = None, password: Optional[str] = None) -> bool:
+    async def login(self, username: Optional[str] = None, password: Optional[str] = None) -> None:
         if (username and password) is None:
             temp_token = await self.get_temp_token()
             self.headers['authorization'] = f'Bearer {temp_token["token"]}'
-            return True
         else:
             raise NotImplementedError
 
