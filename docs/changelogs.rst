@@ -10,6 +10,7 @@ Changelogs
 
 - Removed ``username`` and ``password`` params from :py:meth:`login() <redgifs.API.login()>` method.
 - Changed return type of :py:meth:`login() <redgifs.API.login()>` method from :py:class:`bool` to :py:class:`API <redgifs.API>`.
+- Changed return type of :py:meth:`Tags.random() <redgifs.Tags.random()>` method.
 
 1.7.2
 -----
