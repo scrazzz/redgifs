@@ -87,10 +87,14 @@ class HTTP:
         # Set proxy
         if self.proxy:
             self._proxy = {self.proxy.scheme: str(self.proxy)}
+        else:
+            self._proxy = None
 
         # Set proxy auth
         if self.proxy_auth and self._proxy:
             self._proxy_auth = (self.proxy_auth.username, self.proxy_auth.password)
+        else:
+            self._proxy_auth = None
 
     def request(self, route: Route, **kwargs: Any) -> Any:
         url: str = route.url
@@ -263,6 +267,8 @@ class AsyncHttp(HTTP):
         # Set proxy auth
         if self.proxy_auth and self.proxy:
             self._proxy_auth = aiohttp.BasicAuth(self.proxy_auth.username, self.proxy_auth.password)
+        else:
+            self._proxy_auth = None
 
     # TODO: Implement OAuth login support
     async def login(self, username: Optional[str] = None, password: Optional[str] = None) -> None:
