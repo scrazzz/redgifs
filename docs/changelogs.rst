@@ -12,6 +12,9 @@ Changelogs
 - Changed return type of :py:meth:`login() <redgifs.API.login()>` method from :py:class:`bool` to :py:class:`API <redgifs.API>`.
 - Changed return type of :py:meth:`Tags.random() <redgifs.Tags.random()>` method.
 
+**Updates**
+- Added new :py:attr:`Order.new <redgifs.Order.new>` enum.
+
 1.7.2
 -----
 - Added new :py:attr:`links <redgifs.models.User.links>` attribute to :py:class:`User <redgifs.models.User>`.
