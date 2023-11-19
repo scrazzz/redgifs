@@ -27,10 +27,13 @@ from enum import Enum
 class Order(Enum):
     """An enum representing the Order."""
 
-    recent = 'recent'
-    best = 'best'
     trending = 'trending'
-    top28 = 'top28'
-    new = 'new'
+    top = 'top'
     latest = 'latest'
     oldest = 'oldest'
+
+    # These tags are not available on the web UI but still works through the API.
+    recent = 'recent'
+    best = 'best'
+    top28 = 'top28'
+    new = 'new'
