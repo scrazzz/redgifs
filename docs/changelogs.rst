@@ -3,6 +3,10 @@
 Changelogs
 ==========
 
+1.8.1
+------
+- Fixed an issue with CLI not downloading GIFs using the ``--list`` option.
+
 1.8.0
 -----
 
