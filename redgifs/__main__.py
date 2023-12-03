@@ -95,7 +95,6 @@ def start_dl(url: str, *, folder: Optional[str], quality: str) -> None:
         else:
             client.download(gif, f'{filename}')
         print('Download complete.\n')
-        exit(0)
 
     # Handle /users/ URLs (eg: https://redgifs.com/users/redgifs)
     if '/users/' in yarl_url.path:
@@ -124,14 +123,13 @@ def start_dl(url: str, *, folder: Optional[str], quality: str) -> None:
                     print(f'Downloaded {done}/{total} GIFs')
                 except Exception as e:
                     if isinstance(e, FileNotFoundError):
-                        print(f'[!] An error occured while downloading: {e}\nMake sure you have a folder called "{folder}" in the current working directory.')
+                        print(f'[!] An error occured while downloading: {e}\nMake sure you have a folder called "{folder}" in the current directory.')
                         exit(1)
                     else:
                         print(f'[!] Error occurred when downloading {url}:\n{e}. Continuing...')
                         continue
 
             print(f'\nDownloaded {done}/{total} videos of "{user}" {f"to {folder} folder" if folder else ""} sucessfully')
-            exit(0)
 
         # If there's more than 1 page
         while curr_page != total_pages:
@@ -158,7 +156,6 @@ def start_dl(url: str, *, folder: Optional[str], quality: str) -> None:
             total_gifs.extend(data.gifs)
 
         print(f'\nDownloaded {done}/{total} videos of "{user}" {f"to {folder} folder" if folder else ""} sucessfully')
-        exit(0)
 
 def main() -> None:
     if len(sys.argv) == 1:
@@ -168,12 +165,14 @@ def main() -> None:
     if args.link:
         client.login()
         start_dl(args.link, folder=args.folder, quality=args.quality)
+        exit(0)
 
     if args.list:
         client.login()
         with open(args.list) as f:
             for url in f.readlines():
                 start_dl(url, folder=args.folder, quality=args.quality)
+            exit(0)
 
     if args.version:
         show_version()
