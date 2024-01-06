@@ -33,7 +33,7 @@ import aiohttp
 from .http import AsyncHttp, ProxyAuth
 from .tags import Tags
 from .enums import Order
-from .utils import _to_web_url, _async_read_tags_json, build_file_url, _gifs_iter, _images_iter
+from .utils import _async_read_tags_json, build_file_url, _gifs_iter, _images_iter, to_web_url
 from .parser import parse_feeds, parse_search, parse_creator, parse_creators, parse_search_image
 from .models import GIF, URL, CreatorResult, Feeds, Image, SearchResult, CreatorsResult
 
@@ -81,7 +81,7 @@ class API:
                 poster=urls['poster'],
                 thumbnail=urls['thumbnail'],
                 vthumbnail=urls.get('vthumbnail'),
-                web_url=_to_web_url(json['id']),
+                web_url=to_web_url(json['id']),
                 file_url=build_file_url(urls['sd'])
             ),
             username=json['userName'],

@@ -26,7 +26,7 @@ import logging
 from datetime import datetime
 from typing import Any, Dict
 
-from .utils import _to_web_url, _gifs_iter, _images_iter, _users_iter, build_file_url
+from .utils import _gifs_iter, _images_iter, _users_iter, build_file_url, to_web_url
 from .models import GIF, URL, CreatorResult, Feeds, Image, User, SearchResult, CreatorsResult
 
 _log = logging.getLogger(__name__)
@@ -86,7 +86,7 @@ def parse_search(searched_for: str, json: Dict[str, Any]) -> SearchResult:
                     poster=gif['urls']['poster'],
                     thumbnail=gif['urls']['thumbnail'],
                     vthumbnail=gif['urls']['vthumbnail'],
-                    web_url=_to_web_url(gif['id']),
+                    web_url=to_web_url(gif['id']),
                     file_url=build_file_url(gif['urls']['sd'])
                 ),
                 username=gif['userName'],
@@ -155,7 +155,7 @@ def parse_search_image(searched_for: str, json: Dict[str, Any]) -> SearchResult:
                     poster=gif['urls']['poster'],
                     thumbnail=gif['urls']['thumbnail'],
                     vthumbnail=gif['urls']['vthumbnail'],
-                    web_url=_to_web_url(gif['id']),
+                    web_url=to_web_url(gif['id']),
                     file_url=None
                 ),
                 username=gif['userName'],
@@ -226,7 +226,7 @@ def parse_creator(json: Dict[str, Any]) -> CreatorResult:
                     poster=gif['urls']['poster'],
                     thumbnail=gif['urls']['thumbnail'],
                     vthumbnail=gif['urls']['vthumbnail'],
-                    web_url=_to_web_url(gif['id']),
+                    web_url=to_web_url(gif['id']),
                     file_url=build_file_url(gif['urls']['sd'])
                 ),
                 username=gif['userName'],
