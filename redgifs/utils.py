@@ -27,14 +27,66 @@ import json
 import pkgutil
 import asyncio
 from datetime import datetime
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 import yarl
 
 from .models import GIF, URL, Image, User
-from .const import REDGIFS_THUMBS_RE
+from .const import REDGIFS_ID_RE, REDGIFS_ID_RE_FILEURL, REDGIFS_THUMBS_RE
 
-def _to_web_url(id_or_url: str, use_regex: bool = False) -> str:
+def get_id_from_url(url: str) -> Optional[str]:
+    """A helper method to get the ID of a RedGifs URL.
+    The ID of a URL like ``https://thumbs44.redgifs.com/ThisIsATest-mobile.mp4`` is ``ThisIsATest``.
+    Only pass in ``sd``, ``hd``, ``poster``, ``thumbnail`` and ``file_url`` URLs here.
+
+    Parameters
+    ----------
+    url: :class:`str`
+        The RedGifs URL.
+
+    Returns
+    -------
+    Optional[:class:`str`]
+        The ID of the URL.
+    """
+    if not re.match(REDGIFS_THUMBS_RE, url):
+        return None
+
+    if 'thumbs' not in url:
+        # Handle `file_url` type URL first, eg: https://api.redgifs.com/v2/gifs/thisisatest/files/ThisIsATest.mp4
+        match = re.match(REDGIFS_ID_RE_FILEURL, url)
+        if not match:
+            return None
+        id = match.group('id')
+    else:
+        # Continue handling other type of URLs
+        match = re.match(REDGIFS_ID_RE, url)
+        if not match:
+            return None
+        id = match.group('id')
+
+    return id
+
+def make_embed_url(url: str) -> Optional[str]:
+    """A helper method to make an embed URL for the GIF.
+    This allows to load the video on the client side for viewing without any compromise.
+
+    Parameters
+    ----------
+    url: :class:`str`
+        The RedGifs URL.
+
+    Returns
+    -------
+    Optional[:class:`str`]
+        The modified RedGifs URL.
+    """
+    id = get_id_from_url(url)
+    if not id:
+        return None
+    return f'https://api.redgifs.com/v2/embed/discord?name={id}.mp4'
+
+def to_web_url(id_or_url: str, use_regex: bool = False) -> str:
     if not use_regex:
         return f'https://redgifs.com/watch/{id_or_url.lower()}'
 
@@ -88,7 +140,7 @@ def _gifs_iter(gifs: List[Dict[str, Any]]) -> List[GIF]:
                 poster=g['urls']['poster'],
                 thumbnail=g['urls']['thumbnail'],
                 vthumbnail=g['urls']['vthumbnail'],
-                web_url=_to_web_url(g['id']),
+                web_url=to_web_url(g['id']),
                 file_url=build_file_url(g['urls']['sd'])
             ),
             username=g['userName'],
@@ -116,7 +168,7 @@ def _images_iter(images: List[Dict[str, Any]]) -> List[Image]:
                 poster=i['urls']['poster'],
                 thumbnail=i['urls']['thumbnail'],
                 vthumbnail=i['urls']['vthumbnail'],
-                web_url=_to_web_url(i['id']),
+                web_url=to_web_url(i['id']),
                 file_url=None
             ),
             username=i['userName'],

@@ -35,6 +35,7 @@ from .http import ProxyAuth
 from .enums import Order
 from .tags import Tags
 from .errors import *
+from .utils import *
 
 class VersionInfo(NamedTuple):
     major: int

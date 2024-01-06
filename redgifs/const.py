@@ -25,5 +25,13 @@ DEALINGS IN THE SOFTWARE.
 import re
 
 REDGIFS_THUMBS_RE = re.compile(
-    r'https:\/\/thumbs\d+?\.redgifs\.com\/(?P<id>\w+)(?P<type>-\w+)?\.(?P<ext>\w+)(\?.+(\d|\w))?'
+    r'https://thumbs\d+?\.redgifs\.com/(?P<id>\w+)(?P<type>-\w+)?\.(?P<ext>\w+)(\?.+(\d|\w))?'
+)
+
+REDGIFS_ID_RE = re.compile(
+    r'https://(thumbs(\d+)|api)\.redgifs\.com/(?P<id>[a-zA-Z]+)'
+)
+
+REDGIFS_ID_RE_FILEURL = re.compile(
+    r'/files/(?P<id>\w+).mp4'
 )
