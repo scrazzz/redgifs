@@ -38,7 +38,7 @@ import yarl
 
 from . import __version__
 from .errors import HTTPException
-from .enums import Order
+from .enums import Order, Type
 from .const import REDGIFS_THUMBS_RE
 from .utils import strip_ip
 
@@ -170,10 +170,10 @@ class HTTP:
             )
             return self.request(r, **params)
 
-    def search_creator(self, username: str, page: int, count: int, order: Order, **params):
+    def search_creator(self, username: str, page: int, count: int, order: Order, type: Type, **params):
         r = Route(
-            'GET', '/v2/users/{username}/search?page={page}&count={count}&order={order}',
-            username=username, page=page, count=count, order=order.value
+            'GET', '/v2/users/{username}/search?page={page}&count={count}&order={order}&type={type}',
+            username=username, page=page, count=count, order=order.value, type=type.value
         )
         return self.request(r, **params)
 

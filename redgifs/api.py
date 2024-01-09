@@ -31,7 +31,7 @@ from typing import Any, Dict, List, Optional, Union
 import requests
 
 from .tags import Tags
-from .enums import Order
+from .enums import Order, Type
 from .http import HTTP, ProxyAuth
 from .utils import _read_tags_json, build_file_url, _gifs_iter, _images_iter, to_web_url
 from .parser import parse_creator, parse_feeds, parse_search, parse_creators, parse_search_image
@@ -251,7 +251,7 @@ class API:
         page: int = 1,
         order: Order = Order.recent,
         verified: bool = False,
-        tags: Optional[List[str]] = None
+        tags: Optional[List[str]] = None,
     ) -> CreatorsResult:
         """
         Search for RedGifs Creators.
@@ -275,7 +275,15 @@ class API:
         resp = self.http.search_creators(page=page, order=order, verified=verified, tags=tags)
         return parse_creators(resp)
 
-    def search_creator(self, username: str, *, page: int = 1, count: int = 80, order: Order = Order.recent) -> CreatorResult:
+    def search_creator(
+        self,
+        username: str,
+        *,
+        page: int = 1,
+        count: int = 80,
+        order: Order = Order.recent,
+        type: Type = Type.gif,
+    ) -> CreatorResult:
         """
         Search for a RedGifs creator/user.
 
@@ -294,7 +302,7 @@ class API:
         -------
         :py:class:`CreatorResult <redgifs.models.CreatorResult>` - The creator/user searched for.
         """
-        resp = self.http.search_creator(username, page=page, count=count, order=order)
+        resp = self.http.search_creator(username, page=page, count=count, order=order, type=type)
         return parse_creator(resp)
 
     search_user = search_creator

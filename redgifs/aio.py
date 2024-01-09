@@ -32,7 +32,7 @@ import aiohttp
 
 from .http import AsyncHttp, ProxyAuth
 from .tags import Tags
-from .enums import Order
+from .enums import Order, Type
 from .utils import _async_read_tags_json, build_file_url, _gifs_iter, _images_iter, to_web_url
 from .parser import parse_feeds, parse_search, parse_creator, parse_creators, parse_search_image
 from .models import GIF, URL, CreatorResult, Feeds, Image, SearchResult, CreatorsResult
@@ -43,7 +43,7 @@ class API:
         session: Optional[aiohttp.ClientSession] = None,
         *,
         proxy: Optional[str] = None,
-        proxy_auth: Optional[ProxyAuth] = None
+        proxy_auth: Optional[ProxyAuth] = None,
     ) -> None:
         self.http: AsyncHttp = AsyncHttp(session, proxy=proxy, proxy_auth=proxy_auth)
         self._tags = Tags()
@@ -111,7 +111,7 @@ class API:
         *,
         order: Order = Order.trending,
         count: int = 80,
-        page: int = 1
+        page: int = 1,
     ) -> SearchResult:
         if len(self._tags.tags_mapping) == 0:
             tags = await _async_read_tags_json()
@@ -129,7 +129,7 @@ class API:
         page: int = 1,
         order: Order = Order.recent,
         verified: bool = False,
-        tags: Optional[List[str]] = None
+        tags: Optional[List[str]] = None,
     ) -> CreatorsResult:
         resp = await self.http.search_creators(page=page, order=order, verified=verified, tags=tags)
         return parse_creators(resp)
@@ -140,9 +140,10 @@ class API:
         *,
         page: int = 1,
         count: int = 80,
-        order: Order = Order.recent
+        order: Order = Order.recent,
+        type: Type = Type.gif,
     ) -> CreatorResult:
-        resp = await self.http.search_creator(username=username, page=page, count=count, order=order)
+        resp = await self.http.search_creator(username=username, page=page, count=count, order=order, type=type)
         return parse_creator(resp)
 
     search_user = search_creator
@@ -153,7 +154,7 @@ class API:
         *,
         order: Order = Order.new,
         count: int = 80,
-        page: int = 1
+        page: int = 1,
     ) -> SearchResult:
         # We are not going to use Tags.search() here because it doesn't matter
         # whatever the search_text is, this API endpoints provides images nonetheless.

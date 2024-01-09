@@ -37,3 +37,8 @@ class Order(Enum):
     best = 'best'
     top28 = 'top28'
     new = 'new'
+
+class Type(Enum):
+    """An enum representing the type of the results."""
+    image = 'i'
+    gif = 'g'

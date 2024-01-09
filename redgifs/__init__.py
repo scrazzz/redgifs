@@ -32,7 +32,7 @@ from typing import Literal, NamedTuple
 
 from .api import API
 from .http import ProxyAuth
-from .enums import Order
+from .enums import Order, Type
 from .tags import Tags
 from .errors import *
 from .utils import *
