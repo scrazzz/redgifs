@@ -32,59 +32,7 @@ from typing import Any, Dict, List, Optional
 import yarl
 
 from .models import GIF, URL, Image, User
-from .const import REDGIFS_ID_RE, REDGIFS_ID_RE_FILEURL, REDGIFS_THUMBS_RE
-
-def get_id_from_url(url: str) -> Optional[str]:
-    """A helper method to get the ID of a RedGifs URL.
-    The ID of a URL like ``https://thumbs44.redgifs.com/ThisIsATest-mobile.mp4`` is ``ThisIsATest``.
-    Only pass in ``sd``, ``hd``, ``poster``, ``thumbnail`` and ``file_url`` URLs here.
-
-    Parameters
-    ----------
-    url: :class:`str`
-        The RedGifs URL.
-
-    Returns
-    -------
-    Optional[:class:`str`]
-        The ID of the URL.
-    """
-    if not re.match(REDGIFS_THUMBS_RE, url):
-        return None
-
-    if 'thumbs' not in url:
-        # Handle `file_url` type URL first, eg: https://api.redgifs.com/v2/gifs/thisisatest/files/ThisIsATest.mp4
-        match = re.match(REDGIFS_ID_RE_FILEURL, url)
-        if not match:
-            return None
-        id = match.group('id')
-    else:
-        # Continue handling other type of URLs
-        match = re.match(REDGIFS_ID_RE, url)
-        if not match:
-            return None
-        id = match.group('id')
-
-    return id
-
-def make_embed_url(url: str) -> Optional[str]:
-    """A helper method to make an embed URL for the GIF.
-    This allows to load the video on the client side for viewing without any compromise.
-
-    Parameters
-    ----------
-    url: :class:`str`
-        The RedGifs URL.
-
-    Returns
-    -------
-    Optional[:class:`str`]
-        The modified RedGifs URL.
-    """
-    id = get_id_from_url(url)
-    if not id:
-        return None
-    return f'https://api.redgifs.com/v2/embed/discord?name={id}.mp4'
+from .const import REDGIFS_THUMBS_RE
 
 def to_web_url(id_or_url: str, use_regex: bool = False) -> str:
     if not use_regex:
