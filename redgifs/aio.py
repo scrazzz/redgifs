@@ -144,7 +144,7 @@ class API:
         type: Type = Type.gif,
     ) -> CreatorResult:
         resp = await self.http.search_creator(username=username, page=page, count=count, order=order, type=type)
-        return parse_creator(resp)
+        return parse_creator(resp, type)
 
     search_user = search_creator
 

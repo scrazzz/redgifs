@@ -335,15 +335,20 @@ class CreatorResult:
         The total number of pages available.
     total: :class:`int`
         The total number of GIFs this creator/user has created.
+    gifs: List[:class:`GIF`]
+        The GIFs uploaded by this creator.
+    images: List[:class:`Image`]
+        The images uploaded by this creator.
     """
 
-    __slots__ = ('creator', 'page', 'pages', 'total', 'gifs')
+    __slots__ = ('creator', 'page', 'pages', 'total', 'gifs', 'images')
 
     creator: User
     page: int
     pages: int
     total: int
     gifs: List[GIF]
+    images: List[Image]
 
 @dataclass
 class Feeds:

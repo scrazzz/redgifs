@@ -26,6 +26,7 @@ import logging
 from datetime import datetime
 from typing import Any, Dict
 
+from .enums import Type
 from .utils import _gifs_iter, _images_iter, _users_iter, build_file_url, to_web_url
 from .models import GIF, URL, CreatorResult, Feeds, Image, User, SearchResult, CreatorsResult
 
@@ -178,7 +179,7 @@ def parse_creators(json: Dict[str, Any]) -> CreatorsResult:
         total=json['total'],
     )
 
-def parse_creator(json: Dict[str, Any]) -> CreatorResult:
+def parse_creator(json: Dict[str, Any], type: Type) -> CreatorResult:
     _log.debug('Using `parse_creator`')
     user = json['users'][0]
     return CreatorResult(
@@ -233,6 +234,31 @@ def parse_creator(json: Dict[str, Any]) -> CreatorResult:
                 type=gif['type'],
                 avg_color=gif['avgColor'],
             )
-            for gif in json['gifs']
+            for gif in json['gifs'] if type.name == 'gif'
+        ],
+        images=[
+            Image(
+                id=img['id'],
+                create_date=datetime.utcfromtimestamp(img['createDate']),
+                width=img['width'],
+                height=img['height'],
+                likes=img['likes'],
+                tags=img['tags'],
+                verified=img['verified'],
+                views=img['views'],
+                published=img['published'],
+                urls=URL(
+                    sd=img['urls']['sd'],
+                    hd=img['urls']['hd'],
+                    poster=img['urls']['poster'],
+                    thumbnail=img['urls']['thumbnail'],
+                    vthumbnail=img['urls']['vthumbnail'],
+                    web_url=to_web_url(img['id']),
+                    file_url=None
+                ),
+                username=img['userName'],
+                type=img['type'],
+                avg_color=img['avgColor'],
+            ) for img in json['gifs'] if type.name == 'image' # RedGifs return the key for this data as "gifs" even though it's an image...
         ]
     )
