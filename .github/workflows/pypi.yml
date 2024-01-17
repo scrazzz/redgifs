@@ -25,6 +25,6 @@ jobs:
 
       - name: Upload to PyPi
         env:
-          TWINE_USERNAME: scrazzz
+          TWINE_USERNAME: __token__
           TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
         run: python -m twine upload dist/*
