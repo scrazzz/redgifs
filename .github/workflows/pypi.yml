@@ -27,4 +27,4 @@ jobs:
         env:
           TWINE_USERNAME: __token__
           TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
-        run: python -m twine upload --repository redgifs
+        run: python -m twine upload dist/*
