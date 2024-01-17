@@ -3,6 +3,11 @@
 Changelogs
 ==========
 
+1.8.2
+-----
+- Added new keyword argument ``type`` to :py:meth:`API.search_creator() <redgifs.API.search_creator()>` method. This allows for getting images and gifs of the creator seperately.
+- Added new :py:attr:`images <redgifs.models.CreatorResult.images>` parameter for :py:class:`CreatorResult <redgifs.models.CreatorResult>`.
+
 1.8.1
 ------
 - Fixed an issue with CLI not downloading GIFs using the ``--list`` option.

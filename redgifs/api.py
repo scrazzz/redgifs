@@ -77,7 +77,7 @@ class API:
         Returns
         -------
         :py:class:`API <redgifs.API>`
-            The already initialised API class.
+            The properly initialised API class.
         """
         self.http.login()
         return self
@@ -166,7 +166,7 @@ class API:
         return _images_iter(r)
 
     def get_trending_tags(self) -> List[Dict[str, Union[str, int]]]:
-        """Gets the trending searches on RedGifs.
+        """Get the trending searches on RedGifs.
 
         Returns
         -------
