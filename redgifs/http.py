@@ -30,7 +30,7 @@ import re
 import sys
 import logging
 from urllib.parse import quote
-from typing import Any, ClassVar, Dict, List, NamedTuple, Optional, Union
+from typing import Any, ClassVar, Coroutine, Dict, List, NamedTuple, Optional, Union
 
 import requests
 import aiohttp
@@ -110,11 +110,11 @@ class HTTP:
         else:
             raise HTTPException(r, js)
 
-    def close(self) -> None:
+    def close(self) -> Union[Coroutine[Any, Any, None], None]:
         self.__session.close()
 
     # TODO: Implement OAuth login support
-    def login(self, username: Optional[str] = None, password: Optional[str] = None) -> None:
+    def login(self, username: Optional[str] = None, password: Optional[str] = None) -> Union[Coroutine[Any, Any, None], None]:
         if (username and password) is None:
             temp_token = self.get_temp_token()['token']
             self.headers['authorization'] = f'Bearer {temp_token}'
@@ -209,7 +209,7 @@ class HTTP:
 
     # download
 
-    def download(self, url: str, fp: Union[str, bytes, os.PathLike[Any], io.BufferedIOBase]) -> int:
+    def download(self, url: str, fp: Union[str, bytes, os.PathLike[Any], io.BufferedIOBase]) -> Union[Coroutine[Any, Any, int], int]:
         """A friendly method to download a RedGifs media."""
 
         yarl_url = yarl.URL(url)
