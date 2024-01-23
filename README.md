@@ -56,7 +56,7 @@ from redgifs.aio import API
 
 async def main():
     api = API()
-    await api.login() # Login with teporary token
+    await api.login() # Login with temporary token
     response = await api.search('3D')
     print(response)
     await api.close()
