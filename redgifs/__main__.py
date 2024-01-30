@@ -132,7 +132,7 @@ def start_dl(url: str, *, folder: Optional[str], quality: str) -> None:
             print(f'\nDownloaded {done}/{total} videos of "{user}" {f"to {folder} folder" if folder else ""} sucessfully')
 
         # If there's more than 1 page
-        while curr_page != total_pages:
+        while curr_page <= total_pages:
             for gif in total_gifs:
                 gif = get_quality(quality, gif)
                 filename = f'{gif.split("/")[3].split(".")[0]}.mp4'
