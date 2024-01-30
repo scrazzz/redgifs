@@ -26,6 +26,7 @@ from __future__ import annotations
 
 import io
 import os
+from datetime import datetime
 from typing import Any, Dict, List, Optional, Union
 
 import aiohttp
@@ -61,18 +62,18 @@ class API:
         return resp['tags']
 
     async def get_gif(self, id: str) -> GIF:
-        json: Dict[str, Any] = (await self.http.get_gif(id))['gif']
+        json = (await self.http.get_gif(id))['gif']
         urls = json['urls']
         return GIF(
             id=json['id'],
-            create_date=json['createDate'],
+            create_date=datetime.utcfromtimestamp(json['createDate']),
             has_audio=json['hasAudio'],
             width=json['width'],
             height=json['height'],
             likes=json['likes'],
             tags=json['tags'],
             verified=json['verified'],
-            views=json['views'],
+            views=json.get('views'),
             duration=json['duration'],
             published=json['published'],
             urls=URL(

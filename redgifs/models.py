@@ -116,8 +116,8 @@ class GIF:
     likes: int
     tags: List[str]
     verified: bool
-    views: int
-    duration: int
+    views: Optional[int]
+    duration: float
     published: bool
     urls: URL
     username: str
@@ -245,9 +245,9 @@ class User:
     name: str
     profile_image_url: str
     profile_url: str
-    published_collections: int
+    published_collections: Optional[int]
     published_gifs: int
-    status: str
+    status: Optional[str]
     subscription: int
     url: str
     username: str

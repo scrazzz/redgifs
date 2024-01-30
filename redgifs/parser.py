@@ -26,6 +26,8 @@ import logging
 from datetime import datetime
 from typing import Any, Dict
 
+from redgifs.types.response import SearchResponse
+
 from .enums import Type
 from .utils import _gifs_iter, _images_iter, _users_iter, build_file_url, to_web_url
 from .models import GIF, URL, CreatorResult, Feeds, Image, User, SearchResult, CreatorsResult
@@ -58,7 +60,7 @@ def parse_feeds(json: Dict[str, Any]) -> Feeds:
     )
 
 # For GIFs
-def parse_search(searched_for: str, json: Dict[str, Any]) -> SearchResult:
+def parse_search(searched_for: str, json: SearchResponse) -> SearchResult:
     _log.debug('Using `parse_search` for: {searched_for}')
     json_gifs = json['gifs']
     users = json['users']
