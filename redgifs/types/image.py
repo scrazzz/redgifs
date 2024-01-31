@@ -1,49 +1,42 @@
 from typing import List, Optional, TypedDict
+from redgifs.types.gif import MediaInfo
 from redgifs.types.niches import NichesInfo
 from redgifs.types.user import UserInfo
 
-class MediaInfo(TypedDict):
-    sd: str
-    hd: str
-    gif: str
-    poster: str
-    thumbnail: str
-    vthumbnail: Optional[str]
-
-class GifInfo(TypedDict):
+class ImageInfo(TypedDict):
     id: str
     client_id: Optional[str]
     createDate: int
-    hasAudio: bool
+    # hasAudio: bool
     width: int
     height: int
     likes: int
     tags: List[str]
     verified: bool
     views: Optional[int]
-    duration: float
+    # duration: float
     published: bool
     type: int # Literal[1,2]
     urls: MediaInfo
     userName: str
     avgColor: str
-    gallery: str
+    # gallery: str
+    niches: List[str]
+    sexuality: Optional[List[str]]
 
-class GetGifResponse(TypedDict):
-    gif: GifInfo
-    user: Optional[UserInfo]
-
-class CommonGifResponse(TypedDict):
+# NOTE: even though this is an image, the field for this is `gifs`
+# NOTE: see the type of `gifs` key.
+class CommonImageResponse(TypedDict):
     page: int
     pages: int
     total: int
-    gifs: List[GifInfo]
+    gifs: List[ImageInfo]
     users: List[UserInfo]
     niches: List[NichesInfo]
     tags: List[str]
 
-class TrendingGifsResponse(CommonGifResponse):
-   pass
+class TrendingImagesResponse(CommonImageResponse):
+    pass
 
-class GifResponse(CommonGifResponse):
+class ImageResponse(CommonImageResponse):
     pass

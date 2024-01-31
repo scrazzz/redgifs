@@ -27,7 +27,7 @@ from __future__ import annotations
 import io
 import os
 from datetime import datetime
-from typing import Any, Dict, List, Optional, Union
+from typing import TYPE_CHECKING, Any, List, Optional, Union
 
 import aiohttp
 
@@ -37,6 +37,9 @@ from .enums import Order, Type
 from .utils import _async_read_tags_json, build_file_url, _gifs_iter, _images_iter, to_web_url
 from .parser import parse_feeds, parse_search, parse_creator, parse_creators, parse_search_image
 from .models import GIF, URL, CreatorResult, Feeds, Image, SearchResult, CreatorsResult
+
+if TYPE_CHECKING:
+    from redgifs.types.tags import TagInfo
 
 class API:
     def __init__(
@@ -57,7 +60,7 @@ class API:
         feeds = await self.http.get_feeds()
         return parse_feeds(feeds)
 
-    async def get_tags(self) -> List[Dict[str, Union[str, int]]]:
+    async def get_tags(self) -> List[TagInfo]:
         resp = await self.http.get_tags()
         return resp['tags']
 
@@ -90,7 +93,7 @@ class API:
             avg_color=json['avgColor'],
         )
 
-    async def get_trending_tags(self) -> List[Dict[str, Union[str, int]]]:
+    async def get_trending_tags(self) -> List[TagInfo]:
         result = (await self.http.get_trending_tags())['tags']
         return result
 
@@ -104,7 +107,7 @@ class API:
 
     async def fetch_tag_suggestions(self, query: str) -> List[str]:
         result = await self.http.get_tag_suggestions(query)
-        return [d['text'] for d in result]
+        return [d['text'] for d in result] # type: ignore - `get_tag_suggestions` isn't properly TypedDict'd so ignore the warning
 
     async def search(
         self,

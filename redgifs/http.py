@@ -36,17 +36,22 @@ import requests
 import aiohttp
 import yarl
 
-from redgifs.types.response import GifResponse, SearchResponse
-
 from . import __version__
 from .errors import HTTPException
 from .enums import Order, Type
 from .const import REDGIFS_THUMBS_RE
 from .utils import strip_ip
 
+__all__ = ('ProxyAuth',)
+
 _log = logging.getLogger(__name__)
 
 if TYPE_CHECKING:
+    from redgifs.types.gif import GetGifResponse, GifResponse, TrendingGifsResponse
+    from redgifs.types.image import ImageResponse, TrendingImagesResponse
+    from redgifs.types.feeds import FeedsResponse
+    from redgifs.types.tags import TagsResponse
+
     T = TypeVar('T')
     Response = Coroutine[Any, Any, T]
 
@@ -306,16 +311,16 @@ class AsyncHttp:
     
     # GIF methods
 
-    def get_feeds(self):
+    def get_feeds(self) -> Response[FeedsResponse]:
         return self.request(Route('GET', '/v2/home/feeds'))
 
-    def get_tags(self, **params: Any):
+    def get_tags(self, **params: Any) -> Response[TagsResponse]:
         return self.request(Route('GET', '/v1/tags'), **params)
 
-    def get_gif(self, id: str, **params: Any) -> Response[GifResponse]:
+    def get_gif(self, id: str, **params: Any) -> Response[GetGifResponse]:
         return self.request(Route('GET', '/v2/gifs/{id}', id=id), **params)
 
-    def search(self, search_text: str, order: Order, count: int, page: int, **params: Any) -> Response[SearchResponse]:
+    def search(self, search_text: str, order: Order, count: int, page: int, **params: Any) -> Response[GifResponse]:
         r = Route(
             'GET', '/v2/gifs/search?search_text={search_text}&order={order}&count={count}&page={page}',
             search_text=search_text, order=order.value, count=count, page=page
@@ -357,30 +362,30 @@ class AsyncHttp:
         )
         return self.request(r, **params)
 
-    def get_trending_gifs(self):
+    def get_trending_gifs(self) -> Response[TrendingGifsResponse]:
         r = Route('GET', '/v2/explore/trending-gifs')
         return self.request(r)
 
     # Pic methods
 
-    def search_image(self, search_text: str, order: Order, count: int, page: int, **params: Any):
+    def search_image(self, search_text: str, order: Order, count: int, page: int, **params: Any) -> Response[ImageResponse]:
         r = Route(
             'GET', '/v2/gifs/search?search_text={search_text}&order={order}&count={count}&page={page}&type=i',
             search_text=search_text, order=order.value, count=count, page=page
         )
         return self.request(r, **params)
 
-    def get_trending_images(self):
+    def get_trending_images(self) -> Response[TrendingImagesResponse]:
         r = Route('GET', '/v2/explore/trending-images')
         return self.request(r)
 
     # Tag methods
 
-    def get_trending_tags(self):
+    def get_trending_tags(self) -> Response[TagsResponse]:
         r = Route('GET', '/v2/search/trending')
         return self.request(r)
 
-    def get_tag_suggestions(self, query: str):
+    def get_tag_suggestions(self, query: str) -> Response[List[Dict[str, Union[str, int]]]]:
         r = Route(
             'GET', '/v2/search/suggest?query={query}',
             query=query

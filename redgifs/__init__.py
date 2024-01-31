@@ -30,10 +30,10 @@ __version__ = '1.8.3a'
 
 from typing import Literal, NamedTuple
 
-from .api import API
-from .http import ProxyAuth
-from .enums import Order, Type
-from .tags import Tags
+from .api import *
+from .http import *
+from .enums import *
+from .tags import *
 from .errors import *
 from .utils import *
 

@@ -26,13 +26,17 @@ import re
 import json
 import pkgutil
 import asyncio
-from datetime import datetime
-from typing import Any, Dict, List, Optional
-
 import yarl
+from datetime import datetime
+from typing import TYPE_CHECKING, Dict, List, Union
 
 from .models import GIF, URL, Image, User
 from .const import REDGIFS_THUMBS_RE
+
+if TYPE_CHECKING:
+    from redgifs.types.gif import GifInfo
+    from redgifs.types.image import ImageInfo
+    from redgifs.types.user import UserInfo
 
 def to_web_url(id_or_url: str, use_regex: bool = False) -> str:
     if not use_regex:
@@ -61,14 +65,14 @@ def build_file_url(url: str) -> str:
     return f'https://api.redgifs.com/v2/gifs/{filename.lower()}/files/{filename}.mp4'
 
 def _read_tags_json() -> Dict[str, str]:
-    file_ = pkgutil.get_data(__name__, 'tags.json') # type: ignore - We know this won't be None
+    file_ = pkgutil.get_data(__name__, 'tags.json')
     return json.loads(file_) # type: ignore - same reason above
 
 async def _async_read_tags_json() -> Dict[str, str]:
     r = await asyncio.get_event_loop().run_in_executor(None, _read_tags_json)
     return r
 
-def _gifs_iter(gifs: List[Dict[str, Any]]) -> List[GIF]:
+def _gifs_iter(gifs: List[GifInfo]) -> List[GIF]:
     return [
         GIF(
             id=g['id'],
@@ -98,7 +102,7 @@ def _gifs_iter(gifs: List[Dict[str, Any]]) -> List[GIF]:
         for g in gifs
     ]
 
-def _images_iter(images: List[Dict[str, Any]]) -> List[Image]:
+def _images_iter(images: List[ImageInfo]) -> List[Image]:
     return [
         Image(
             id=i['id'],
@@ -126,7 +130,7 @@ def _images_iter(images: List[Dict[str, Any]]) -> List[Image]:
         for i in images
     ]
 
-def _users_iter(users: List[Dict[str, Any]]) -> List[User]:
+def _users_iter(users: Union[List[UserInfo], List[GifInfo], List[ImageInfo]]) -> List[User]:
     return [
         User(
             # I only had this occurrence once where redgifs did not

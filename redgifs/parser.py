@@ -24,17 +24,20 @@ DEALINGS IN THE SOFTWARE.
 
 import logging
 from datetime import datetime
-from typing import Any, Dict
-
-from redgifs.types.response import SearchResponse
+from typing import TYPE_CHECKING, Any, Dict
 
 from .enums import Type
 from .utils import _gifs_iter, _images_iter, _users_iter, build_file_url, to_web_url
 from .models import GIF, URL, CreatorResult, Feeds, Image, User, SearchResult, CreatorsResult
 
+if TYPE_CHECKING:
+    from redgifs.types.feeds import FeedsResponse
+    from redgifs.types.gif import GifResponse
+    from redgifs.types.image import ImageResponse
+
 _log = logging.getLogger(__name__)
 
-def parse_feeds(json: Dict[str, Any]) -> Feeds:
+def parse_feeds(json: FeedsResponse) -> Feeds:
     _log.debug('Parsing feeds')
     hgifs = json['horizontalGifs']
     vgifs = json['verticalGifs']
@@ -60,7 +63,7 @@ def parse_feeds(json: Dict[str, Any]) -> Feeds:
     )
 
 # For GIFs
-def parse_search(searched_for: str, json: SearchResponse) -> SearchResult:
+def parse_search(searched_for: str, json: GifResponse) -> SearchResult:
     _log.debug('Using `parse_search` for: {searched_for}')
     json_gifs = json['gifs']
     users = json['users']
@@ -131,7 +134,7 @@ def parse_search(searched_for: str, json: SearchResponse) -> SearchResult:
     )
 
 # For images
-def parse_search_image(searched_for: str, json: Dict[str, Any]) -> SearchResult:
+def parse_search_image(searched_for: str, json: ImageResponse) -> SearchResult:
     _log.debug('Using `parse_search` for: {searched_for}')
     json_gifs = json['gifs']
     users = json['users']

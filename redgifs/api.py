@@ -37,6 +37,8 @@ from .utils import _read_tags_json, build_file_url, _gifs_iter, _images_iter, to
 from .parser import parse_creator, parse_feeds, parse_search, parse_creators, parse_search_image
 from .models import URL, GIF, CreatorResult, Feeds, Image, SearchResult, CreatorsResult
 
+__all__ = ('API',)
+
 class API:
     """The API Instance to get information from the RedGifs API.
 

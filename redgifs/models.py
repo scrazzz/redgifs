@@ -59,7 +59,7 @@ class URL:
     hd: str
     poster: str
     thumbnail: str
-    vthumbnail: str
+    vthumbnail: Optional[str]
     web_url: str
     file_url: Optional[str]
 
@@ -173,7 +173,7 @@ class Image:
     likes: int
     tags: List[str]
     verified: bool
-    views: int
+    views: Optional[int]
     published: bool
     urls: URL
     username: str
