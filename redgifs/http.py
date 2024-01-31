@@ -423,8 +423,6 @@ class AsyncHttp:
         if 'watch' in yarl_url.path:
             id = yarl_url.path.strip('/watch/')
             hd_url = (await self.get_gif(id))['gif']['urls']['hd']
-            # gif = await (await self.get_gif('id'))
-            # hd_url = gif['gif']['urls']['hd']
             return (await dl(hd_url))
 
         raise TypeError(f'"{strip_ip(str_url)}" is not a valid RedGifs URL')
