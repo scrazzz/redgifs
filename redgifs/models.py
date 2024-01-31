@@ -45,7 +45,7 @@ class URL:
         The poster URL of the GIF.
     thumbnail: :class:`str`
         The thumbnail URL of the GIF.
-    vthumbnail: :class:`str`
+    vthumbnail: Optional[:class:`str`]
         The vthumbnail URL of the GIF.
     web_url: :class:`str`
         The website URL of the GIF.
@@ -86,9 +86,9 @@ class GIF:
         A list of tags for the GIF.
     verified: :class:`bool`
         Wheather the publisher of the GIF is a verified creator.
-    views: :class:`int`
+    views: Optional[:class:`int`]
         The amount of views for the GIF.
-    duration: :class:`int`
+    duration: :class:`float`
         The GIF's duration in seconds.
     published: :class:`bool`
         Wheather the GIF is published.
@@ -146,7 +146,7 @@ class Image:
         A list of tags for the GIF.
     verified: :class:`bool`
         Wheather the publisher of the image is a verified creator.
-    views: :class:`int`
+    views: Optional[:class:`int`]
         The amount of views the image has.
     published: :class:`bool`
         Wheather the image is published.
@@ -204,11 +204,11 @@ class User:
     profile_url: :class:`str`
         The user's "profile URL".
         This is NOT the user's URL on ``redgifs.com``, see :py:attr:`url <redgifs.models.User.url>` for that.
-    published_collections: :class:`int`
+    published_collections: Optional[:class:`int`]
         The user's amount of published collections.
     published_gifs: :class:`int`
         The user's amount of published GIFs.
-    status: :class:`str`
+    status: Optional[:class:`str`]
         The user's status.
     subscription: :class:`int`
 

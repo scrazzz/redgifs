@@ -66,7 +66,7 @@ def build_file_url(url: str) -> str:
 
 def _read_tags_json() -> Dict[str, str]:
     file_ = pkgutil.get_data(__name__, 'tags.json')
-    return json.loads(file_) # type: ignore - same reason above
+    return json.loads(file_) # type: ignore - file_ will never be None
 
 async def _async_read_tags_json() -> Dict[str, str]:
     r = await asyncio.get_event_loop().run_in_executor(None, _read_tags_json)
