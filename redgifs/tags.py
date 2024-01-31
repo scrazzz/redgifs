@@ -29,6 +29,8 @@ from typing import Dict, List, Literal, overload
 from .utils import _read_tags_json
 from .errors import InvalidTag
 
+__all__ = ('Tags',)
+
 class Tags:
     tags_mapping: Dict[str, str] = {}
 
@@ -74,9 +76,9 @@ class Tags:
     @overload
     def random(self, count: Literal[1] = ...) -> str:
         ...
-    
+
     @overload
-    def random(self, count: int = ...) -> List[str]:
+    def random(self, count: int) -> List[str]:
         ...
 
     def random(self, count: int = 1):

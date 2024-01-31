@@ -30,7 +30,7 @@ import re
 import sys
 import logging
 from urllib.parse import quote
-from typing import Any, ClassVar, Coroutine, Dict, List, NamedTuple, Optional, Union
+from typing import TYPE_CHECKING, Any, ClassVar, Coroutine, Dict, List, NamedTuple, Optional, TypeVar, Union
 
 import requests
 import aiohttp
@@ -42,7 +42,18 @@ from .enums import Order, Type
 from .const import REDGIFS_THUMBS_RE
 from .utils import strip_ip
 
+__all__ = ('ProxyAuth',)
+
 _log = logging.getLogger(__name__)
+
+if TYPE_CHECKING:
+    from redgifs.types.gif import GetGifResponse, GifResponse, TrendingGifsResponse
+    from redgifs.types.image import ImageResponse, TrendingImagesResponse
+    from redgifs.types.feeds import FeedsResponse
+    from redgifs.types.tags import TagsResponse
+
+    T = TypeVar('T')
+    Response = Coroutine[Any, Any, T]
 
 class Route:
     BASE: ClassVar[str] = "https://api.redgifs.com"
@@ -110,11 +121,11 @@ class HTTP:
         else:
             raise HTTPException(r, js)
 
-    def close(self) -> Union[Coroutine[Any, Any, None], None]:
+    def close(self) -> None:
         self.__session.close()
 
     # TODO: Implement OAuth login support
-    def login(self, username: Optional[str] = None, password: Optional[str] = None) -> Union[Coroutine[Any, Any, None], None]:
+    def login(self, username: Optional[str] = None, password: Optional[str] = None) -> None:
         if (username and password) is None:
             temp_token = self.get_temp_token()['token']
             self.headers['authorization'] = f'Bearer {temp_token}'
@@ -245,7 +256,7 @@ class HTTP:
         raise TypeError(f'"{strip_ip(str_url)}" is not a valid RedGifs URL')
 
 
-class AsyncHttp(HTTP):
+class AsyncHttp:
     def __init__(
         self,
         session: Optional[aiohttp.ClientSession] = None,
@@ -270,14 +281,6 @@ class AsyncHttp(HTTP):
         else:
             self._proxy_auth = None
 
-    # TODO: Implement OAuth login support
-    async def login(self, username: Optional[str] = None, password: Optional[str] = None) -> None:
-        if (username and password) is None:
-            temp_token = await self.get_temp_token()
-            self.headers['authorization'] = f'Bearer {temp_token["token"]}'
-        else:
-            raise NotImplementedError
-
     async def request(self, route: Route, **kwargs: Any) -> Any:
         url: str = route.url
         method: str = route.method
@@ -292,8 +295,104 @@ class AsyncHttp(HTTP):
             else:
                 raise HTTPException(resp, js)
 
+    async def close(self) -> None:
+        await self.__session.close()
+
     async def get_temp_token(self):
         return (await self.request(Route('GET', '/v2/auth/temporary')))
+
+    # TODO: Implement OAuth login support
+    async def login(self, username: Optional[str] = None, password: Optional[str] = None) -> None:
+        if (username and password) is None:
+            temp_token = await self.get_temp_token()
+            self.headers['authorization'] = f'Bearer {temp_token["token"]}'
+        else:
+            raise NotImplementedError
+    
+    # GIF methods
+
+    def get_feeds(self) -> Response[FeedsResponse]:
+        return self.request(Route('GET', '/v2/home/feeds'))
+
+    def get_tags(self, **params: Any) -> Response[TagsResponse]:
+        return self.request(Route('GET', '/v1/tags'), **params)
+
+    def get_gif(self, id: str, **params: Any) -> Response[GetGifResponse]:
+        return self.request(Route('GET', '/v2/gifs/{id}', id=id), **params)
+
+    def search(self, search_text: str, order: Order, count: int, page: int, **params: Any) -> Response[GifResponse]:
+        r = Route(
+            'GET', '/v2/gifs/search?search_text={search_text}&order={order}&count={count}&page={page}',
+            search_text=search_text, order=order.value, count=count, page=page
+        )
+        return self.request(r, **params)
+
+    # User/Creator methods
+
+    def search_creators(
+        self,
+        page: int,
+        order: Order,
+        verified: bool,
+        tags: Optional[List[str]],
+        **params: Any
+    ):
+        url = '/v1/creators/search?page={page}&order={order}'
+        if verified:
+            url += '&verified={verified}'
+        if tags:
+            url += '&tags={tags}'
+            r = Route(
+                'GET', url,
+                page=page, order=order.value, verified='y' if verified else 'n',
+                tags=','.join(t for t in tags)
+            )
+            return self.request(r, **params)
+        else:
+            r = Route(
+                'GET', url,
+                page=page, order=order.value, verified='y' if verified else 'n'
+            )
+            return self.request(r, **params)
+
+    def search_creator(self, username: str, page: int, count: int, order: Order, type: Type, **params):
+        r = Route(
+            'GET', '/v2/users/{username}/search?page={page}&count={count}&order={order}&type={type}',
+            username=username, page=page, count=count, order=order.value, type=type.value
+        )
+        return self.request(r, **params)
+
+    def get_trending_gifs(self) -> Response[TrendingGifsResponse]:
+        r = Route('GET', '/v2/explore/trending-gifs')
+        return self.request(r)
+
+    # Pic methods
+
+    def search_image(self, search_text: str, order: Order, count: int, page: int, **params: Any) -> Response[ImageResponse]:
+        r = Route(
+            'GET', '/v2/gifs/search?search_text={search_text}&order={order}&count={count}&page={page}&type=i',
+            search_text=search_text, order=order.value, count=count, page=page
+        )
+        return self.request(r, **params)
+
+    def get_trending_images(self) -> Response[TrendingImagesResponse]:
+        r = Route('GET', '/v2/explore/trending-images')
+        return self.request(r)
+
+    # Tag methods
+
+    def get_trending_tags(self) -> Response[TagsResponse]:
+        r = Route('GET', '/v2/search/trending')
+        return self.request(r)
+
+    def get_tag_suggestions(self, query: str) -> Response[List[Dict[str, Union[str, int]]]]:
+        r = Route(
+            'GET', '/v2/search/suggest?query={query}',
+            query=query
+        )
+        return self.request(r)
+
+    # download
 
     async def download(self, url: str, fp: Union[str, bytes, os.PathLike[Any], io.BufferedIOBase]) -> int:
         yarl_url = yarl.URL(url)
@@ -327,6 +426,3 @@ class AsyncHttp(HTTP):
             return (await dl(hd_url))
 
         raise TypeError(f'"{strip_ip(str_url)}" is not a valid RedGifs URL')
-
-    async def close(self) -> None:
-        await self.__session.close()

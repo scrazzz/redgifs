@@ -24,6 +24,8 @@ DEALINGS IN THE SOFTWARE.
 
 from enum import Enum
 
+__all__ = ('Order', 'Type')
+
 class Order(Enum):
     """An enum representing the Order."""
 

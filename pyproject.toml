@@ -1,0 +1,15 @@
+[tool.pyright]
+include = [
+    "redgifs",
+    "redgifs/types"
+]
+exclude = [
+    "**/__pycache__",
+    "build",
+    "dist",
+    "docs",
+]
+reportUnnecessaryTypeIgnoreComment = "warning"
+reportUnusedImport = "error"
+pythonVersion = "3.8"
+typeCheckingMode = "basic"
