@@ -15,11 +15,11 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Install package
-        run: pip install -U -r requirements.txt -e .
+      - name: Install packages
+        run: python3 -m pip install -U pip -r requirements.txt -e .
 
       - name: Run newtags.py
-        run: python newtags.py
+        run: python3 newtags.py
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
 
