@@ -20,6 +20,11 @@ extras_require = {
     ],
 }
 
+packages = [
+    'redgifs',
+    'redgifs.types',
+]
+
 setup(
     name='redgifs',
     author='scrazzz',
@@ -29,7 +34,7 @@ setup(
         'Issue tracker': 'https://github.com/scrazzz/redgifs/issues'
     },
     version=version,
-    packages=['redgifs'],
+    packages=packages,
     extras_require=extras_require,
     license='MIT',
     description='Async and Sync Python Wrapper for the RedGIFs API.',
