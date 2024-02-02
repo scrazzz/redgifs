@@ -1,6 +1,7 @@
 from typing import List, Optional, TypedDict
-from redgifs.types.niches import NichesInfo
-from redgifs.types.user import UserInfo
+
+from .niches import NichesInfo
+from .user import UserInfo
 
 class MediaInfo(TypedDict):
     sd: str
@@ -9,6 +10,7 @@ class MediaInfo(TypedDict):
     poster: str
     thumbnail: str
     vthumbnail: Optional[str]
+
 
 class GifInfo(TypedDict):
     id: str
@@ -29,9 +31,11 @@ class GifInfo(TypedDict):
     avgColor: str
     gallery: str
 
+
 class GetGifResponse(TypedDict):
     gif: GifInfo
     user: Optional[UserInfo]
+
 
 class CommonGifResponse(TypedDict):
     page: int
@@ -42,8 +46,10 @@ class CommonGifResponse(TypedDict):
     niches: List[NichesInfo]
     tags: List[str]
 
+
 class TrendingGifsResponse(CommonGifResponse):
    pass
+
 
 class GifResponse(CommonGifResponse):
     pass

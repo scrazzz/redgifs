@@ -1,5 +1,6 @@
 from typing import TypedDict
 
+
 class NichesInfo(TypedDict):
     cover: str
     description: str

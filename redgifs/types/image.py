@@ -1,7 +1,9 @@
 from typing import List, Optional, TypedDict
-from redgifs.types.gif import MediaInfo
-from redgifs.types.niches import NichesInfo
-from redgifs.types.user import UserInfo
+
+from .gif import MediaInfo
+from .niches import NichesInfo
+from .user import UserInfo
+
 
 class ImageInfo(TypedDict):
     id: str
@@ -14,7 +16,6 @@ class ImageInfo(TypedDict):
     tags: List[str]
     verified: bool
     views: Optional[int]
-    # duration: float
     published: bool
     type: int # Literal[1,2]
     urls: MediaInfo
@@ -23,6 +24,7 @@ class ImageInfo(TypedDict):
     # gallery: str
     niches: List[str]
     sexuality: Optional[List[str]]
+
 
 # NOTE: even though this is an image, the field for this is `gifs`
 # NOTE: see the type of `gifs` key.
@@ -35,8 +37,10 @@ class CommonImageResponse(TypedDict):
     niches: List[NichesInfo]
     tags: List[str]
 
+
 class TrendingImagesResponse(CommonImageResponse):
     pass
+
 
 class ImageResponse(CommonImageResponse):
     pass
