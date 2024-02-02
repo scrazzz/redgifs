@@ -243,7 +243,7 @@ class User:
     following: int
     gifs: int
     name: str
-    profile_image_url: str
+    profile_image_url: Optional[str]
     profile_url: str
     published_collections: Optional[int]
     published_gifs: int

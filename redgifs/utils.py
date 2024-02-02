@@ -30,7 +30,7 @@ import pkgutil
 import asyncio
 import yarl
 from datetime import datetime
-from typing import TYPE_CHECKING, Dict, List, Union
+from typing import TYPE_CHECKING, Dict, List
 
 from .models import GIF, URL, Image, User
 from .const import REDGIFS_THUMBS_RE
@@ -132,13 +132,13 @@ def _images_iter(images: List[ImageInfo]) -> List[Image]:
         for i in images
     ]
 
-def _users_iter(users: Union[List[UserInfo], List[GifInfo], List[ImageInfo]]) -> List[User]:
+def _users_iter(users: List[UserInfo]) -> List[User]:
     return [
         User(
             # I only had this occurrence once where redgifs did not
             # send the response properly and messed up the entire JSON
             # response, this is why I have used dict.get() here.
-            creation_time=datetime.utcfromtimestamp(user.get('creationtime')) if user.get('creationtime') is not None else None, # type: ignore
+            creation_time=datetime.utcfromtimestamp(user.get('creationtime')) if user.get('creationtime') is not None else None,
             description=user.get('description'),
             followers=user.get('followers'),
             following=user.get('following'),

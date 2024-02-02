@@ -26,7 +26,8 @@ from __future__ import annotations
 
 import io
 import os
-from typing import Any, Dict, List, Optional, Union
+from datetime import datetime
+from typing import TYPE_CHECKING, Any, List, Optional, Union
 
 import requests
 
@@ -36,6 +37,9 @@ from .http import HTTP, ProxyAuth
 from .utils import _read_tags_json, build_file_url, _gifs_iter, _images_iter, to_web_url
 from .parser import parse_creator, parse_feeds, parse_search, parse_creators, parse_search_image
 from .models import URL, GIF, CreatorResult, Feeds, Image, SearchResult, CreatorsResult
+
+if TYPE_CHECKING:
+    from redgifs.types.tags import TagInfo
 
 __all__ = ('API',)
 
@@ -92,7 +96,7 @@ class API:
         feeds = self.http.get_feeds()
         return parse_feeds(feeds)
 
-    def get_tags(self) -> List[Dict[str, Union[str, int]]]:
+    def get_tags(self) -> List[TagInfo]:
         """Get all available RedGifs Tags.
         
         Returns
@@ -115,11 +119,11 @@ class API:
         :py:class:`GIF <redgifs.models.GIF>` - The GIF's info.
         """
 
-        json: Dict[str, Any] = self.http.get_gif(id)['gif']
+        json = self.http.get_gif(id)['gif']
         urls = json['urls']
         return GIF(
             id=json['id'],
-            create_date=json['createDate'],
+            create_date=datetime.utcfromtimestamp(json['createDate']),
             has_audio=json['hasAudio'],
             width=json['width'],
             height=json['height'],
@@ -165,7 +169,7 @@ class API:
         r = self.http.get_trending_images()['gifs']
         return _images_iter(r)
 
-    def get_trending_tags(self) -> List[Dict[str, Union[str, int]]]:
+    def get_trending_tags(self) -> List[TagInfo]:
         """Get the trending searches on RedGifs.
 
         Returns
@@ -206,7 +210,7 @@ class API:
             A list of tag names.
         """
         result = self.http.get_tag_suggestions(query)
-        return [d['text'] for d in result]
+        return [d['text'] for d in result] # type: ignore
 
     def search(
         self,

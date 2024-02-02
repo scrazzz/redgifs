@@ -26,7 +26,7 @@ from __future__ import annotations
 
 import logging
 from datetime import datetime
-from typing import TYPE_CHECKING, Any, Dict
+from typing import TYPE_CHECKING
 
 from .enums import Type
 from .utils import _gifs_iter, _images_iter, _users_iter, build_file_url, to_web_url
@@ -36,6 +36,7 @@ if TYPE_CHECKING:
     from redgifs.types.feeds import FeedsResponse
     from redgifs.types.gif import GifResponse
     from redgifs.types.image import ImageResponse
+    from redgifs.types.user import CreatorResponse, CreatorsResponse
 
 _log = logging.getLogger(__name__)
 
@@ -176,7 +177,7 @@ def parse_search_image(searched_for: str, json: ImageResponse) -> SearchResult:
         tags=json['tags'],
     )
 
-def parse_creators(json: Dict[str, Any]) -> CreatorsResult:
+def parse_creators(json: CreatorsResponse) -> CreatorsResult:
     _log.debug('Using `parse_creators`')
     items = json['items']
     return CreatorsResult(
@@ -186,7 +187,7 @@ def parse_creators(json: Dict[str, Any]) -> CreatorsResult:
         total=json['total'],
     )
 
-def parse_creator(json: Dict[str, Any], type: Type) -> CreatorResult:
+def parse_creator(json: CreatorResponse, type: Type) -> CreatorResult:
     _log.debug('Using `parse_creator`')
     user = json['users'][0]
     return CreatorResult(
@@ -195,7 +196,7 @@ def parse_creator(json: Dict[str, Any], type: Type) -> CreatorResult:
             description=user['description'],
             followers=user['followers'],
             following=user['following'],
-            gifs=json['gifs'],
+            gifs=user['gifs'],
             name=user['name'],
             profile_image_url=user['profileImageUrl'],
             profile_url=user['profileUrl'],
@@ -219,14 +220,14 @@ def parse_creator(json: Dict[str, Any], type: Type) -> CreatorResult:
             GIF(
                 id=gif['id'],
                 create_date=datetime.utcfromtimestamp(gif['createDate']),
-                has_audio=gif['hasAudio'],
+                has_audio=gif['hasAudio'], # type: ignore - We aren't setting values for ImageInfo
                 width=gif['width'],
                 height=gif['height'],
                 likes=gif['likes'],
                 tags=gif['tags'],
                 verified=gif['verified'],
                 views=gif['views'],
-                duration=int(gif['duration']) if gif['duration'] is not None else gif['duration'],
+                duration=gif['duration'], # type: ignore - We aren't setting values for ImageInfo
                 published=gif['published'],
                 urls=URL(
                     sd=gif['urls']['sd'],
