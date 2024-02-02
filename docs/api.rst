@@ -10,6 +10,14 @@ API Instance
    :members:
    :member-order: bysource
 
+Async API
+=========
+Same as :ref:`API` but for usage in async context.
+
+.. autoclass:: redgifs.aio.API
+   :members:
+   :member-order: bysource
+
 Tags
 ====
 A utility class for all things related to RedGifs tags.

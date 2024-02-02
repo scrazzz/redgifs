@@ -8,10 +8,6 @@ redgifs
 
 Sync and Async Python Wrapper for RedGifs API.
 
-.. note::
-   ⚠ This project is still under development.
-
-
 Getting started
 ---------------
 

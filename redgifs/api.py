@@ -45,15 +45,13 @@ class API:
     .. note::
 
         If you are using this library in an asynchronous code,
-        you should pass a session object which is an instance of
-        :class:`aiohttp.ClientSession`.
+        you should be referencing :ref:`Async API` section.
 
     Parameters
     ----------
     session: Optional[:class:`requests.Session`]
         A session object that can be provided to do the requests.
         If not provided, a new session object is created.
-        See above note too.
     proxy: Optional[:class:`str`]
         A valid proxy URL.
     proxy_auth: Optional[:class:`redgifs.ProxyAuth`]
@@ -105,7 +103,7 @@ class API:
     
     def get_gif(self, id: str) -> GIF:
         """
-        Get details of a GIF with its ID.
+        Get details of a single GIF using its ID.
 
         Parameters
         ----------
@@ -147,7 +145,7 @@ class API:
     
     def get_trending_gifs(self) -> List[GIF]:
         """
-        Gets the top 10 trending GIFs on RedGifs.
+        Get the top 10 trending GIFs on RedGifs.
 
         Returns
         -------
@@ -158,7 +156,7 @@ class API:
 
     def get_trending_images(self) -> List[Image]:
         """
-        Gets the top 10 trending images on RedGifs.
+        Get the top 10 trending images on RedGifs.
 
         Returns
         -------
@@ -194,9 +192,8 @@ class API:
         """Get tag suggestions from RedGifs.
 
         .. note::
-
-            This is an API call. See :func:`Tags.search() <redgifs.Tags.search()>` for an internal lookup
-            of all available tags.
+        
+            It's advised to use :func:`Tags.search() <redgifs.Tags.search()>` to prevent multiple API calls to redgifs.com.
 
         Parameters
         ----------
@@ -220,12 +217,12 @@ class API:
         page: int = 1
     ) -> SearchResult:
         """
-        Search for a GIF.
+        Search for GIFs.
 
         Parameters
         ----------
         search_text: :class:`str`
-            The GIFs to search for. Can be a string or an instance of :class:`Tags`.
+            The type of GIFs to search for. Can be a string or an instance of :class:`Tags`.
         order: Optional[:class:`Order`]
             The order of the GIFs to return.
         count: Optional[:class:`int`]
@@ -256,19 +253,19 @@ class API:
         tags: Optional[List[str]] = None,
     ) -> CreatorsResult:
         """
-        Search for RedGifs Creators.
+        Search for some RedGifs Creators.
 
         Parameters
         ----------
         page: Optional[:class:`int`]
-            The number of page to return.
-        order: Optional[:class:`Order`]
+            The result in page number to return.
+        order: Optional[:class:`Order <redgifs.Order>`]
             The order of the creators to return.
         verified: Optional[:class:`bool`]
             Wheather to only return verified creators.
         tags: Optional[List[:class:`str`]]
             A list of tags to look for.
-            Narrows down the results to content creators that have contents with all the given tags.
+            Narrows down the results to creators that have contents with the given tags.
 
         Returns
         -------
@@ -287,7 +284,7 @@ class API:
         type: Type = Type.gif,
     ) -> CreatorResult:
         """
-        Search for a RedGifs creator/user.
+        Search for a single RedGifs creator/user by username.
 
         Parameters
         ----------
@@ -318,12 +315,12 @@ class API:
         page: int = 1
     ) -> SearchResult:
         """
-        Search for images on Redgifs.
+        Search for images.
 
         Parameters
         ----------
         search_text: :class:`str`
-            The images to search for. Can be a string or an instance of :class:`Tags`.
+            The images to search for. Can be a string or an instance of :class:`Tags <redgifs.Tags>`.
         order: Optional[:class:`Order`]
             The order of the images to return.
         count: Optional[:class:`int`]
@@ -356,8 +353,8 @@ class API:
         .. note::
             
             You should use this method to download any media from RedGifs
-            because RedGifs does validation on User-Agents. If you try to download
-            it by using any other means, it may give you a 403 error.
+            because RedGifs does validation on User-Agents and other params. 
+            If you try to download it by using any other means, it will return 403 error.
 
         Parameters
         ----------

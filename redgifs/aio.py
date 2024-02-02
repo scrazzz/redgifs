@@ -42,6 +42,18 @@ if TYPE_CHECKING:
     from redgifs.types.tags import TagInfo
 
 class API:
+    """The API Instance to get information from the RedGifs API.
+
+    Parameters
+    ----------
+    session: Optional[:class:`aiohttp.ClientSession`]
+        An :class:`aiohttp.ClientSession` object that can be provided to do the requests.
+        If not provided, a new session object is created.
+    proxy: Optional[:class:`str`]
+        A valid proxy URL.
+    proxy_auth: Optional[:class:`redgifs.ProxyAuth`]
+        The proxy auth to provide if the proxy requires it.
+    """
     def __init__(
         self,
         session: Optional[aiohttp.ClientSession] = None,
@@ -53,18 +65,52 @@ class API:
         self._tags = Tags()
 
     async def login(self) -> 'API':
+        """
+        A method to login to RedGifs with a temporary token.
+        You must use this method after initialising the :py:class:`API <redgifs.aio.API>` class 
+        for this library to function properly.
+
+        Returns
+        -------
+        :py:class:`API <redgifs.aio.API>`
+            The properly initialised API class.
+        """
         await self.http.login()
         return self
 
     async def get_feeds(self) -> Feeds:
+        """Get RedGifs homepage feeds.
+        
+        Returns
+        -------
+        :py:class:`Feeds <redgifs.models.Feeds>` - The Feed info.
+        """
         feeds = await self.http.get_feeds()
         return parse_feeds(feeds)
 
     async def get_tags(self) -> List[TagInfo]:
+        """Get all available RedGifs Tags.
+        
+        Returns
+        -------
+        ``List[Dict[str, Union[str, int]]]``
+        """
         resp = await self.http.get_tags()
         return resp['tags']
 
     async def get_gif(self, id: str) -> GIF:
+        """
+        Get details of a single GIF uisng its ID.
+
+        Parameters
+        ----------
+        id: :class:`str`
+            The ID of the GIF.
+
+        Returns
+        -------
+        :py:class:`GIF <redgifs.models.GIF>` - The GIF's info.
+        """
         json = (await self.http.get_gif(id))['gif']
         urls = json['urls']
         return GIF(
@@ -93,19 +139,68 @@ class API:
             avg_color=json['avgColor'],
         )
 
-    async def get_trending_tags(self) -> List[TagInfo]:
-        result = (await self.http.get_trending_tags())['tags']
-        return result
-
     async def get_trending_gifs(self) -> List[GIF]:
+        """
+        Get the top 10 trending GIFs on RedGifs.
+
+        Returns
+        -------
+        List[:py:class:`Image <redgifs.models.Image>`]
+        """
         r = (await self.http.get_trending_gifs())['gifs']
         return _gifs_iter(r)
 
     async def get_trending_images(self) -> List[Image]:
+        """
+        Get the top 10 trending images on RedGifs.
+
+        Returns
+        -------
+        List[:py:class:`Image <redgifs.models.Image>`]
+        """
         r = (await self.http.get_trending_images())['gifs']
         return _images_iter(r)
 
+    async def get_trending_tags(self) -> List[TagInfo]:
+        """Get the trending searches on RedGifs.
+
+        Returns
+        -------
+        ``List[Dict[str, Union[str, int]]]``
+            A list of dicts containing the tag name and count::
+
+                [
+                    {
+                        "name": "r/CaughtPublic",
+                        "count": 2034
+                    },
+                    {
+                        "name": "Vintage",
+                        "count": 19051
+                    },
+                    ...
+                ]
+        """
+        result = (await self.http.get_trending_tags())['tags']
+        return result
+
     async def fetch_tag_suggestions(self, query: str) -> List[str]:
+        """Get tag suggestions from RedGifs.
+
+        .. note::
+
+            It's advised to use :func:`Tags.search() <redgifs.Tags.search()>` to prevent multiple API calls to redgifs.com.
+
+        Parameters
+        ----------
+        query: :class:`str`
+            The tag name to look for.
+
+        Returns
+        -------
+        ``List[str]``
+            A list of tag names.
+        """
         result = await self.http.get_tag_suggestions(query)
         return [d['text'] for d in result] # type: ignore - `get_tag_suggestions` isn't properly TypedDict'd so ignore the warning
 
@@ -117,6 +212,24 @@ class API:
         count: int = 80,
         page: int = 1,
     ) -> SearchResult:
+        """
+        Search for GIFs.
+
+        Parameters
+        ----------
+        search_text: :class:`str`
+            The type of GIFs to search for. Can be a string or an instance of :class:`Tags`.
+        order: Optional[:class:`Order`]
+            The order of the GIFs to return.
+        count: Optional[:class:`int`]
+            The amount of GIFs to return.
+        page: Optional[:class:`int`]
+            The page number of the GIFs to return.
+
+        Returns
+        -------
+        :py:class:`SearchResult <redgifs.models.SearchResult>` - The search result.
+        """
         if len(self._tags.tags_mapping) == 0:
             tags = await _async_read_tags_json()
             self._tags._set(tags)
@@ -135,6 +248,25 @@ class API:
         verified: bool = False,
         tags: Optional[List[str]] = None,
     ) -> CreatorsResult:
+        """
+        Search for some RedGifs Creators.
+
+        Parameters
+        ----------
+        page: Optional[:class:`int`]
+            The result in page number to return.
+        order: Optional[:class:`Order <redgifs.Order>`]
+            The order of the creators to return.
+        verified: Optional[:class:`bool`]
+            Wheather to only return verified creators.
+        tags: Optional[List[:class:`str`]]
+            A list of tags to look for.
+            Narrows down the results to creators that have contents with the given tags.
+
+        Returns
+        -------
+        :py:class:`CreatorsResult <redgifs.models.CreatorsResult>` - The search result.
+        """
         resp = await self.http.search_creators(page=page, order=order, verified=verified, tags=tags)
         return parse_creators(resp)
 
@@ -147,6 +279,24 @@ class API:
         order: Order = Order.recent,
         type: Type = Type.gif,
     ) -> CreatorResult:
+        """
+        Search for a single RedGifs creator/user by username.
+
+        Parameters
+        ----------
+        username: :class:`str`
+            The username of the creator/user.
+        page: :class:`int`
+            The current page number of the creator/user's profile.
+        count: :class:`int`
+            The total amount of GIFs to return.
+        order: :class:`Order`
+            The order to return creator/user's GIFs.
+
+        Returns
+        -------
+        :py:class:`CreatorResult <redgifs.models.CreatorResult>` - The creator/user searched for.
+        """
         resp = await self.http.search_creator(username=username, page=page, count=count, order=order, type=type)
         return parse_creator(resp, type)
 
@@ -160,13 +310,61 @@ class API:
         count: int = 80,
         page: int = 1,
     ) -> SearchResult:
+        """
+        Search for images.
+
+        Parameters
+        ----------
+        search_text: :class:`str`
+            The images to search for. Can be a string or an instance of :class:`Tags <redgifs.Tags>`.
+        order: Optional[:class:`Order`]
+            The order of the images to return.
+        count: Optional[:class:`int`]
+            The amount of images to return.
+        page: Optional[:class:`int`]
+            The page number of the images to return.
+
+        Returns
+        -------
+        :py:class:`SearchResult <redgifs.models.SearchResult>` - The search result.
+        """
         # We are not going to use Tags.search() here because it doesn't matter
         # whatever the search_text is, this API endpoints provides images nonetheless.
         resp = await self.http.search_image(search_text, order, count, page)
         return parse_search_image(search_text, resp)
 
     async def download(self, url: str, fp: Union[str, bytes, os.PathLike[Any], io.BufferedIOBase]) -> int:
+        """
+        A friendly method to download a RedGifs media.
+
+        Example:
+
+        .. code-block:: python
+
+            from redgifs.aio import API
+
+            api = API()
+            await api.login()
+            hd_url = await api.search("query").gifs[0].urls.hd
+            await api.download(hd_url, "video.mp4")
+
+        .. note::
+            
+            You should use this method to download any media from RedGifs
+            because RedGifs does validation on User-Agents and other params. 
+            If you try to download it by using any other means, it will return a 403 error.
+
+        Parameters
+        ----------
+        url: str
+            A valid RedGifs URL.
+        fp: Union[:class:`io.BufferedIOBase`, :class:`os.PathLike`]
+            The file-like object to save this asset to or the filename
+            to use. If a filename is passed then a file is created with that
+            filename and used instead.
+        """
         return (await self.http.download(url, fp))
 
     async def close(self) -> None:
+        """Closes the API session."""
         return (await self.http.close())
