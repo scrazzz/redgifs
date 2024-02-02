@@ -2,14 +2,13 @@ from redgifs import API
 from redgifs.utils import _read_tags_json
 import os
 
-api = API()
-api.login()
+api = API().login()
 nt = api.get_tags()
 ct = _read_tags_json()
 wh = os.environ.get('DISCORD_WEBHOOK', None)
 
 mapping = {
-    tag.lower(): tag # type: ignore - checked below
+    tag.lower(): tag # type: ignore
     for tag in [d['name'] for d in nt]
 }
 
@@ -31,3 +30,5 @@ if wh is not None:
     r = requests.post(wh, json={
         'content': f'Added `{len(newtags)}` new tags.\n{", ".join(newtags)}'
     })
+else:
+    print('No Discord webhook found')
