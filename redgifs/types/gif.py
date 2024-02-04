@@ -47,9 +47,5 @@ class CommonGifResponse(TypedDict):
     tags: List[str]
 
 
-class TrendingGifsResponse(CommonGifResponse):
-   pass
-
-
 class GifResponse(CommonGifResponse):
     pass

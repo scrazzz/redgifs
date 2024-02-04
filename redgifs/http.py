@@ -47,7 +47,7 @@ __all__ = ('ProxyAuth',)
 _log = logging.getLogger(__name__)
 
 if TYPE_CHECKING:
-    from redgifs.types.gif import GetGifResponse, GifResponse, TrendingGifsResponse
+    from redgifs.types.gif import GetGifResponse, GifResponse
     from redgifs.types.image import ImageResponse, TrendingImagesResponse
     from redgifs.types.feeds import FeedsResponse
     from redgifs.types.tags import TagsResponse
@@ -153,7 +153,14 @@ class HTTP:
             search_text=search_text, order=order.value, count=count, page=page
         )
         return self.request(r, **params)
-    
+
+    def get_top_this_week(self, count: int, page: int, type: Type, **params) -> GifResponse:
+        r = Route(
+            'GET', '/v2/gifs/search?order=top7&count={count}&page={page}&type={type}',
+            count=count, page=page, type=type.value
+        )
+        return self.request(r, **params)
+
     # User/Creator methods
 
     def search_creators(
@@ -189,7 +196,7 @@ class HTTP:
         )
         return self.request(r, **params)
 
-    def get_trending_gifs(self) -> TrendingGifsResponse:
+    def get_trending_gifs(self) -> GifResponse:
         r = Route('GET', '/v2/explore/trending-gifs')
         return self.request(r)
 
@@ -328,6 +335,13 @@ class AsyncHttp:
         )
         return self.request(r, **params)
 
+    def get_top_this_week(self, count: int, page: int, type: Type, **params) -> Response[GifResponse]:
+        r = Route(
+            'GET', '/v2/gifs/search?order=top7&count={count}&page={page}&type={type}',
+            count=count, page=page, type=type.value
+        )
+        return self.request(r, **params)
+
     # User/Creator methods
 
     def search_creators(
@@ -363,7 +377,7 @@ class AsyncHttp:
         )
         return self.request(r, **params)
 
-    def get_trending_gifs(self) -> Response[TrendingGifsResponse]:
+    def get_trending_gifs(self) -> Response[GifResponse]:
         r = Route('GET', '/v2/explore/trending-gifs')
         return self.request(r)
 

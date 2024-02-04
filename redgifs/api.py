@@ -191,6 +191,25 @@ class API:
         """
         resp = self.http.get_trending_tags()['tags']
         return resp
+    
+    def get_top_this_week(self, count: int = 30, page: int = 1, type: Type = Type.gif) -> SearchResult:
+        """Get media from "Top This Week" section.
+
+        Parameters
+        ----------
+        count: :class:`int`
+            The number of items to return.
+        page: :class:`int`
+            The items to return from given page number.
+        type: :class:`Order`
+            The type of media to return.
+
+        Returns
+        -------
+        :class:`SearchResult <redgifs.models.SearchResult>` - Top this week results.
+        """
+        resp = self.http.get_top_this_week(count, page, type)
+        return parse_search('TopThisWeek', resp)
 
     def fetch_tag_suggestions(self, query: str) -> List[str]:
         """Get tag suggestions from RedGifs.
