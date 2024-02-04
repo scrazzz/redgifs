@@ -33,6 +33,7 @@ class Order(Enum):
     top = 'top'
     latest = 'latest'
     oldest = 'oldest'
+    top7 = 'top7'
 
     # These tags are not available on the web UI but still works through the API.
     recent = 'recent'
