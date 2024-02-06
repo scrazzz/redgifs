@@ -3,6 +3,17 @@
 Changelogs
 ==========
 
+1.9.0
+-----
+- Fixed an issue with CLI not downloading the last page of the user's gifs.
+- Added new :py:meth:`API.get_top_this_week() <redgifs.API.get_top_this_week()>` method.
+- Added proper types to the API responses.
+
+Many issues were found and fixed.
+
+- The type of certain attributes were changed. E.g (:py:attr:`GIF.duration <redgifs.models.GIF.duration>` was changed from ``int`` to ``float``).
+- Certain attributes were returning invalid data which were fixed. E.g: (`5765501 <https://github.com/scrazzz/redgifs/commit/5765501#diff-e4a15e908eff2a2d37a9274961771a9e8bfa434bc7b11e7e2de396be0855925dR199>`_).
+
 1.8.2
 -----
 - Added new keyword argument ``type`` to :py:meth:`API.search_creator() <redgifs.API.search_creator()>` method. This allows for getting images and gifs of the creator seperately.
