@@ -9,9 +9,9 @@ def test_attrs():
         for gif in r.gifs:
             assert gif.id is not None
             assert gif.create_date
-            assert type(gif.has_audio) is bool
+            assert isinstance(gif.has_audio, bool)
             assert gif.width and gif.height
-            assert type(gif.likes) is int
+            assert isinstance(gif.likes, int)
             assert gif.tags
-            assert type(gif.published) is bool
+            assert isinstance(gif.published, bool)
             assert gif.urls
