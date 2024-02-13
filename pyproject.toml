@@ -2,6 +2,53 @@
 requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
 
+[project]
+name = "redgifs"
+dynamic = ["version"]
+dependencies = [
+    "requests>=2.31.0",
+    "aiohttp>=3.9.0,<4",
+]
+requires-python = ">= 3.8"
+authors = [{name = "scrazzz"}]
+description = "Async and Sync Python Wrapper for the RedGIFs API."
+readme = "README.md"
+license = {file = "LICENSE"}
+keywords = ["redgifs", "api", "python", "cli", "async", "sync", "aiohttp", "requests"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "License :: OSI Approved :: MIT License",
+    "Intended Audience :: Science/Research",
+    "Natural Language :: English",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+]
+
+[project.optional-dependencies]
+docs = [
+    "Sphinx==4.4.0",
+    "furo==2022.2.23",
+]
+test = [
+    "pytest==8.0.0",
+]
+
+[project.urls]
+Documentation = "https://redgifs.rtfd.io/en/stable/"
+Repository = "https://github.com/scrazzz/redgifs"
+Issues = "https://github.com/scrazzz/redgifs/issues"
+Changelogs = "https://redgifs.rtfd.io/en/stable/changelogs.html"
+
+[project.scripts]
+redgifs = "redgifs.__main__:main"
+
+[tool.setuptools.dynamic]
+version = {attr = "redgifs.__version__"}
+
 [tool.pyright]
 include = [
     "redgifs",
