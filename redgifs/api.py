@@ -109,6 +109,8 @@ class API:
         """
         Get details of a single GIF using its ID.
 
+        If the URL is ``https://redgifs.com/watch/abcxyz`` then the ID is ``abcxyz``.
+
         Parameters
         ----------
         id: :class:`str`
