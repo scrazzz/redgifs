@@ -66,6 +66,11 @@ def build_file_url(url: str) -> str:
     filename = u.path.replace('/', '').replace('-mobile.mp4', '')
     return f'https://api.redgifs.com/v2/gifs/{filename.lower()}/files/{filename}.mp4'
 
+def to_embed_url(sd_url: str) -> str:
+    u = yarl.URL(sd_url)
+    filename = u.path.replace('/', '').replace('-mobile.mp4', '.mp4')
+    return f'https://api.redgifs.com/v2/embed/discord?name={filename}'
+
 def _read_tags_json() -> Dict[str, str]:
     file_ = pkgutil.get_data(__name__, 'tags.json')
     return json.loads(file_) # type: ignore - file_ will never be None
@@ -95,7 +100,8 @@ def _gifs_iter(gifs: List[GifInfo]) -> List[GIF]:
                 thumbnail=g['urls']['thumbnail'],
                 vthumbnail=g['urls']['vthumbnail'],
                 web_url=to_web_url(g['id']),
-                file_url=build_file_url(g['urls']['sd'])
+                file_url=build_file_url(g['urls']['sd']),
+                embed_url=to_embed_url(g['urls']['sd']),
             ),
             username=g['userName'],
             type=g['type'],
@@ -123,7 +129,8 @@ def _images_iter(images: List[ImageInfo]) -> List[Image]:
                 thumbnail=i['urls']['thumbnail'],
                 vthumbnail=i['urls']['vthumbnail'],
                 web_url=to_web_url(i['id']),
-                file_url=None
+                file_url=None,
+                embed_url=None,
             ),
             username=i['userName'],
             type=i['type'],

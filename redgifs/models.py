@@ -33,7 +33,7 @@ class URL:
     .. warning::
 
         ``sd``, ``hd``, ``poster``, ``thumbnail``, and ``vthumbnail`` leaks your IP address in the URL.
-        If you want to display the URLs to the end user consider using ``web_url`` or ``file_url`` instead.
+        If you want to display the URLs to the end user consider using ``web_url`` or ``embed_url`` instead.
 
     Attributes
     ----------
@@ -51,9 +51,11 @@ class URL:
         The website URL of the GIF.
     file_url: Optional[:class:`str`]
         The file URL of the GIF.
+    embed_url: Optional[:class:`str`]
+        The embed URL of the GIF. This can be used to load the GIF without any restrictions.
     """
 
-    __slots__ = ('sd', 'hd', 'poster', 'thumbnail', 'vthumbnail', 'web_url', 'file_url')
+    __slots__ = ('sd', 'hd', 'poster', 'thumbnail', 'vthumbnail', 'web_url', 'file_url', 'embed_url')
 
     sd: str
     hd: str
@@ -62,6 +64,7 @@ class URL:
     vthumbnail: Optional[str]
     web_url: str
     file_url: Optional[str]
+    embed_url: Optional[str]
 
 @dataclass
 class GIF:

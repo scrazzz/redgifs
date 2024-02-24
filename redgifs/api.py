@@ -34,7 +34,7 @@ import requests
 from .tags import Tags
 from .enums import Order, Type
 from .http import HTTP, ProxyAuth
-from .utils import _read_tags_json, build_file_url, _gifs_iter, _images_iter, to_web_url
+from .utils import _read_tags_json, build_file_url, _gifs_iter, _images_iter, to_embed_url, to_web_url
 from .parser import parse_creator, parse_feeds, parse_search, parse_creators, parse_search_image
 from .models import URL, GIF, CreatorResult, Feeds, Image, SearchResult, CreatorsResult
 
@@ -140,7 +140,8 @@ class API:
                 thumbnail=urls['thumbnail'],
                 vthumbnail=urls.get('vthumbnail'),
                 web_url=to_web_url(json['id']),
-                file_url=build_file_url(urls['sd'])
+                file_url=build_file_url(urls['sd']),
+                embed_url=to_embed_url(urls['sd']),
             ),
             username=json['userName'],
             type=json['type'],

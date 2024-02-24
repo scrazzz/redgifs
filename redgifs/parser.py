@@ -29,7 +29,7 @@ from datetime import datetime
 from typing import TYPE_CHECKING
 
 from .enums import Type
-from .utils import _gifs_iter, _images_iter, _users_iter, build_file_url, to_web_url
+from .utils import _gifs_iter, _images_iter, _users_iter, build_file_url, to_embed_url, to_web_url
 from .models import GIF, URL, CreatorResult, Feeds, Image, User, SearchResult, CreatorsResult
 
 if TYPE_CHECKING:
@@ -96,7 +96,8 @@ def parse_search(searched_for: str, json: GifResponse) -> SearchResult:
                     thumbnail=gif['urls']['thumbnail'],
                     vthumbnail=gif['urls']['vthumbnail'],
                     web_url=to_web_url(gif['id']),
-                    file_url=build_file_url(gif['urls']['sd'])
+                    file_url=build_file_url(gif['urls']['sd']),
+                    embed_url=to_embed_url(gif['urls']['sd']),
                 ),
                 username=gif['userName'],
                 type=gif['type'],
@@ -165,7 +166,8 @@ def parse_search_image(searched_for: str, json: ImageResponse) -> SearchResult:
                     thumbnail=gif['urls']['thumbnail'],
                     vthumbnail=gif['urls']['vthumbnail'],
                     web_url=to_web_url(gif['id']),
-                    file_url=None
+                    file_url=None,
+                    embed_url=None,
                 ),
                 username=gif['userName'],
                 type=gif['type'],
@@ -236,7 +238,8 @@ def parse_creator(json: CreatorResponse, type: Type) -> CreatorResult:
                     thumbnail=gif['urls']['thumbnail'],
                     vthumbnail=gif['urls']['vthumbnail'],
                     web_url=to_web_url(gif['id']),
-                    file_url=build_file_url(gif['urls']['sd'])
+                    file_url=build_file_url(gif['urls']['sd']),
+                    embed_url=to_embed_url(gif['urls']['sd']),
                 ),
                 username=gif['userName'],
                 type=gif['type'],
@@ -262,7 +265,8 @@ def parse_creator(json: CreatorResponse, type: Type) -> CreatorResult:
                     thumbnail=img['urls']['thumbnail'],
                     vthumbnail=img['urls']['vthumbnail'],
                     web_url=to_web_url(img['id']),
-                    file_url=None
+                    file_url=None,
+                    embed_url=None,
                 ),
                 username=img['userName'],
                 type=img['type'],
