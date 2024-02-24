@@ -3,6 +3,10 @@
 Changelogs
 ==========
 
+1.9.1
+-----
+- :py:attr:`URL.file_url <redgifs.models.URL.file_url>` is deprecated and will be removed in v2.0, use :py:attr:`URL.embed_url <redgifs.models.URL.embed_url>` instead.
+
 1.9.0
 -----
 - Fixed an issue with CLI not downloading the last page of the user's gifs.

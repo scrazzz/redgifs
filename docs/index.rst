@@ -19,6 +19,7 @@ API Reference
 
 .. toctree::
    api
+   :maxdepth: 2
 
 Changelogs
 ----------
