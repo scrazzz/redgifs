@@ -30,8 +30,8 @@ classifiers = [
 
 [project.optional-dependencies]
 docs = [
-    "Sphinx==4.4.0",
-    "furo==2022.2.23",
+    "Sphinx==6.0",
+    "furo==2024.01.29",
 ]
 test = [
     "pytest==8.0.0",
