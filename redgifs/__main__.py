@@ -70,13 +70,7 @@ def show_version() -> None:
 def get_quality(q: str, gif: GIF) -> str:
     if q.lower() not in ['sd', 'hd']:
         raise TypeError('Valid quality options are "sd" or "hd"')
-    if q.lower() == 'sd':
-        return gif.urls.sd
-    if q.lower() == 'hd':
-        return gif.urls.hd
-    # Shouldn't reach here
-    else:
-        return gif.urls.hd
+    return gif.urls.sd if q.lower() == 'sd' else gif.urls.hd
 
 def start_dl(url: str, *, folder: Optional[str], quality: str) -> None:
     yarl_url = URL(url)
@@ -87,14 +81,15 @@ def start_dl(url: str, *, folder: Optional[str], quality: str) -> None:
     if 'watch' in yarl_url.path:
         id = yarl_url.path.split('/')[-1]
         gif = client.get_gif(id)
-        gif = get_quality(quality, gif)
-        filename = f'{gif.split("/")[3].split(".")[0]}.mp4'
+        gif_url = get_quality(quality, gif)
+        filename = f'{gif_url.split("/")[3].split(".")[0]}.mp4'
         print(f'Downloading {id}...')
         if folder:
-            client.download(gif, f'{folder}/{filename}')
+            client.download(gif_url, f'{folder}/{filename}')
         else:
-            client.download(gif, f'{filename}')
+            client.download(gif_url, f'{filename}')
         print('Download complete.\n')
+        return
 
     # Handle /users/ URLs (eg: https://redgifs.com/users/redgifs)
     if '/users/' in yarl_url.path:
@@ -130,6 +125,7 @@ def start_dl(url: str, *, folder: Optional[str], quality: str) -> None:
                         continue
 
             print(f'\nDownloaded {done}/{total} videos of "{user}" {f"to {folder} folder" if folder else ""} sucessfully')
+            return
 
         # If there's more than 1 page
         while curr_page <= total_pages:
@@ -161,6 +157,11 @@ def start_dl(url: str, *, folder: Optional[str], quality: str) -> None:
             total_gifs.extend(data.gifs)
 
         print(f'\nDownloaded {done}/{total} videos of "{user}" {f"to {folder} folder" if folder else ""} sucessfully')
+        return
+
+    else:
+        print('[!] Invalid URL')
+        exit(1)
 
 def main() -> None:
     if len(sys.argv) == 1:

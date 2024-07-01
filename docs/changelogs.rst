@@ -3,6 +3,15 @@
 Changelogs
 ==========
 
+1.9.3
+-----
+- Upated ``tags.json`` with new tags. You can access them from :py:meth:`Tags.search() <redgifs.Tags.search>`.
+
+
+1.9.2
+-----
+- Upated ``tags.json`` with new tags. You can access them from :py:meth:`Tags.search() <redgifs.Tags.search>`.
+
 1.9.1
 -----
 - :py:attr:`URL.file_url <redgifs.models.URL.file_url>` is deprecated and will be removed in v2.0, use :py:attr:`URL.embed_url <redgifs.models.URL.embed_url>` instead.
