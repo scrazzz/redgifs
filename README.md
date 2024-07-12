@@ -32,11 +32,21 @@ pip install -U git+https://github.com/scrazzz/redgifs
 -----
 
 ### Quickstart
-Command Line usage:
+Command Line:
+`redgifs --help`
 ```console
-redgifs [url]
+usage: redgifs [-h] [--folder FOLDER] [--list FILE] [--version] [--quality QUALITY] [URL]
+
+positional arguments:
+  URL                Enter a RedGifs URL
+
+options:
+  -h, --help         show this help message and exit
+  --folder FOLDER    Folder to download the video(s) to.
+  --list FILE        Download GIFs from a txt file containing URLs seperated by a newline.
+  --version          Show redgifs version info.
+  --quality QUALITY  The video quality of the GIF to download. Available options are: "sd" and "hd".
 ```
-See `redgifs -h` for help.
 
 Synchronous usage:
 ```py
