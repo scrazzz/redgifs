@@ -3,32 +3,30 @@ from redgifs.utils import _read_tags_json
 import os
 
 api = API().login()
-nt = api.get_tags()
-ct = _read_tags_json()
-wh = os.environ.get('DISCORD_WEBHOOK', None)
+new_tags = api.get_tags()
+old_tags = _read_tags_json()
+webhook = os.getenv('DISCORD_WEBHOOK', None)
 
-mapping = {
-    tag.lower(): tag # type: ignore
-    for tag in [d['name'] for d in nt]
+new_tags = {
+    tag.lower(): tag
+    for tag in [d['name'] for d in new_tags]
 }
 
-with open('redgifs/tags.json', 'w') as f:
-    import json
-    json.dump(mapping, f)
+before = len(old_tags)
+now = len(new_tags)
+print(f'There are {now - before} new tags')
 
-before = len(ct)
-with open('redgifs/tags.json') as f:
-    now = len(json.load(f))
-    print('Before:', before)
-    print('Now:', now)
-    print(f'Added {now - before} new tags')
+if webhook is not None:
+    with open('redgifs/tags.json', 'w') as f:
+        import json
+        json.dump(new_tags, f)
 
-if wh is not None:
     import requests
-    tags = _read_tags_json()
-    newtags = list(filter(lambda t: t not in ct.keys(), tags))
-    r = requests.post(wh, json={
-        'content': f'Added `{len(newtags)}` new tags.\n{", ".join(newtags)}'
+    new = list(filter(lambda tag: tag not in old_tags.keys(), new_tags))
+    r = requests.post(webhook, json={
+        'content': f'Added `{len(new)}` new tags.\n{", ".join(new)}'
     })
 else:
+    new = list(filter(lambda tag: tag not in old_tags.keys(), new_tags))
     print('No Discord webhook found')
+    print('The new tags added are:\n ', "\n  ".join(new))
