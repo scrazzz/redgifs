@@ -62,7 +62,7 @@ api.close()
 Asynchronous usage:
 ```py
 import asyncio
-from redgifs.aio import API
+from redgifs.aio import API #
 
 async def main():
     api = API()
