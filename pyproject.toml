@@ -32,6 +32,7 @@ classifiers = [
 docs = [
     "Sphinx==6.0",
     "furo==2024.01.29",
+    "myst-parser==4.0.0",
 ]
 test = [
     "pytest==8.0.0",
