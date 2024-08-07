@@ -32,23 +32,60 @@ pip install -U git+https://github.com/scrazzz/redgifs
 -----
 
 ### Quickstart
-Command Line:
-`redgifs --help`
+#### 1. Command Line:
+Install: `pip install redgifs[cli]`
 ```console
-usage: redgifs [-h] [--folder FOLDER] [--list FILE] [--version] [--quality QUALITY] [URL]
+$ redgifs --help
+Usage: redgifs [OPTIONS] [URLS]...
 
-positional arguments:
-  URL                Enter a RedGifs URL
-
-options:
-  -h, --help         show this help message and exit
-  --folder FOLDER    Folder to download the video(s) to.
-  --list FILE        Download GIFs from a txt file containing URLs seperated by a newline.
-  --version          Show redgifs version info.
-  --quality QUALITY  The video quality of the GIF to download. Available options are: "sd" and "hd".
+Options:
+  -q, --quality [sd|hd]  Video quality of GIF to download.  [default: hd]
+  --use-dir FOLDER_NAME  The folder/directory to save the downloads to.
+  --file PATH            Download URLs from a newline seperated txt file.
+  --help                 Show this message and exit.
 ```
 
-Synchronous usage:
+__Examples:__
+
+To download files to a folder
+```console
+$ ls
+Home    Downloads  Homework  Music
+Backup  Documents  Videos    Games
+$ redgifs https://redgifs.com/watch/xyz --q sd --use-dir Homework
+Downloading xyz...
+Download complete
+$ ls Homework
+xyz.mp4
+```
+
+To download GIFs from a list of URLs
+```console
+# urls.txt:
+# https://redigfs.com/watch/xyz
+# https://redigfs.com/watch/qwe
+# https://redigfs.com/watch/abc
+# https://redigfs.com/watch/rst
+
+$ redgifs --file urls.txt
+Downloading xyz...
+Download complete
+Downloading qwe...
+Download complete
+```
+
+To download all GIFs from a user's profile
+```console
+$ mkdir rg_vids
+$ redgifs https://redgifs.com/users/usernamethatexists --use-dir rg_vids
+Downloaded 1/3 GIFs
+Downloaded 2/3 GIFs
+Downloaded 3/3 GIFs
+
+Downloaded 3/3 videos of "usernamethatexists" to rg_vids folder sucessfully
+```
+
+#### 2. Synchronous usage:
 ```py
 import redgifs
 
@@ -59,10 +96,10 @@ print(response)
 api.close()
 ```
 
-Asynchronous usage:
+#### 3. Asynchronous usage:
 ```py
 import asyncio
-from redgifs.aio import API #
+from redgifs.aio import API # note this
 
 async def main():
     api = API()
