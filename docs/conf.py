@@ -39,7 +39,6 @@ extensions = [
     # 'sphinx.ext.autosummary',
     'sphinx.ext.napoleon',
     'sphinx.ext.autosectionlabel',
-    'myst_parser',
 ]
 
 suppress_warnings = ['autosectionlabel.*']
