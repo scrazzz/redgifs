@@ -36,6 +36,9 @@ docs = [
 test = [
     "pytest==8.0.0",
 ]
+cli = [
+    "click>=8",
+]
 
 [project.urls]
 Documentation = "https://redgifs.rtfd.io/en/stable/"
@@ -44,7 +47,7 @@ Issues = "https://github.com/scrazzz/redgifs/issues"
 Changelogs = "https://redgifs.rtfd.io/en/stable/changelogs.html"
 
 [project.scripts]
-redgifs = "redgifs.__main__:main"
+redgifs = "redgifs.__main__:cli"
 
 [tool.setuptools.dynamic]
 version = {attr = "redgifs.__version__"}
