@@ -26,3 +26,4 @@ Changelogs
 
 .. toctree::
    changelogs
+   :maxdepth: 1
