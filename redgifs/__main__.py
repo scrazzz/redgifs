@@ -46,7 +46,7 @@ def download_gif(url: yarl.URL, quality: str, folder: Optional[str]):
         client.download(gif_url, f'{folder}/{filename}')
     else:
         client.download(gif_url, f'{filename}')
-        click.echo('Download complete.')
+    click.echo('Download complete.')
 
 def _dl_with_args(gif: GIF, quality: str, folder: Optional[str]):
     gif_url = gif.urls.sd if quality == 'sd' else gif.urls.hd

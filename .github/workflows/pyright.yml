@@ -25,7 +25,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: Install dependencies
-        run: pip install -U -r requirements.txt .[test]
+        run: pip install -U -r requirements.txt .[test] .[cli]
 
       - name: Delete build directory
         run: rm -rf build
