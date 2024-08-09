@@ -1,4 +1,5 @@
-name: Run Pytest
+name: pytest
+
 on:
   workflow_dispatch:
   push:
@@ -14,10 +15,8 @@ jobs:
 
     name: pytest ${{ matrix.python-version }}
     steps:
-      - name: Checkout source
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 1
+      - name: Checkout
+        uses: actions/checkout@v4
 
       - name: Setup Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
