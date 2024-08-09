@@ -26,8 +26,5 @@ jobs:
       - name: Install dependencies
         run: pip install -U -r requirements.txt .[test] .[cli]
 
-      - name: Delete build directory
-        run: rm -rf build
-
       - name: Run Pyright
         uses: jakebailey/pyright-action@v1
