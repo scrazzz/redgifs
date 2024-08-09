@@ -115,8 +115,8 @@ def download_users_gifs(url: yarl.URL, quality: str, folder: Optional[str]):
 @click.command()
 @click.argument('urls', nargs=-1)
 @click.option('-q', '--quality', type=click.Choice(['sd', 'hd']), default='hd', show_default=True, help='Video quality of GIF to download.')
-@click.option('--use-dir', 'folder', help='The folder/directory to save the downloads to.', metavar='FOLDER_NAME')
-@click.option('--file', help='Download URLs from a newline seperated txt file.', type=click.Path(exists=True))
+@click.option('-d', '--dir', 'folder', help='The folder/directory to save the downloads to.', metavar='FOLDER_NAME')
+@click.option('-i', '--input', 'file', help='Download URLs from a newline seperated txt file.', type=click.Path(exists=True))
 @click.pass_context
 def cli(ctx: click.Context, urls: Iterable[str], quality: str, folder: Optional[str], file: Optional[str]) -> None:
     if not urls and not file:
