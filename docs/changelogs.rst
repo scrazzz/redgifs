@@ -3,6 +3,10 @@
 Changelogs
 ==========
 
+2.0.0
+-----
+- Updated redgifs CLI. Check the GitHub README for more info.
+
 1.9.3
 -----
 - Upated ``tags.json`` with new tags. You can access them from :py:meth:`Tags.search() <redgifs.Tags.search>`.
