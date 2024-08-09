@@ -1,4 +1,4 @@
-name: Run Pyright
+name: pyright
 
 on:
   workflow_dispatch:
@@ -15,9 +15,8 @@ jobs:
 
     name: check ${{ matrix.python-version }}
     steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
+      - name: Checkout
+        uses: actions/checkout@v4
 
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v4
