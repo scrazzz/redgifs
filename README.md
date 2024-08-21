@@ -43,44 +43,43 @@ Usage: redgifs [OPTIONS] [URLS]...
 
 Options:
   -q, --quality [sd|hd]  Video quality of GIF to download.  [default: hd]
-  --use-dir FOLDER_NAME  The folder/directory to save the downloads to.
-  --file PATH            Download URLs from a newline seperated txt file.
+  -d, --dir FOLDER_NAME  The folder/directory to save the downloads to.
+  -i, --input PATH       Download URLs from a newline seperated txt file.
   --help                 Show this message and exit.
 ```
 
-__Examples:__
-
-To download files to a folder
+Examples:
 ```console
+$ # Download files to a folder
 $ ls
 Home    Downloads  Homework  Music
 Backup  Documents  Videos    Games
-$ redgifs https://redgifs.com/watch/xyz --q sd --use-dir Homework
+$ redgifs https://redgifs.com/watch/xyz --q sd --dir Homework
 Downloading xyz...
 Download complete
 $ ls Homework
 xyz.mp4
 ```
 
-To download GIFs from a list of URLs
 ```console
-# urls.txt:
-# https://redigfs.com/watch/xyz
-# https://redigfs.com/watch/qwe
-# https://redigfs.com/watch/abc
-# https://redigfs.com/watch/rst
+$ # Download GIFs from a file that contains a list of URLs
+$
+$ # urls.txt:
+$ # https://redigfs.com/watch/xyz
+$ # https://redigfs.com/watch/qwe
+$ # https://redigfs.com/watch/abc
+$ # https://redigfs.com/watch/rst
 
-$ redgifs --file urls.txt
+$ redgifs -i urls.txt
 Downloading xyz...
 Download complete
 Downloading qwe...
-Download complete
 ```
 
-To download all GIFs from a user's profile
 ```console
+$ # Download all GIFs from a user's profile
 $ mkdir rg_vids
-$ redgifs https://redgifs.com/users/usernamethatexists --use-dir rg_vids
+$ redgifs https://redgifs.com/users/usernamethatexists -d rg_vids
 Downloaded 1/3 GIFs
 Downloaded 2/3 GIFs
 Downloaded 3/3 GIFs
