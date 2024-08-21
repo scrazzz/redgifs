@@ -3,7 +3,7 @@
 Changelogs
 ==========
 
-2.0.0
+1.9.4
 -----
 - Updated redgifs CLI. Check the GitHub README for more info.
 
