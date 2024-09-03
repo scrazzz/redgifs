@@ -39,7 +39,7 @@ import yarl
 from . import __version__
 from .errors import HTTPException
 from .enums import Order, Type
-from .const import REDGIFS_THUMBS_RE
+from .const import REDGIFS_FILES_RE, REDGIFS_THUMBS_RE
 from .utils import strip_ip
 
 __all__ = ('ProxyAuth',)
@@ -251,6 +251,13 @@ class HTTP:
         # If it's a direct URL
         if all([x in str(yarl_url.host) for x in ['thumbs', 'redgifs']]):
             match = re.match(REDGIFS_THUMBS_RE, str_url)
+            if match:
+                return (dl(str_url))
+            raise TypeError(f'"{strip_ip(str_url)}" is an invalid RedGifs URL.')
+
+        # If it's a 'files' URL
+        if all([x in str(yarl_url.host) for x in ['files', 'redgifs']]):
+            match = re.match(REDGIFS_FILES_RE, str_url)
             if match:
                 return (dl(str_url))
             raise TypeError(f'"{strip_ip(str_url)}" is an invalid RedGifs URL.')

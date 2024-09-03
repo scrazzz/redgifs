@@ -28,6 +28,10 @@ REDGIFS_THUMBS_RE = re.compile(
     r'https://thumbs\d+?\.redgifs\.com/(?P<id>\w+)(?P<type>-\w+)?\.(?P<ext>\w+)(\?.+(\d|\w))?'
 )
 
+REDGIFS_FILES_RE = re.compile(
+    r'https://files\.redgifs\.com/(?P<id>\w+)\.(?P<ext>\w+)'
+)
+
 REDGIFS_ID_RE = re.compile(
     r'https://(thumbs(\d+)|api)\.redgifs\.com/(?P<id>[a-zA-Z]+)'
 )
