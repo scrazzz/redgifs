@@ -26,7 +26,6 @@ from __future__ import annotations
 
 import io
 import os
-import re
 import sys
 import logging
 from urllib.parse import quote
@@ -39,7 +38,6 @@ import yarl
 from . import __version__
 from .errors import HTTPException
 from .enums import Order, Type
-from .const import REDGIFS_THUMBS_RE
 from .utils import strip_ip
 
 __all__ = ('ProxyAuth',)
@@ -178,8 +176,7 @@ class HTTP:
             url += '&tags={tags}'
             r = Route(
                 'GET', url,
-                page=page, order=order.value, verified='y' if verified else 'n',
-                tags=','.join(t for t in tags)
+                page=page, order=order.value, verified='y' if verified else 'n', tags=','.join(t for t in tags)
             )
             return self.request(r, **params)
         else:
@@ -220,10 +217,7 @@ class HTTP:
         return self.request(r)
 
     def get_tag_suggestions(self, query: str) -> List[Dict[str, Union[str, int]]]:
-        r = Route(
-            'GET', '/v2/search/suggest?query={query}',
-            query=query
-        )
+        r = Route('GET', '/v2/search/suggest?query={query}', query=query)
         return self.request(r)
 
     # download
@@ -234,32 +228,29 @@ class HTTP:
         yarl_url = yarl.URL(url)
         str_url = str(yarl_url)
 
-        if (yarl_url.host and 'redgifs.com' not in yarl_url.host):
-            raise TypeError(f'"{strip_ip(str_url)}" is not a valid RedGifs URL')
-
         def dl(url: str) -> int:
             r = self.__session.get(url, headers = self.headers)
             _log.debug(f'GET {url} returned code: {r.status_code}')
 
+            content_type = r.headers['Content-Type']
+            if content_type != 'video/mp4':
+                _log.error(f'GET {url} returned improper content-type: {content_type}')
+                raise TypeError(f'"{url}" returned invalid content type for downloading: {content_type}')
+
             data = r.content
             if isinstance(fp, io.BufferedIOBase):
-                return (fp.write(data))
+                return fp.write(data)
             else:
                 with open(fp, 'wb') as f:
                     return f.write(data)
 
-        # If it's a direct URL
-        if all([x in str(yarl_url.host) for x in ['thumbs', 'redgifs']]):
-            match = re.match(REDGIFS_THUMBS_RE, str_url)
-            if match:
-                return (dl(str_url))
-            raise TypeError(f'"{strip_ip(str_url)}" is an invalid RedGifs URL.')
-
-        # If it's a 'watch' URL
-        if 'watch' in yarl_url.path:
-            id = yarl_url.path.strip('/watch/')
-            hd_url = self.get_gif(id)['gif']['urls']['hd']
-            return (dl(hd_url))
+        if (yarl_url.host is not None and 'redgifs.com' in yarl_url.host):
+            if 'watch' in yarl_url.path:
+                id = yarl_url.path.strip('/watch/')
+                hd_url = self.get_gif(id)['gif']['urls']['hd']
+                return dl(hd_url)
+            else:
+                return dl(str_url)
 
         raise TypeError(f'"{strip_ip(str_url)}" is not a valid RedGifs URL')
 
@@ -359,8 +350,7 @@ class AsyncHttp:
             url += '&tags={tags}'
             r = Route(
                 'GET', url,
-                page=page, order=order.value, verified='y' if verified else 'n',
-                tags=','.join(t for t in tags)
+                page=page, order=order.value, verified='y' if verified else 'n', tags=','.join(t for t in tags)
             )
             return self.request(r, **params)
         else:
@@ -401,10 +391,7 @@ class AsyncHttp:
         return self.request(r)
 
     def get_tag_suggestions(self, query: str) -> Response[List[Dict[str, Union[str, int]]]]:
-        r = Route(
-            'GET', '/v2/search/suggest?query={query}',
-            query=query
-        )
+        r = Route('GET', '/v2/search/suggest?query={query}', query=query)
         return self.request(r)
 
     # download
@@ -413,12 +400,14 @@ class AsyncHttp:
         yarl_url = yarl.URL(url)
         str_url = str(yarl_url)
 
-        if (yarl_url.host and 'redgifs.com' not in yarl_url.host):
-            raise TypeError(f'"{strip_ip(str_url)}" is not a valid RedGifs URL')
-
         async def dl(url: str) -> int:
             async with self.__session.get(url, headers = self.headers) as r:
                 _log.debug(f'GET {str_url} returned code: {r.status}')
+
+                content_type = r.headers['Content-Type']
+                if content_type != 'video/mp4':
+                    _log.error(f'GET {url} returned improper content-type: {content_type}')
+                    raise TypeError(f'"{url}" returned invalid content type for downloading: {content_type}')
 
                 data = await r.read()
                 if isinstance(fp, io.BufferedIOBase):
@@ -427,17 +416,12 @@ class AsyncHttp:
                     with open(fp, 'wb') as f:
                         return f.write(data)
 
-        # If it's a direct URL
-        if all([x in str(yarl_url.host) for x in ['thumbs', 'redgifs']]):
-            match = re.match(REDGIFS_THUMBS_RE, str_url)
-            if match:
+        if (yarl_url.host is not None and 'redgifs.com' in yarl_url.host):
+            if 'watch' in yarl_url.path:
+                id = yarl_url.path.strip('/watch/')
+                hd_url = (await self.get_gif(id))['gif']['urls']['hd']
+                return (await dl(hd_url))
+            else:
                 return (await dl(str_url))
-            raise TypeError(f'"{strip_ip(str_url)}" is an invalid RedGifs URL.')
-
-        # If it's a 'watch' URL
-        if 'watch' in yarl_url.path:
-            id = yarl_url.path.strip('/watch/')
-            hd_url = (await self.get_gif(id))['gif']['urls']['hd']
-            return (await dl(hd_url))
 
         raise TypeError(f'"{strip_ip(str_url)}" is not a valid RedGifs URL')
