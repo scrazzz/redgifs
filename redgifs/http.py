@@ -233,6 +233,12 @@ class HTTP:
             _log.debug(f'GET {url} returned code: {r.status_code}')
 
             content_type = r.headers['Content-Type']
+            if content_type.startswith('application/json'):
+                try:
+                    json = r.json()
+                    raise HTTPException(r, json)
+                except:
+                    raise HTTPException(r, None)
             if content_type != 'video/mp4':
                 _log.error(f'GET {url} returned improper content-type: {content_type}')
                 raise TypeError(f'"{url}" returned invalid content type for downloading: {content_type}')
