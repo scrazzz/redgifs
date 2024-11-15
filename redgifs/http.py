@@ -239,7 +239,8 @@ class HTTP:
                     raise HTTPException(r, json)
                 except:
                     raise HTTPException(r, None)
-            if content_type != 'video/mp4':
+                
+            if content_type not in ('video/mp4', 'image/jpeg'):
                 _log.error(f'GET {url} returned improper content-type: {content_type}')
                 raise TypeError(f'"{url}" returned invalid content type for downloading: {content_type}')
 
