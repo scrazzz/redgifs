@@ -58,8 +58,8 @@ class URL:
     __slots__ = ('sd', 'hd', 'poster', 'thumbnail', 'vthumbnail', 'web_url', 'file_url', 'embed_url')
 
     sd: str
-    hd: str
-    poster: str
+    hd: Optional[str]
+    poster: Optional[str]
     thumbnail: str
     vthumbnail: Optional[str]
     web_url: str
