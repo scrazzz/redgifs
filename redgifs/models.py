@@ -41,7 +41,7 @@ class URL:
         The sd URL of the GIF.
     hd: :class:`str`
         The hd URL of the GIF.
-    poster: :class:`str`
+    poster: Optional[:class:`str`]
         The poster URL of the GIF.
     thumbnail: :class:`str`
         The thumbnail URL of the GIF.
@@ -58,7 +58,7 @@ class URL:
     __slots__ = ('sd', 'hd', 'poster', 'thumbnail', 'vthumbnail', 'web_url', 'file_url', 'embed_url')
 
     sd: str
-    hd: Optional[str]
+    hd: str
     poster: Optional[str]
     thumbnail: str
     vthumbnail: Optional[str]
