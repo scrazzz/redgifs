@@ -27,4 +27,4 @@ jobs:
         run: pip install -U -r requirements.txt .[test] .[cli]
 
       - name: Run Pyright
-        uses: jakebailey/pyright-action@v1
+        uses: jakebailey/pyright-action@v2
