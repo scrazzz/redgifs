@@ -137,8 +137,8 @@ class API:
             published=json['published'],
             urls=URL(
                 sd=urls['sd'],
-                hd=urls['hd'],
-                poster=urls['poster'],
+                hd=urls.get('hd'),
+                poster=urls.get('poster'),
                 thumbnail=urls['thumbnail'],
                 vthumbnail=urls.get('vthumbnail'),
                 web_url=to_web_url(json['id']),
