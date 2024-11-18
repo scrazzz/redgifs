@@ -36,8 +36,9 @@ if TYPE_CHECKING:
 
 client = redgifs.API().login()
 
-def download_gif(url: yarl.URL, quality: str, folder: Optional[str]):
-    id = url.path.split('/')[-1]
+def download_gif(url: yarl.URL, quality: str, folder: Optional[str], *, skip_check: bool = False):
+    # If skip_check is true then this will be the GIF's ID and splitting the URL is not required
+    id = str(url) if skip_check else url.path.split('/')[-1]
     gif = client.get_gif(id)
     gif_url = gif.urls.sd if quality == 'sd' else gif.urls.hd
     filename = f'{gif_url.split("/")[3].split(".")[0]}.mp4'
@@ -129,8 +130,12 @@ def cli(ctx: click.Context, urls: Iterable[str], quality: str, folder: Optional[
     for url in urls:
         url = yarl.URL(url)
         if 'redgifs' not in str(url.host):
-            click.UsageError(f'"{url}" is not a valid redgifs URL').show()
-            exit(1)
+            try:
+                # This could be the ID of the video
+                download_gif(url, quality, folder, skip_check=True)
+            except:
+                click.UsageError(f'"{url}" is not a valid redgifs URL or ID').show()
+                exit(1)
 
         # Handle 'normal' URLs, i.e, a direct link from browser (eg: "https://redgifs.com/watch/deeznuts")
         if '/watch/' in url.path:
