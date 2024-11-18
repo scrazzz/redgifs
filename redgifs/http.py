@@ -47,7 +47,6 @@ _log = logging.getLogger(__name__)
 if TYPE_CHECKING:
     from redgifs.types.gif import GetGifResponse, GifResponse
     from redgifs.types.image import ImageResponse, TrendingImagesResponse
-    from redgifs.types.feeds import FeedsResponse
     from redgifs.types.tags import TagsResponse
     from redgifs.types.user import CreatorResponse, CreatorsResponse
 
@@ -135,9 +134,6 @@ class HTTP:
         return self.request(Route('GET', '/v2/auth/temporary'))
 
     # GIF methods
-
-    def get_feeds(self) -> FeedsResponse:
-        return self.request(Route('GET', '/v2/home/feeds'))
 
     def get_tags(self, **params: Any) -> TagsResponse:
         return self.request(Route('GET', '/v1/tags'), **params)
@@ -309,9 +305,6 @@ class AsyncHttp:
             raise NotImplementedError
     
     # GIF methods
-
-    def get_feeds(self) -> Response[FeedsResponse]:
-        return self.request(Route('GET', '/v2/home/feeds'))
 
     def get_tags(self, **params: Any) -> Response[TagsResponse]:
         return self.request(Route('GET', '/v1/tags'), **params)

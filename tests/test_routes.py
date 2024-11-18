@@ -1,6 +1,5 @@
 from redgifs.api import API
 
-
 def test_routes():
     api = API().login()
     # assert api.get_feeds() # removed on v2.0.0

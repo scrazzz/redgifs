@@ -29,41 +29,15 @@ from datetime import datetime
 from typing import TYPE_CHECKING
 
 from .enums import Type
-from .utils import _gifs_iter, _images_iter, _users_iter, build_file_url, to_embed_url, to_web_url
-from .models import GIF, URL, CreatorResult, Feeds, Image, User, SearchResult, CreatorsResult
+from .utils import _users_iter, build_file_url, to_embed_url, to_web_url
+from .models import GIF, URL, CreatorResult, Image, User, SearchResult, CreatorsResult
 
 if TYPE_CHECKING:
-    from redgifs.types.feeds import FeedsResponse
     from redgifs.types.gif import GifResponse
     from redgifs.types.image import ImageResponse
     from redgifs.types.user import CreatorResponse, CreatorsResponse
 
 _log = logging.getLogger(__name__)
-
-def parse_feeds(json: FeedsResponse) -> Feeds:
-    _log.debug('Parsing feeds')
-    hgifs = json['horizontalGifs']
-    vgifs = json['verticalGifs']
-    hotcreators = json['hotCreators']
-    newcreators = json['newCreators']
-    longgifs = json['longGifs']
-    verifiedgifs = json['verifiedGifs']
-    soundgifs = json['soundGifs']
-    hotgifs = json['hotGifs']
-    hotimages = json['hotImages']
-    verifiedimages = json['verifiedImages']
-    return Feeds(
-        horizontal_gifs=_gifs_iter(hgifs),
-        vertical_gifs=_gifs_iter(vgifs),
-        hot_creators=_users_iter(hotcreators),
-        new_creators=_users_iter(newcreators),
-        long_gifs=_gifs_iter(longgifs),
-        verified_gifs=_gifs_iter(verifiedgifs),
-        sound_gifs=_gifs_iter(soundgifs),
-        hot_gifs=_gifs_iter(hotgifs),
-        hot_images=_images_iter(hotimages),
-        verified_images=_images_iter(verifiedimages),
-    )
 
 # For GIFs
 def parse_search(searched_for: str, json: GifResponse) -> SearchResult:

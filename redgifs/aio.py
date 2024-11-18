@@ -35,8 +35,8 @@ from .http import AsyncHttp, ProxyAuth
 from .tags import Tags
 from .enums import Order, Type
 from .utils import _async_read_tags_json, build_file_url, _gifs_iter, _images_iter, to_embed_url, to_web_url
-from .parser import parse_feeds, parse_search, parse_creator, parse_creators, parse_search_image
-from .models import GIF, URL, CreatorResult, Feeds, Image, SearchResult, CreatorsResult
+from .parser import parse_search, parse_creator, parse_creators, parse_search_image
+from .models import GIF, URL, CreatorResult, Image, SearchResult, CreatorsResult
 
 if TYPE_CHECKING:
     from redgifs.types.tags import TagInfo
@@ -77,16 +77,6 @@ class API:
         """
         await self.http.login()
         return self
-
-    async def get_feeds(self) -> Feeds:
-        """Get RedGifs homepage feeds.
-        
-        Returns
-        -------
-        :py:class:`Feeds <redgifs.models.Feeds>` - The Feed info.
-        """
-        feeds = await self.http.get_feeds()
-        return parse_feeds(feeds)
 
     async def get_tags(self) -> List[TagInfo]:
         """Get all available RedGifs Tags.
