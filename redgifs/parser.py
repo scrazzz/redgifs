@@ -25,7 +25,7 @@ DEALINGS IN THE SOFTWARE.
 from __future__ import annotations
 
 import logging
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import TYPE_CHECKING
 
 from .enums import Type
@@ -53,7 +53,7 @@ def parse_search(searched_for: str, json: GifResponse) -> SearchResult:
         gifs=[
             GIF(
                 id=gif['id'],
-                create_date=datetime.utcfromtimestamp(gif['createDate']),
+                create_date=datetime.fromtimestamp(gif['createDate'], tz=timezone.utc),
                 has_audio=gif['hasAudio'],
                 width=gif['width'],
                 height=gif['height'],
@@ -84,7 +84,7 @@ def parse_search(searched_for: str, json: GifResponse) -> SearchResult:
                 # I only had this occurrence once where redgifs did not
                 # send the response properly and messed up the entire JSON
                 # response, this is why I have used dict.get() here.
-                creation_time=datetime.utcfromtimestamp(user.get('creationtime'))
+                creation_time=datetime.fromtimestamp(user.get('creationtime'), tz=timezone.utc)
                 if user.get('creationtime') is not None else None,
                 description=user.get('description'),
                 followers=user.get('followers'),
@@ -125,7 +125,7 @@ def parse_search_image(searched_for: str, json: ImageResponse) -> SearchResult:
         images=[
             Image(
                 id=gif['id'],
-                create_date=datetime.utcfromtimestamp(gif['createDate']),
+                create_date=datetime.fromtimestamp(gif['createDate'], tz=timezone.utc),
                 width=gif['width'],
                 height=gif['height'],
                 likes=gif['likes'],
@@ -168,7 +168,7 @@ def parse_creator(json: CreatorResponse, type: Type) -> CreatorResult:
     user = json['users'][0]
     return CreatorResult(
         creator=User(
-            creation_time=datetime.utcfromtimestamp(user['creationtime']),
+            creation_time=datetime.fromtimestamp(user['creationtime'], tz=timezone.utc),
             description=user['description'],
             followers=user['followers'],
             following=user['following'],
@@ -195,7 +195,7 @@ def parse_creator(json: CreatorResponse, type: Type) -> CreatorResult:
         gifs=[
             GIF(
                 id=gif['id'],
-                create_date=datetime.utcfromtimestamp(gif['createDate']),
+                create_date=datetime.fromtimestamp(gif['createDate'], tz=timezone.utc),
                 has_audio=gif['hasAudio'], # type: ignore - We aren't setting values for ImageInfo
                 width=gif['width'],
                 height=gif['height'],
@@ -224,7 +224,7 @@ def parse_creator(json: CreatorResponse, type: Type) -> CreatorResult:
         images=[
             Image(
                 id=img['id'],
-                create_date=datetime.utcfromtimestamp(img['createDate']),
+                create_date=datetime.fromtimestamp(img['createDate'], tz=timezone.utc),
                 width=img['width'],
                 height=img['height'],
                 likes=img['likes'],

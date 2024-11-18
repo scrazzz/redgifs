@@ -29,7 +29,7 @@ import json
 import pkgutil
 import asyncio
 import yarl
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import TYPE_CHECKING, Dict, List
 
 from .models import GIF, URL, Image, User
@@ -83,7 +83,7 @@ def _gifs_iter(gifs: List[GifInfo]) -> List[GIF]:
     return [
         GIF(
             id=g['id'],
-            create_date=datetime.utcfromtimestamp(g['createDate']),
+            create_date=datetime.fromtimestamp(g['createDate'], tz=timezone.utc),
             has_audio=g['hasAudio'],
             width=g['width'],
             height=g['height'],
@@ -114,7 +114,7 @@ def _images_iter(images: List[ImageInfo]) -> List[Image]:
     return [
         Image(
             id=i['id'],
-            create_date=datetime.utcfromtimestamp(i['createDate']),
+            create_date=datetime.fromtimestamp(i['createDate'], tz=timezone.utc),
             width=i['width'],
             height=i['height'],
             likes=i['likes'],
@@ -145,7 +145,7 @@ def _users_iter(users: List[UserInfo]) -> List[User]:
             # I only had this occurrence once where redgifs did not
             # send the response properly and messed up the entire JSON
             # response, this is why I have used dict.get() here.
-            creation_time=datetime.utcfromtimestamp(user.get('creationtime')) if user.get('creationtime') is not None else None,
+            creation_time=datetime.fromtimestamp(user.get('creationtime'), tz=timezone.utc) if user.get('creationtime') is not None else None,
             description=user.get('description'),
             followers=user.get('followers'),
             following=user.get('following'),
