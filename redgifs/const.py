@@ -31,7 +31,3 @@ REDGIFS_THUMBS_RE = re.compile(
 REDGIFS_ID_RE = re.compile(
     r'https://(thumbs(\d+)|api)\.redgifs\.com/(?P<id>[a-zA-Z]+)'
 )
-
-REDGIFS_ID_RE_FILEURL = re.compile(
-    r'/files/(?P<id>\w+).mp4'
-)
