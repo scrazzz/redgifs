@@ -3,6 +3,13 @@
 Changelogs
 ==========
 
+2.0.0
+-----
+
+**Major Breaking Changes**
+
+- See :ref:`Migrating to v2.0`
+
 1.9.4
 -----
 - Updated redgifs CLI. Check the GitHub README for more info.

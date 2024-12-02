@@ -27,3 +27,10 @@ Changelogs
 .. toctree::
    changelogs
    :maxdepth: 1
+
+Migrating
+---------
+
+.. toctree::
+   migrating
+   :maxdepth: 1
