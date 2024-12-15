@@ -47,7 +47,7 @@ _log = logging.getLogger(__name__)
 if TYPE_CHECKING:
     from redgifs.types.gif import GetGifResponse, GifResponse
     from redgifs.types.image import ImageResponse, TrendingImagesResponse
-    from redgifs.types.tags import TagsResponse
+    from redgifs.types.tags import TagsResponse, TagSuggestion
     from redgifs.types.user import CreatorResponse, CreatorsResponse
 
     T = TypeVar('T')
@@ -212,7 +212,7 @@ class HTTP:
         r = Route('GET', '/v2/search/trending')
         return self.request(r)
 
-    def get_tag_suggestions(self, query: str) -> List[Dict[str, Union[str, int]]]:
+    def get_tag_suggestions(self, query: str) -> List[TagSuggestion]:
         r = Route('GET', '/v2/search/suggest?query={query}', query=query)
         return self.request(r)
 
@@ -383,7 +383,7 @@ class AsyncHttp:
         r = Route('GET', '/v2/search/trending')
         return self.request(r)
 
-    def get_tag_suggestions(self, query: str) -> Response[List[Dict[str, Union[str, int]]]]:
+    def get_tag_suggestions(self, query: str) -> Response[List[TagSuggestion]]:
         r = Route('GET', '/v2/search/suggest?query={query}', query=query)
         return self.request(r)
 

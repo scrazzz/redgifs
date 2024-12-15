@@ -8,3 +8,9 @@ class TagInfo(TypedDict):
 
 class TagsResponse(TypedDict):
     tags: List[TagInfo]
+
+
+class TagSuggestion(TypedDict):
+    gifs: int
+    text: str
+    type: str

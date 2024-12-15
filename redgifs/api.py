@@ -26,7 +26,7 @@ from __future__ import annotations
 
 import io
 import os
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import TYPE_CHECKING, Any, List, Optional, Union
 
 import requests
@@ -115,7 +115,7 @@ class API:
         urls = json['urls']
         return GIF(
             id=json['id'],
-            create_date=datetime.utcfromtimestamp(json['createDate']),
+            create_date=datetime.fromtimestamp(json['createDate'], tz=timezone.utc),
             has_audio=json['hasAudio'],
             width=json['width'],
             height=json['height'],
@@ -222,7 +222,7 @@ class API:
             A list of tag names.
         """
         result = self.http.get_tag_suggestions(query)
-        return [d['text'] for d in result] # type: ignore
+        return [d['text'] for d in result]
 
     def search(
         self,

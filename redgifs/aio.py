@@ -26,7 +26,7 @@ from __future__ import annotations
 
 import io
 import os
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import TYPE_CHECKING, Any, List, Optional, Union
 
 import aiohttp
@@ -90,7 +90,7 @@ class API:
 
     async def get_gif(self, id: str) -> GIF:
         """
-        Get details of a single GIF uisng its ID.
+        Get details of a single GIF using its ID.
 
         If the URL is ``https://redgifs.com/watch/abcxyz`` then the ID is ``abcxyz``.
 
@@ -107,7 +107,7 @@ class API:
         urls = json['urls']
         return GIF(
             id=json['id'],
-            create_date=datetime.utcfromtimestamp(json['createDate']),
+            create_date=datetime.fromtimestamp(json['createDate'], tz=timezone.utc),
             has_audio=json['hasAudio'],
             width=json['width'],
             height=json['height'],
@@ -214,7 +214,7 @@ class API:
             A list of tag names.
         """
         result = await self.http.get_tag_suggestions(query)
-        return [d['text'] for d in result] # type: ignore - `get_tag_suggestions` isn't properly TypedDict'd so ignore the warning
+        return [d['text'] for d in result]
 
     async def search(
         self,
