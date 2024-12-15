@@ -83,7 +83,7 @@ class HTTP:
         proxy_auth: Optional[ProxyAuth] = None
     ) -> None:
 
-        if session is not None and not isinstance(session, requests.Session):
+        if session is not None and session is not isinstance(session, requests.Session):
             raise RuntimeError("session is not of type requests.Session")
 
         self.__session: requests.Session = session or requests.Session()
@@ -260,7 +260,7 @@ class AsyncHttp:
         proxy_auth: Optional[ProxyAuth] = None
     ) -> None:
 
-        if session is not None and not isinstance(session, aiohttp.ClientSession):
+        if session is not None and session is not isinstance(session, aiohttp.ClientSession):
             raise RuntimeError("session is not of type aiohttp.ClientSession")
 
         self.__session: aiohttp.ClientSession = session or aiohttp.ClientSession()
