@@ -42,6 +42,9 @@ Models are classes that are received from Redgifs and are not meant to be create
 .. autoclass:: redgifs.models.GIF()
    :members:
 
+.. autoclass:: redgifs.models.TagSuggestion()
+   :members:
+
 .. autoclass:: redgifs.models.Image()
    :members:
 

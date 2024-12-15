@@ -36,7 +36,7 @@ from .enums import Order, Type
 from .http import HTTP, ProxyAuth
 from .utils import _read_tags_json, build_file_url, _gifs_iter, _images_iter, to_embed_url, to_web_url
 from .parser import parse_creator, parse_search, parse_creators, parse_search_image
-from .models import URL, GIF, CreatorResult, Image, SearchResult, CreatorsResult
+from .models import URL, GIF, CreatorResult, Image, SearchResult, CreatorsResult, TagSuggestion
 
 if TYPE_CHECKING:
     from redgifs.types.tags import TagInfo
@@ -204,12 +204,12 @@ class API:
         resp = self.http.get_top_this_week(count, page, type)
         return parse_search('TopThisWeek', resp)
 
-    def fetch_tag_suggestions(self, query: str) -> List[str]:
+    def fetch_tag_suggestions(self, query: str) -> List[TagSuggestion]:
         """Get tag suggestions from RedGifs.
 
         .. note::
         
-            It's advised to use :func:`Tags.search() <redgifs.Tags.search()>` to prevent multiple API calls to redgifs.com.
+            It's advised to use :func:`Tags.search()` to prevent multiple API calls to redgifs.com.
 
         Parameters
         ----------
@@ -218,11 +218,10 @@ class API:
 
         Returns
         -------
-        ``List[str]``
-            A list of tag names.
+        List[:class:`.TagSuggestion`] - A list of ``TagSuggestion`` with tag name and count.
         """
         result = self.http.get_tag_suggestions(query)
-        return [d['text'] for d in result]
+        return [TagSuggestion(name=d['text'], count=d['gifs']) for d in result]
 
     def search(
         self,

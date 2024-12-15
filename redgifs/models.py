@@ -24,7 +24,7 @@ DEALINGS IN THE SOFTWARE.
 
 import datetime
 from dataclasses import dataclass
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, TypedDict
 
 @dataclass
 class URL:
@@ -352,3 +352,16 @@ class CreatorResult:
     total: int
     gifs: List[GIF]
     images: List[Image]
+
+class TagSuggestion(TypedDict):
+    """The tag suggestion results.
+    
+    Attributes
+    ----------
+    name: :class:`str`
+        The tag name.
+    count: :class:`int`
+        The number of GIFs with this tag.
+    """
+    name: str
+    count: int
