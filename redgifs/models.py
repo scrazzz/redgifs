@@ -206,7 +206,7 @@ class User:
         The user's profile image URL.
     profile_url: :class:`str`
         The user's "profile URL".
-        This is NOT the user's URL on ``redgifs.com``, see :py:attr:`url <redgifs.models.User.url>` for that.
+        This is NOT the user's URL on ``redgifs.com``, see :attr:`.User.url` for that.
     published_collections: Optional[:class:`int`]
         The user's amount of published collections.
     published_gifs: :class:`int`
@@ -264,13 +264,13 @@ class User:
 @dataclass
 class SearchResult:
     # TODO: Document "users"
-    """The result you have searched. This is returned in :py:meth:`API.search() <redgifs.API.search()>`.
+    """The result you have searched. This is returned in :meth:`.API.search()`.
 
     Attributes
     ----------
     searched_for: :class:`str`
         The result of what you have searched for.
-        This may differ from what you have provided for ``query`` in :py:meth:`API.search() <redgifs.API.search()>`.
+        This may differ from what you have provided for ``query`` in :meth:`.API.search()`.
     page: :class:`int`
         The current page number.
     pages: :class:`int`

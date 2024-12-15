@@ -39,7 +39,14 @@ extensions = [
     # 'sphinx.ext.autosummary',
     'sphinx.ext.napoleon',
     'sphinx.ext.autosectionlabel',
+    'sphinx.ext.intersphinx',
 ]
+
+intersphinx_mapping = {
+  'py': ('https://docs.python.org/3', None),
+  'aio': ('https://docs.aiohttp.org/en/stable/', None),
+  'req': ('https://requests.readthedocs.io/en/latest/', None)
+}
 
 suppress_warnings = ['autosectionlabel.*']
 

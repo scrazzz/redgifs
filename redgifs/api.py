@@ -58,7 +58,7 @@ class API:
         If not provided, a new session object is created.
     proxy: Optional[:class:`str`]
         A valid proxy URL.
-    proxy_auth: Optional[:class:`redgifs.ProxyAuth`]
+    proxy_auth: Optional[:class:`.ProxyAuth`]
         The proxy auth to provide if the proxy requires it.
     """
 
@@ -75,13 +75,12 @@ class API:
     def login(self) -> 'API':
         """
         A method to login to RedGifs with a temporary token.
-        You must use this method after initialising the :py:class:`API <redgifs.API>` class 
+        You must use this method after initialising the :class:`API <redgifs.API>` class 
         for this library to function properly.
 
         Returns
         -------
-        :py:class:`API <redgifs.API>`
-            The properly initialised API class.
+        :class:`API` - The properly initialised API class.
         """
         self.http.login()
         return self
@@ -108,7 +107,7 @@ class API:
 
         Returns
         -------
-        :py:class:`GIF <redgifs.models.GIF>` - The GIF's info.
+        :class:`.GIF` - The GIF's info.
         """
 
         json = self.http.get_gif(id)['gif']
@@ -146,7 +145,7 @@ class API:
 
         Returns
         -------
-        List[:py:class:`GIF <redgifs.models.GIF>`]
+        List[:class:`.GIF`]
         """
         r = self.http.get_trending_gifs()['gifs']
         return _gifs_iter(r)
@@ -157,7 +156,7 @@ class API:
 
         Returns
         -------
-        List[:py:class:`Image <redgifs.models.Image>`]
+        List[:class:`.Image`]
         """
         r = self.http.get_trending_images()['gifs']
         return _images_iter(r)
@@ -199,7 +198,7 @@ class API:
 
         Returns
         -------
-        :class:`SearchResult <redgifs.models.SearchResult>` - Top this week results.
+        :class:`.SearchResult` - Top this week results.
         """
         resp = self.http.get_top_this_week(count, page, type)
         return parse_search('TopThisWeek', resp)
@@ -247,7 +246,7 @@ class API:
 
         Returns
         -------
-        :py:class:`SearchResult <redgifs.models.SearchResult>` - The search result.
+        :class:`.SearchResult` - The search result.
         """
         if len(self._tags.tags_mapping) == 0:
             tags = _read_tags_json()
@@ -274,7 +273,7 @@ class API:
         ----------
         page: Optional[:class:`int`]
             The result in page number to return.
-        order: Optional[:class:`Order <redgifs.Order>`]
+        order: Optional[:class:`.Order`]
             The order of the creators to return.
         verified: Optional[:class:`bool`]
             Wheather to only return verified creators.
@@ -284,7 +283,7 @@ class API:
 
         Returns
         -------
-        :py:class:`CreatorsResult <redgifs.models.CreatorsResult>` - The search result.
+        :class:`.CreatorsResult` - The search result.
         """
         resp = self.http.search_creators(page=page, order=order, verified=verified, tags=tags)
         return parse_creators(resp)
@@ -314,7 +313,7 @@ class API:
 
         Returns
         -------
-        :py:class:`CreatorResult <redgifs.models.CreatorResult>` - The creator/user searched for.
+        :class:`.CreatorResult` - The creator/user searched for.
         """
         resp = self.http.search_creator(username, page=page, count=count, order=order, type=type)
         return parse_creator(resp, type)
@@ -336,7 +335,7 @@ class API:
         ----------
         search_text: :class:`str`
             The images to search for. Can be a string or an instance of :class:`Tags <redgifs.Tags>`.
-        order: Optional[:class:`Order`]
+        order: Optional[:class:`.Order`]
             The order of the images to return.
         count: Optional[:class:`int`]
             The amount of images to return.
@@ -345,7 +344,7 @@ class API:
 
         Returns
         -------
-        :py:class:`SearchResult <redgifs.models.SearchResult>` - The search result.
+        :class:`.SearchResult` - The search result.
         """
         # We are not going to use Tags.search() here because it doesn't matter
         # whatever the search_text is, this API endpoints provides images nonetheless.
@@ -373,7 +372,7 @@ class API:
 
         Parameters
         ----------
-        url: str
+        url: :class:`str`
             A valid RedGifs URL.
         fp: Union[:class:`io.BufferedIOBase`, :class:`os.PathLike`]
             The file-like object to save this asset to or the filename
