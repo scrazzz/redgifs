@@ -264,13 +264,13 @@ class User:
 @dataclass
 class SearchResult:
     # TODO: Document "users"
-    """The result you have searched. This is returned in :meth:`.API.search()`.
+    """The result you have searched. This is returned in :meth:`~redgifs.API.search()`.
 
     Attributes
     ----------
     searched_for: :class:`str`
         The result of what you have searched for.
-        This may differ from what you have provided for ``query`` in :meth:`.API.search()`.
+        This may differ from what you have provided for ``query`` in :meth:`~redgifs.API.search()`.
     page: :class:`int`
         The current page number.
     pages: :class:`int`
