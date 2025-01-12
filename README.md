@@ -121,3 +121,4 @@ More examples can be found in the examples directory.
 ### Links
 - [Documentation](https://redgifs.readthedocs.io)
 - [Discord](https://discord.gg/NtAJMCcTd4)
+- [Examples](https://github.com/scrazzz/redgifs/tree/main/examples)
