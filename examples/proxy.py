@@ -1,8 +1,5 @@
 """
-This example shows how you can use a proxy if your
-country blocks redgifs.com.
-
-This is similiar even if you're using async code.
+This example shows how you can use a proxy if your country blocks redgifs.com
 """
 
 import redgifs

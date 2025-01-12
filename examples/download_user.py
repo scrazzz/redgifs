@@ -1,5 +1,5 @@
 """
-This example shows how you can download all GIFs from a user's profile on RedGifs.
+This example shows how to download all GIFs from a user's profile on RedGifs.
 """
 
 from redgifs import API

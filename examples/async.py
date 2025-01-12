@@ -1,5 +1,5 @@
 """
-Example showing usage in an async code.
+Example showing how to use this library asynchronously
 """
 
 from redgifs.aio import API

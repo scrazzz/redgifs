@@ -1,5 +1,5 @@
 """
-This example shows how you can download GIFs from RedGIFs using this library.
+This example shows how to download GIFs from RedGIFs using this library.
 """
 
 from redgifs import API
