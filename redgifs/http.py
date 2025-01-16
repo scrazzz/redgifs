@@ -228,6 +228,9 @@ class HTTP:
             r = self.__session.get(url, headers = self.headers)
             _log.debug(f'GET {url} returned code: {r.status_code}')
 
+            if r.status_code == 404:
+                raise HTTPException(r, r.json())
+
             content_type = r.headers['Content-Type']
             if content_type != 'video/mp4':
                 _log.error(f'GET {url} returned improper content-type: {content_type}')

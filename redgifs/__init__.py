@@ -26,7 +26,7 @@ __title__ = 'redgifs'
 __author__ = 'scrazzz'
 __license__ = 'MIT'
 __copyright__ = 'Copyright (c) 2022-present scrazzz'
-__version__ = '2.0.1'
+__version__ = '2.0.1a'
 
 from typing import Literal, NamedTuple
 
