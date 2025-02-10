@@ -28,7 +28,7 @@ class ImageInfo(TypedDict):
 
 # NOTE: even though this is an image, the field for this is `gifs`
 # NOTE: see the type of `gifs` key.
-class CommonImageResponse(TypedDict):
+class BaseImageResponse(TypedDict):
     page: int
     pages: int
     total: int
@@ -38,9 +38,9 @@ class CommonImageResponse(TypedDict):
     tags: List[str]
 
 
-class TrendingImagesResponse(CommonImageResponse):
+class TrendingImagesResponse(BaseImageResponse):
     pass
 
 
-class ImageResponse(CommonImageResponse):
+class ImageResponse(BaseImageResponse):
     pass

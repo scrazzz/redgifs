@@ -37,7 +37,7 @@ class GetGifResponse(TypedDict):
     user: Optional[UserInfo]
 
 
-class CommonGifResponse(TypedDict):
+class BaseGifResponse(TypedDict):
     page: int
     pages: int
     total: int
@@ -47,5 +47,5 @@ class CommonGifResponse(TypedDict):
     tags: List[str]
 
 
-class GifResponse(CommonGifResponse):
+class GifResponse(BaseGifResponse):
     pass
