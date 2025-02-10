@@ -36,7 +36,7 @@ pip install -U git+https://github.com/scrazzz/redgifs
 
 ### Quickstart
 #### 1. Command Line:
-Install: `pip install redgifs[cli]`
+
 ```console
 $ redgifs --help
 Usage: redgifs [OPTIONS] [URLS]...
@@ -45,7 +45,8 @@ Options:
   -q, --quality [sd|hd]  Video quality of GIF to download.  [default: hd]
   -d, --dir FOLDER_NAME  The folder/directory to save the downloads to.
   -i, --input PATH       Download URLs from a newline seperated txt file.
-  --help                 Show this message and exit.
+  -v, --version          Shows currently installed version.
+  --help                 Show this message and exit
 ```
 
 Examples:
