@@ -176,8 +176,7 @@ class API:
         result = (await self.http.get_trending_tags())['tags']
         return result
 
-    # FIXME: Fix this args
-    async def get_top_this_week(self, count: int = 30, page: int = 1, media_type: MediaType = MediaType.gif) -> SearchResult:
+    async def get_top_this_week(self, count: int = 30, page: int = 1, media_type: MediaType = MediaType.GIF) -> SearchResult:
         """Get media from "Top This Week" section.
 
         Parameters
@@ -248,7 +247,7 @@ class API:
 
         st = self._tags.search(search_text)[0]
         resp = await self.http.search(st, order, count, page)
-        return parse_search(st, resp, MediaType.gif)
+        return parse_search(st, resp, MediaType.GIF)
 
     search_gif = search
 
@@ -289,7 +288,7 @@ class API:
         page: int = 1,
         count: int = 80,
         order: Order = Order.recent,
-        media_type: MediaType = MediaType.gif,
+        media_type: MediaType = MediaType.GIF,
     ) -> CreatorResult:
         """
         Search for a single RedGifs creator/user by username.
