@@ -33,10 +33,11 @@ import click
 import yarl
 
 import redgifs
+from redgifs.enums import MediaType
 from . import __version__
 
 if TYPE_CHECKING:
-    from redgifs.models import GIF
+    from redgifs.models import GIF, Image
 
 def download_gif(client, url: yarl.URL, quality: str, folder: Optional[str], *, skip_check: bool = False):
     # If skip_check is true then this will be the GIF's ID and splitting the URL is not required
@@ -49,25 +50,31 @@ def download_gif(client, url: yarl.URL, quality: str, folder: Optional[str], *, 
     click.echo(f'Downloading {id}...')
     click.echo('Download complete.')
 
-def _dl_with_args(client, gif: GIF, quality: str, folder: Optional[str]):
+def _dl_with_args(client, gif: GIF | Image, quality: str, folder: Optional[str], is_image: bool):
     gif_url = gif.urls.sd if quality == 'sd' else gif.urls.hd
     filename = f'{gif_url.split("/")[3].split(".")[0]}.mp4'
+    if is_image:
+        name, ext = gif_url.split("/")[3].split('.')
+        filename = f'{name}.{ext}'
+
     if folder:
         client.download(gif_url, f'{folder}/{filename}')
     else:
         client.download(gif_url, f'{filename}')
 
-def download_users_gifs(client, url: yarl.URL, quality: str, folder: Optional[str]):
+def download_users_gifs(client, url: yarl.URL, quality: str, folder: Optional[str], images_only: bool):
     match = re.match(r'https://(www\.)?redgifs\.com\/users\/(?P<username>\w+)', str(url))
     if not match:
         click.UsageError(f'Not a valid redgifs user URL: {url}')
         exit(1)
 
+    is_image = images_only
+
     user = match.groupdict()['username']
-    data = client.search_creator(user)
+    data = client.search_creator(user, media_type=MediaType.IMAGE if is_image else MediaType.GIF)
     curr_page = data.page
     total_pages = data.pages
-    total_gifs_in_page = data.gifs
+    total_gifs_in_page = data.gifs if not is_image else data.images
     total = data.total
     done = 0
 
@@ -75,7 +82,7 @@ def download_users_gifs(client, url: yarl.URL, quality: str, folder: Optional[st
     if curr_page == total_pages:
         for gif in total_gifs_in_page:
             try:
-                _dl_with_args(client, gif, quality, folder)
+                _dl_with_args(client, gif, quality, folder, is_image)
                 done += 1
                 click.echo(f'Downloaded {done}/{total} GIFs')
             except Exception as e:
@@ -91,7 +98,7 @@ def download_users_gifs(client, url: yarl.URL, quality: str, folder: Optional[st
     while curr_page <= total_pages:
         for gif in total_gifs_in_page:
             try:
-                _dl_with_args(client, gif, quality, folder)
+                _dl_with_args(client, gif, quality, folder, is_image)
                 done += 1
                 click.echo(f'Downloaded {done}/{total} GIFs')
             except Exception as e:
@@ -118,9 +125,10 @@ def download_users_gifs(client, url: yarl.URL, quality: str, folder: Optional[st
 @click.option('-q', '--quality', type=click.Choice(['sd', 'hd']), default='hd', show_default=True, help='Video quality of GIF to download.')
 @click.option('-d', '--dir', 'folder', help='The folder/directory to save the downloads to.', metavar='FOLDER_NAME')
 @click.option('-i', '--input', 'file', help='Download URLs from a newline seperated txt file.', type=click.Path(exists=True))
+@click.option('--images', is_flag=True, help='Download only images from a user profile')
 @click.option('-v', '--version', is_flag=True, help='Shows currently installed version.')
 @click.pass_context
-def cli(ctx: click.Context, urls: Iterable[str], quality: str, folder: Optional[str], file: Optional[str], version) -> None:
+def cli(ctx: click.Context, urls: Iterable[str], quality: str, folder: Optional[str], file: Optional[str], version: bool, images: bool) -> None:
     if version:
         info = []
         info.append('- python: v{0.major}.{0.minor}.{0.micro}-{0.releaselevel}'.format(sys.version_info))
@@ -142,10 +150,10 @@ def cli(ctx: click.Context, urls: Iterable[str], quality: str, folder: Optional[
         if 'redgifs' not in str(url.host):
             download_gif(client, url, quality, folder, skip_check=True)
 
-        # Handle 'normal' URLs, i.e, a direct link from browser (eg: "https://redgifs.com/watch/deeznuts")
+        # Handle 'normal' URLs, i.e, a direct link (eg: "https://redgifs.com/watch/deeznuts")
         if '/watch/' in url.path:
             download_gif(client, url, quality, folder)
 
         # Handle /users/ URLs (eg: https://redgifs.com/users/redgifs)
         if '/users/' in url.path:
-            download_users_gifs(client, url, quality, folder)
+            download_users_gifs(client, url, quality, folder, images)
