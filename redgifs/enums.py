@@ -24,7 +24,7 @@ DEALINGS IN THE SOFTWARE.
 
 from enum import Enum
 
-__all__ = ('Order', 'Type')
+__all__ = ('Order', 'MediaType')
 
 class Order(Enum):
     """An enum representing the Order."""
@@ -40,7 +40,7 @@ class Order(Enum):
     top28 = 'top28'
     new = 'new'
 
-class Type(Enum):
-    """An enum representing the type of the results."""
+class MediaType(Enum):
+    """An enum representing the media type of the results."""
     image = 'i'
     gif = 'g'

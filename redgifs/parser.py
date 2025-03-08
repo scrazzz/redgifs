@@ -28,7 +28,7 @@ import logging
 from datetime import datetime, timezone
 from typing import TYPE_CHECKING
 
-from .enums import Type
+from .enums import MediaType
 from .utils import _users_iter, build_file_url, to_embed_url, to_web_url
 from .models import GIF, URL, CreatorResult, Image, User, SearchResult, CreatorsResult
 
@@ -40,7 +40,7 @@ if TYPE_CHECKING:
 _log = logging.getLogger(__name__)
 
 # For GIFs
-def parse_search(searched_for: str, json: GifResponse) -> SearchResult:
+def parse_search(searched_for: str, json: GifResponse, type: MediaType) -> SearchResult:
     _log.debug('Using `parse_search` for: {searched_for}')
     json_gifs = json['gifs']
     users = json['users']
@@ -49,7 +49,32 @@ def parse_search(searched_for: str, json: GifResponse) -> SearchResult:
         page=json['page'],
         pages=json['pages'],
         total=json['total'],
-        images=None,
+        images=[
+            Image(
+                id=img['id'],
+                create_date=datetime.fromtimestamp(img['createDate'], tz=timezone.utc),
+                width=img['width'],
+                height=img['height'],
+                likes=img['likes'],
+                tags=img['tags'],
+                verified=img['verified'],
+                views=img['views'],
+                published=img['published'],
+                urls=URL(
+                    sd=img['urls']['sd'],
+                    hd=img['urls']['hd'],
+                    poster=img['urls']['poster'],
+                    thumbnail=img['urls']['thumbnail'],
+                    vthumbnail=img['urls']['vthumbnail'],
+                    web_url=to_web_url(img['id']),
+                    file_url=None,
+                    embed_url=to_embed_url(img['urls']['hd']),
+                ),
+                username=img['userName'],
+                type=img['type'],
+                avg_color=img['avgColor'],
+            ) for img in json['gifs'] if type.name == 'image'
+        ],
         gifs=[
             GIF(
                 id=gif['id'],
@@ -77,7 +102,7 @@ def parse_search(searched_for: str, json: GifResponse) -> SearchResult:
                 type=gif['type'],
                 avg_color=gif['avgColor'],
             )
-            for gif in json_gifs
+            for gif in json_gifs if type.name == 'gif'
         ],
         users=[
             User(
@@ -141,7 +166,7 @@ def parse_search_image(searched_for: str, json: ImageResponse) -> SearchResult:
                     vthumbnail=gif['urls']['vthumbnail'],
                     web_url=to_web_url(gif['id']),
                     file_url=None,
-                    embed_url=None,
+                    embed_url=gif['urls']['hd'],
                 ),
                 username=gif['userName'],
                 type=gif['type'],
@@ -163,7 +188,7 @@ def parse_creators(json: CreatorsResponse) -> CreatorsResult:
         total=json['total'],
     )
 
-def parse_creator(json: CreatorResponse, type: Type) -> CreatorResult:
+def parse_creator(json: CreatorResponse, type: MediaType) -> CreatorResult:
     _log.debug('Using `parse_creator`')
     user = json['users'][0]
     return CreatorResult(
@@ -240,7 +265,7 @@ def parse_creator(json: CreatorResponse, type: Type) -> CreatorResult:
                     vthumbnail=img['urls']['vthumbnail'],
                     web_url=to_web_url(img['id']),
                     file_url=None,
-                    embed_url=None,
+                    embed_url=img['urls']['hd'],
                 ),
                 username=img['userName'],
                 type=img['type'],

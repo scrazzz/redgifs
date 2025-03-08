@@ -33,7 +33,7 @@ import aiohttp
 
 from .http import AsyncHttp, ProxyAuth
 from .tags import Tags
-from .enums import Order, Type
+from .enums import Order, MediaType
 from .utils import _async_read_tags_json, build_file_url, _gifs_iter, _images_iter, to_embed_url, to_web_url
 from .parser import parse_search, parse_creator, parse_creators, parse_search_image
 from .models import GIF, URL, CreatorResult, Image, SearchResult, CreatorsResult, TagSuggestion
@@ -127,7 +127,7 @@ class API:
                 embed_url=to_embed_url(urls['sd']),
             ),
             username=json['userName'],
-            type=json['type'],
+            type=json['type'], # TODO: Find what this type is
             avg_color=json['avgColor'],
         )
 
@@ -176,7 +176,8 @@ class API:
         result = (await self.http.get_trending_tags())['tags']
         return result
 
-    async def get_top_this_week(self, count: int = 30, page: int = 1, type: Type = Type.gif) -> SearchResult:
+    # FIXME: Fix this args
+    async def get_top_this_week(self, count: int = 30, page: int = 1, media_type: MediaType = MediaType.gif) -> SearchResult:
         """Get media from "Top This Week" section.
 
         Parameters
@@ -185,15 +186,15 @@ class API:
             The number of items to return.
         page: :class:`int`
             The items to return from given page number.
-        type: :class:`.Order`
+        media_type: :class:`.MediaType`
             The type of media to return.
 
         Returns
         -------
         :class:`.SearchResult` - Top this week results.
         """
-        resp = await self.http.get_top_this_week(count, page, type)
-        return parse_search('TopThisWeek', resp)
+        resp = await self.http.get_top_this_week(count, page, media_type)
+        return parse_search('TopThisWeek', resp, media_type)
 
     async def fetch_tag_suggestions(self, query: str) -> List[TagSuggestion]:
         """Get tag suggestions from RedGifs.
@@ -247,7 +248,7 @@ class API:
 
         st = self._tags.search(search_text)[0]
         resp = await self.http.search(st, order, count, page)
-        return parse_search(st, resp)
+        return parse_search(st, resp, MediaType.gif)
 
     search_gif = search
 
@@ -288,7 +289,7 @@ class API:
         page: int = 1,
         count: int = 80,
         order: Order = Order.recent,
-        type: Type = Type.gif,
+        media_type: MediaType = MediaType.gif,
     ) -> CreatorResult:
         """
         Search for a single RedGifs creator/user by username.
@@ -303,13 +304,15 @@ class API:
             The total amount of GIFs to return.
         order: :class:`.Order`
             The order to return creator/user's GIFs.
+        media_type: :class:`.MediaType`
+            Whether to return image or GIF results. By default returns GIFs.
 
         Returns
         -------
         :class:`.CreatorResult` - The creator/user searched for.
         """
-        resp = await self.http.search_creator(username=username, page=page, count=count, order=order, type=type)
-        return parse_creator(resp, type)
+        resp = await self.http.search_creator(username=username, page=page, count=count, order=order, type=media_type)
+        return parse_creator(resp, media_type)
 
     search_user = search_creator
 

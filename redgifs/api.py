@@ -32,7 +32,7 @@ from typing import TYPE_CHECKING, Any, List, Optional, Union
 import requests
 
 from .tags import Tags
-from .enums import Order, Type
+from .enums import Order, MediaType
 from .http import HTTP, ProxyAuth
 from .utils import _read_tags_json, build_file_url, _gifs_iter, _images_iter, to_embed_url, to_web_url
 from .parser import parse_creator, parse_search, parse_creators, parse_search_image
@@ -183,8 +183,8 @@ class API:
         """
         resp = self.http.get_trending_tags()['tags']
         return resp
-    
-    def get_top_this_week(self, count: int = 30, page: int = 1, type: Type = Type.gif) -> SearchResult:
+
+    def get_top_this_week(self, count: int = 30, page: int = 1, media_type: MediaType = MediaType.gif) -> SearchResult:
         """Get media from "Top This Week" section.
 
         Parameters
@@ -193,15 +193,15 @@ class API:
             The number of items to return.
         page: :class:`int`
             The items to return from given page number.
-        type: :class:`Order`
+        media_type: :class:`.MediaType`
             The type of media to return.
 
         Returns
         -------
         :class:`.SearchResult` - Top this week results.
         """
-        resp = self.http.get_top_this_week(count, page, type)
-        return parse_search('TopThisWeek', resp)
+        resp = self.http.get_top_this_week(count, page, media_type)
+        return parse_search('TopThisWeek', resp, media_type)
 
     def fetch_tag_suggestions(self, query: str) -> List[TagSuggestion]:
         """Get tag suggestions from RedGifs.
@@ -254,7 +254,7 @@ class API:
 
         st = self._tags.search(search_text)[0]
         resp = self.http.search(st, order, count, page)
-        return parse_search(st, resp)
+        return parse_search(st, resp, MediaType.gif)
 
     search_gif = search
 
@@ -295,7 +295,7 @@ class API:
         page: int = 1,
         count: int = 80,
         order: Order = Order.recent,
-        type: Type = Type.gif,
+        media_type: MediaType = MediaType.gif,
     ) -> CreatorResult:
         """
         Search for a single RedGifs creator/user by username.
@@ -310,13 +310,15 @@ class API:
             The total amount of GIFs to return.
         order: :class:`Order`
             The order to return creator/user's GIFs.
+        media_type: :class:`.MediaType`
+            Whether to return image or GIF results. By default returns GIFs.
 
         Returns
         -------
         :class:`.CreatorResult` - The creator/user searched for.
         """
-        resp = self.http.search_creator(username, page=page, count=count, order=order, type=type)
-        return parse_creator(resp, type)
+        resp = self.http.search_creator(username, page=page, count=count, order=order, type=media_type)
+        return parse_creator(resp, media_type)
 
     search_user = search_creator
 

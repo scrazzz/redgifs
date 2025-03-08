@@ -37,7 +37,7 @@ import yarl
 
 from . import __version__
 from .errors import HTTPException
-from .enums import Order, Type
+from .enums import Order, MediaType
 from .utils import strip_ip
 
 __all__ = ('ProxyAuth',)
@@ -148,7 +148,7 @@ class HTTP:
         )
         return self.request(r, **params)
 
-    def get_top_this_week(self, count: int, page: int, type: Type, **params) -> GifResponse:
+    def get_top_this_week(self, count: int, page: int, type: MediaType, **params) -> GifResponse:
         r = Route(
             'GET', '/v2/gifs/search?order=top7&count={count}&page={page}&type={type}',
             count=count, page=page, type=type.value
@@ -182,7 +182,7 @@ class HTTP:
             )
             return self.request(r, **params)
 
-    def search_creator(self, username: str, page: int, count: int, order: Order, type: Type, **params) -> CreatorResponse:
+    def search_creator(self, username: str, page: int, count: int, order: Order, type: MediaType, **params) -> CreatorResponse:
         r = Route(
             'GET', '/v2/users/{username}/search?page={page}&count={count}&order={order}&type={type}',
             username=username, page=page, count=count, order=order.value, type=type.value
@@ -322,7 +322,7 @@ class AsyncHttp:
         )
         return self.request(r, **params)
 
-    def get_top_this_week(self, count: int, page: int, type: Type, **params) -> Response[GifResponse]:
+    def get_top_this_week(self, count: int, page: int, type: MediaType, **params) -> Response[GifResponse]:
         r = Route(
             'GET', '/v2/gifs/search?order=top7&count={count}&page={page}&type={type}',
             count=count, page=page, type=type.value
@@ -356,7 +356,7 @@ class AsyncHttp:
             )
             return self.request(r, **params)
 
-    def search_creator(self, username: str, page: int, count: int, order: Order, type: Type, **params) -> Response[CreatorResponse]:
+    def search_creator(self, username: str, page: int, count: int, order: Order, type: MediaType, **params) -> Response[CreatorResponse]:
         r = Route(
             'GET', '/v2/users/{username}/search?page={page}&count={count}&order={order}&type={type}',
             username=username, page=page, count=count, order=order.value, type=type.value
