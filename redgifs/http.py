@@ -232,7 +232,7 @@ class HTTP:
                 raise HTTPException(r, r.json())
 
             content_type = r.headers['Content-Type']
-            if content_type != 'video/mp4':
+            if content_type not in ['video/mp4', 'image/jpeg']:
                 _log.error(f'GET {url} returned improper content-type: {content_type}')
                 raise TypeError(f'"{url}" returned invalid content type for downloading: {content_type}')
 
@@ -401,7 +401,7 @@ class AsyncHttp:
                 _log.debug(f'GET {str_url} returned code: {r.status}')
 
                 content_type = r.headers['Content-Type']
-                if content_type != 'video/mp4':
+                if content_type not in ['video/mp4', 'image/jpeg']:
                     _log.error(f'GET {url} returned improper content-type: {content_type}')
                     raise TypeError(f'"{url}" returned invalid content type for downloading: {content_type}')
 
