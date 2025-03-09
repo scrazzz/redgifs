@@ -116,7 +116,6 @@ def download_users_gifs(client, url: yarl.URL, quality: str, folder: Optional[Pa
         data = client.search_creator(user, page=curr_page)
         total_gifs_in_page.extend(data.gifs)
 
-    click.echo()
     click.echo(f'\r[-] Downloaded {done}/{total} {"videos" if not is_image else "images"} of user {user} {f"to folder '{folder}'" if folder else ""} sucessfully!')
 
 @click.command()
