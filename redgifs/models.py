@@ -38,21 +38,21 @@ class URL:
     Attributes
     ----------
     sd: :class:`str`
-        The sd URL of the GIF.
+        The sd URL of the media.
     hd: :class:`str`
-        The hd URL of the GIF.
+        The hd URL of the media.
     poster: Optional[:class:`str`]
-        The poster URL of the GIF.
+        The poster URL of the media.
     thumbnail: :class:`str`
-        The thumbnail URL of the GIF.
+        The thumbnail URL of the media.
     vthumbnail: Optional[:class:`str`]
-        The vthumbnail URL of the GIF.
+        The vthumbnail URL of the media.
     web_url: :class:`str`
-        The website URL of the GIF.
+        The website URL of the media.
     file_url: Optional[:class:`str`]
-        The file URL of the GIF.
+        The file URL of the media.
     embed_url: Optional[:class:`str`]
-        The embed URL of the GIF. This can be used to load the GIF without any restrictions.
+        The embed URL of the media. This can be used to load the media without any restrictions.
     """
 
     __slots__ = ('sd', 'hd', 'poster', 'thumbnail', 'vthumbnail', 'web_url', 'file_url', 'embed_url')
