@@ -120,6 +120,7 @@ def download_users_gifs(client, url: yarl.URL, quality: str, folder: Optional[Pa
 
 @click.command()
 @click.argument('urls', nargs=-1)
+@click.option('-v', '--version', is_flag=True, help='Shows currently installed version.')
 @click.option('-q', '--quality', type=click.Choice(['sd', 'hd']), default='hd', show_default=True, help='Video quality of GIF to download.')
 @click.option(
     '-f', '--folder',
@@ -134,7 +135,6 @@ def download_users_gifs(client, url: yarl.URL, quality: str, folder: Optional[Pa
     metavar='FILE_NAME'
 )
 @click.option('--images', is_flag=True, help='Download only images from a user profile.')
-@click.option('-v', '--version', is_flag=True, help='Shows currently installed version.')
 @click.pass_context
 def cli(ctx: click.Context, urls: Iterable[str], quality: str, folder: Optional[Path], file: Optional[str], version: bool, images: bool) -> None:
     if version:

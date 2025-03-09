@@ -46,11 +46,12 @@ $ redgifs --help
 Usage: redgifs [OPTIONS] [URLS]...
 
 Options:
-  -q, --quality [sd|hd]  Video quality of GIF to download.  [default: hd]
-  -d, --dir FOLDER_NAME  The folder/directory to save the downloads to.
-  -i, --input PATH       Download URLs from a newline seperated txt file.
-  -v, --version          Shows currently installed version.
-  --help                 Show this message and exit
+  -v, --version             Shows currently installed version.
+  -q, --quality [sd|hd]     Video quality of GIF to download.  [default: hd]
+  -f, --folder FOLDER_NAME  The folder to save the downloads to.
+  -i, --input FILE_NAME     Download URLs from a newline seperated txt file.
+  --images                  Download only images from a user profile.
+  --help                    Show this message and exit.
 ```
 
 Examples:
@@ -59,7 +60,7 @@ $ # Download files to a folder
 $ ls
 Home    Downloads  Homework  Music
 Backup  Documents  Videos    Games
-$ redgifs https://redgifs.com/watch/xyz --q sd --dir Homework
+$ redgifs https://redgifs.com/watch/xyz --quality sd --folder Homework
 Downloading xyz...
 Download complete
 $ ls Homework
@@ -84,12 +85,12 @@ Downloading qwe...
 ```console
 $ # Download all GIFs from a user's profile
 $ mkdir rg_vids
-$ redgifs https://redgifs.com/users/usernamethatexists -d rg_vids
+$ redgifs https://redgifs.com/users/usernamethatexists -f rg_vids
 Downloaded 1/3 GIFs
 Downloaded 2/3 GIFs
 Downloaded 3/3 GIFs
-
-Downloaded 3/3 videos of "usernamethatexists" to rg_vids folder sucessfully
+...
+Downloaded 3/3 videos of user usernamethatexists to folder rg_vids sucessfully!
 ```
 
 #### 2. Synchronous usage:
