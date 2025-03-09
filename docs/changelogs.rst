@@ -3,12 +3,16 @@
 Changelogs
 ==========
 
+2.1.0
+-----
+- From this version onwards, breaking changes will be done on "minor" versions (semver ``major.minor.patch``). Please refer to the migrating guide (:ref:`Migrating to v2.x`) to know about the changes.
+
 2.0.0
 -----
 
 **Major Breaking Changes**
 
-- See :ref:`Migrating to v2.0`
+- See :ref:`Migrating to v2.x`
 
 1.9.4
 -----

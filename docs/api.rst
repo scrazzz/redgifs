@@ -68,6 +68,10 @@ Enums
    :members:
    :undoc-members:
 
+.. autoclass:: MediaType
+   :members:
+   :undoc-members:
+
 
 Exceptions
 ==========
