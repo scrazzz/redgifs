@@ -28,15 +28,10 @@ The entire feeds API has been removed. RedGifs had removed the feeds page from t
 ------------------
 The :meth:`~redgifs.API.fetch_tag_suggestions()` method has been updated and now returns a List[:class:`.TagSuggestion`] type.
 
-4. MediaType
+4. :class:`MediaType` enum
 ------------
-Two methods had a kwarg called ``type`` that lets you get the result as either GIFs or images.
-This kwarg has been renamed to ``media_type`` and the following functions were affected:
-
-  * :meth:`~redgifs.API.get_top_this_week()`
-  * :meth:`~redgifs.API.search_creator()`
-
-Other than above change, the enum which was passed to this kwarg has been renamed from ``Type`` to :class:`.MediaType`.
+The enum which was passed to methods :meth:`~redgifs.API.get_top_this_week()` and :meth:`~redgifs.API.search_creator()`
+has been renamed from ``Type`` to :class:`.MediaType`.
 
 .. code:: diff
 
@@ -46,7 +41,7 @@ Other than above change, the enum which was passed to this kwarg has been rename
 
     api = redgifs.API().login()
     -api.search_creator('username', type=Type.image)
-    +api.search_creator('username', media_type=MediaType.IMAGE)
+    +api.search_creator('username', type=MediaType.IMAGE)
 
 5. :class:`.Order` enum
 -----------------------

@@ -176,7 +176,7 @@ class API:
         result = (await self.http.get_trending_tags())['tags']
         return result
 
-    async def get_top_this_week(self, count: int = 30, page: int = 1, media_type: MediaType = MediaType.GIF) -> SearchResult:
+    async def get_top_this_week(self, count: int = 30, page: int = 1, type: MediaType = MediaType.GIF) -> SearchResult:
         """Get media from "Top This Week" section.
 
         Parameters
@@ -185,15 +185,15 @@ class API:
             The number of items to return.
         page: :class:`int`
             The items to return from given page number.
-        media_type: :class:`.MediaType`
+        type: :class:`.MediaType`
             The type of media to return.
 
         Returns
         -------
         :class:`.SearchResult` - Top this week results.
         """
-        resp = await self.http.get_top_this_week(count, page, media_type)
-        return parse_search('TopThisWeek', resp, media_type)
+        resp = await self.http.get_top_this_week(count, page, type)
+        return parse_search('TopThisWeek', resp, type)
 
     async def fetch_tag_suggestions(self, query: str) -> List[TagSuggestion]:
         """Get tag suggestions from RedGifs.
@@ -288,7 +288,7 @@ class API:
         page: int = 1,
         count: int = 80,
         order: Order = Order.recent,
-        media_type: MediaType = MediaType.GIF,
+        type: MediaType = MediaType.GIF,
     ) -> CreatorResult:
         """
         Search for a single RedGifs creator/user by username.
@@ -303,15 +303,15 @@ class API:
             The total amount of GIFs to return.
         order: :class:`.Order`
             The order to return creator/user's GIFs.
-        media_type: :class:`.MediaType`
+        type: :class:`.MediaType`
             Whether to return image or GIF results. By default returns GIFs.
 
         Returns
         -------
         :class:`.CreatorResult` - The creator/user searched for.
         """
-        resp = await self.http.search_creator(username=username, page=page, count=count, order=order, type=media_type)
-        return parse_creator(resp, media_type)
+        resp = await self.http.search_creator(username=username, page=page, count=count, order=order, type=type)
+        return parse_creator(resp, type)
 
     search_user = search_creator
 
