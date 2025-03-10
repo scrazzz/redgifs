@@ -44,7 +44,7 @@ class OrderMeta(EnumMeta):
         return super().__getattribute__(name)
 
 class Order(Enum, metaclass=OrderMeta):
-    """An enum representing the Order."""
+    """An enum representing the order of the results."""
 
     TRENDING = 'trending'
     trending = 'trending'
