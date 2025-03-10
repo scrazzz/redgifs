@@ -30,7 +30,7 @@ The :meth:`~redgifs.API.fetch_tag_suggestions()` method has been updated and now
 
 4. MediaType
 ------------
-Multiple methods had a kwarg called ``type`` that lets you get the result as either GIFs or images.
+Two methods had a kwarg called ``type`` that lets you get the result as either GIFs or images.
 This kwarg has been renamed to ``media_type`` and the following functions were affected:
 
   * :meth:`~redgifs.API.get_top_this_week()`
@@ -38,11 +38,25 @@ This kwarg has been renamed to ``media_type`` and the following functions were a
 
 Other than above change, the enum which was passed to this kwarg has been renamed from ``Type`` to :class:`.MediaType`.
 
+.. code:: diff
+
+    from redgifs import API
+    -from redgifs import Type
+    +from redgifs import MediaType
+
+    api = redgifs.API().login()
+    -api.search_creator('username', type=Type.image)
+    +api.search_creator('username', media_type=MediaType.IMAGE)
+
 5. :class:`.Order` enum
 -----------------------
 In v2.1 the enum members were changed to uppercase which follows the PEP8 guidelines.
 Lowercase enums will continue to work until v2.2 but will throw a DeprecationWarning if used.
 It is advised to switch to the uppercase enum members (e.g, ``Order.BEST``, ``Order.LATEST``) asap.
+
+6. CLI
+------
+The CLI option ``--dir`` (``-d``) has been renamed to ``--folder`` (``-f``).
 
 -----
 
@@ -60,5 +74,5 @@ v2.1
 
 - Fix an internal ``KeyError`` that occurs rarely when using :meth:`~redgifs.API.search_creator()`.
 - Added :attr:`.embed_url` to images.
-- [CLI] Fix CLI not acknowledging valid redgifs URLs.
+- [CLI] Fix CLI not acknowledging valid RedGifs URLs.
 - [CLI] Added support to download images of a creator.
