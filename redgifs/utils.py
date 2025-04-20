@@ -98,7 +98,7 @@ def _gifs_iter(gifs: List[GifInfo]) -> List[GIF]:
                 hd=g['urls']['hd'],
                 poster=g['urls'].get('poster'),
                 thumbnail=g['urls']['thumbnail'],
-                vthumbnail=g['urls']['vthumbnail'],
+                vthumbnail=g['urls'].get('vthumbnail'),
                 web_url=to_web_url(g['id']),
                 file_url=build_file_url(g['urls']['sd']),
                 embed_url=to_embed_url(g['urls']['sd']),
