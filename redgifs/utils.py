@@ -127,7 +127,7 @@ def _images_iter(images: List[ImageInfo]) -> List[Image]:
                 hd=i['urls']['hd'],
                 poster=i['urls'].get('poster'),
                 thumbnail=i['urls']['thumbnail'],
-                vthumbnail=i['urls']['vthumbnail'],
+                vthumbnail=i['urls'].get('vthumbnail'),
                 web_url=to_web_url(i['id']),
                 file_url=None,
                 embed_url=None,
