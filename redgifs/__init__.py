@@ -43,6 +43,6 @@ class VersionInfo(NamedTuple):
     micro: int
     releaselevel: Literal['alpha', 'beta', 'final']
 
-version_info: VersionInfo = VersionInfo(major=2, minor=1, micro=1, releaselevel='alpha')
+version_info: VersionInfo = VersionInfo(major=2, minor=1, micro=1, releaselevel='final')
 
 del NamedTuple, VersionInfo
