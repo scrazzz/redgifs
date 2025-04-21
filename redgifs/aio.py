@@ -219,7 +219,7 @@ class API:
         self,
         search_text: str,
         *,
-        order: Order = Order.trending,
+        order: Order = Order.TRENDING,
         count: int = 80,
         page: int = 1,
     ) -> SearchResult:
@@ -255,7 +255,7 @@ class API:
         self,
         *,
         page: int = 1,
-        order: Order = Order.recent,
+        order: Order = Order.RECENT,
         verified: bool = False,
         tags: Optional[List[str]] = None,
     ) -> CreatorsResult:
@@ -287,7 +287,7 @@ class API:
         *,
         page: int = 1,
         count: int = 80,
-        order: Order = Order.recent,
+        order: Order = Order.RECENT,
         type: MediaType = MediaType.GIF,
     ) -> CreatorResult:
         """
@@ -319,7 +319,7 @@ class API:
         self,
         search_text: str,
         *,
-        order: Order = Order.new,
+        order: Order = Order.NEW,
         count: int = 80,
         page: int = 1,
     ) -> SearchResult:
