@@ -25,10 +25,6 @@
 pip install -U redgifs
 ```
 
-> [!IMPORTANT]
-> - It is advised to install the [Development version](####development-version)  because v2.0 has a lot of bugs
-> - A new v2.1 version will be released soon with major breaking changes
-
 #### Development version
 ```
 pip install -U git+https://github.com/scrazzz/redgifs
