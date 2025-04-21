@@ -3,6 +3,12 @@
 Changelogs
 ==========
 
+2.1.1
+-----
+- Removed usage of deprecated :class:`.Order` inside the library.
+- Added required ``click`` dependency in ``pyproject.toml``.
+- Fixed issue `#45 <https://github.com/scrazzz/redgifs/issues/45>`_.
+
 2.1.0
 -----
 
