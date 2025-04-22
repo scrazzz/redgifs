@@ -1,9 +1,16 @@
 import pytest
 
-from redgifs import API
+from redgifs import API, Tags
 
 api = API()
 api.login()
+
+def random_tag() -> str:
+    return Tags().random(1)
+
+def trending_tag() -> str:
+    return api.get_trending_tags()[0]['name']
+
 
 @pytest.mark.parametrize(
     "search_text, searched_for",
@@ -24,7 +31,7 @@ def test_search_with_search_text(search_text, searched_for):
     [ (10, 10), (20, 20), (35, 35) ]
 )
 def test_search_with_count(count, expected_count):
-    result = api.search('hitomi tanaka', count=count)
+    result = api.search(trending_tag(), count=count)
     assert result.gifs is not None and len(result.gifs) >= expected_count
 
 

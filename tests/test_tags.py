@@ -7,7 +7,7 @@ from redgifs import Tags
     [
         ('tits', 'Tits'),
         ('ass', 'Ass'),
-        #('cum', 'Cum'),
+        ('cum', 'Cum'),
         ('americam', 'American'),
         ('japanes', 'Japanese'),
         ('hitomi tanaka', 'Hitomi Tanaka'),
