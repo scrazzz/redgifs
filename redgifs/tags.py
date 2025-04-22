@@ -96,5 +96,9 @@ class Tags:
             If the ``count`` specified is ``1`` then a single random tag is returned
             or else a list of tags are returned.
         """
+        # If this method is being used alone, then `tags_mapping` needs to be set
+        if len(self.tags_mapping) == 0:
+            self._set(_read_tags_json())
+
         return choices(list(self.tags_mapping.values()), k=count) if count != 1 \
         else choice(list(self.tags_mapping.values()))
