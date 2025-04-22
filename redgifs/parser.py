@@ -63,7 +63,7 @@ def parse_search(searched_for: str, json: GifResponse, media_type: MediaType) ->
                 urls=URL(
                     sd=img['urls']['sd'],
                     hd=img['urls']['hd'],
-                    poster=img['urls']['poster'],
+                    poster=img['urls'].get('poster'),
                     thumbnail=img['urls']['thumbnail'],
                     vthumbnail=img['urls'].get('vthumbnail'),
                     web_url=to_web_url(img['id']),
@@ -91,7 +91,7 @@ def parse_search(searched_for: str, json: GifResponse, media_type: MediaType) ->
                 urls=URL(
                     sd=gif['urls']['sd'],
                     hd=gif['urls']['hd'],
-                    poster=gif['urls']['poster'],
+                    poster=gif['urls'].get('poster'),
                     thumbnail=gif['urls']['thumbnail'],
                     vthumbnail=gif['urls'].get('vthumbnail'),
                     web_url=to_web_url(gif['id']),
@@ -161,7 +161,7 @@ def parse_search_image(searched_for: str, json: ImageResponse) -> SearchResult:
                 urls=URL(
                     sd=gif['urls']['sd'],
                     hd=gif['urls']['hd'],
-                    poster=gif['urls']['poster'],
+                    poster=gif['urls'].get('poster'),
                     thumbnail=gif['urls']['thumbnail'],
                     vthumbnail=gif['urls'].get('vthumbnail'),
                     web_url=to_web_url(gif['id']),
@@ -200,7 +200,7 @@ def parse_creator(json: CreatorResponse, media_type: MediaType) -> CreatorResult
             gifs=user['gifs'],
             name=user.get('name'),
             profile_image_url=user['profileImageUrl'],
-            profile_url=user['profileUrl'],
+            profile_url=user.get('profileUrl'),
             published_collections=user['publishedCollections'],
             status=user.get('status'),
             published_gifs=user['publishedGifs'],
@@ -233,7 +233,7 @@ def parse_creator(json: CreatorResponse, media_type: MediaType) -> CreatorResult
                 urls=URL(
                     sd=gif['urls']['sd'],
                     hd=gif['urls']['hd'],
-                    poster=gif['urls']['poster'],
+                    poster=gif['urls'].get('poster'),
                     thumbnail=gif['urls']['thumbnail'],
                     vthumbnail=gif['urls'].get('vthumbnail'),
                     web_url=to_web_url(gif['id']),
@@ -260,7 +260,7 @@ def parse_creator(json: CreatorResponse, media_type: MediaType) -> CreatorResult
                 urls=URL(
                     sd=img['urls']['sd'],
                     hd=img['urls']['hd'],
-                    poster=img['urls']['poster'],
+                    poster=img['urls'].get('poster'),
                     thumbnail=img['urls']['thumbnail'],
                     vthumbnail=img['urls'].get('vthumbnail'),
                     web_url=to_web_url(img['id']),

@@ -204,7 +204,7 @@ class User:
         The user's name.
     profile_image_url: Optional[:class:`str`]
         The user's profile image URL.
-    profile_url: :class:`str`
+    profile_url: Optional[:class:`str`]
         The user's "profile URL". It is a URL that is seen on the profile set by the user.
         This is NOT the user's URL on ``redgifs.com``, see :attr:`.User.url` for that.
     published_collections: Optional[:class:`int`]
@@ -247,7 +247,7 @@ class User:
     gifs: int
     name: str
     profile_image_url: Optional[str]
-    profile_url: str
+    profile_url: Optional[str]
     published_collections: Optional[int]
     published_gifs: int
     status: Optional[str]
