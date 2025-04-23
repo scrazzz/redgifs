@@ -245,7 +245,7 @@ class User:
     followers: int
     following: int
     gifs: int
-    name: str
+    name: Optional[str]
     profile_image_url: Optional[str]
     profile_url: Optional[str]
     published_collections: Optional[int]

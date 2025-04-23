@@ -34,7 +34,7 @@ def test_attrs():
         assert c.following >= 0
         assert c.gifs
         # assert c.links
-        assert c.name
+        # assert c.name
         # assert c.poster
         # assert c.preview
         # assert c.profile_image_url
@@ -46,5 +46,5 @@ def test_attrs():
         # assert c.thumbnail
         assert c.url
         assert c.username
-        # assert c.verified
+        assert isinstance(c.verified, bool)
         assert c.views

@@ -106,26 +106,23 @@ def parse_search(searched_for: str, json: GifResponse, media_type: MediaType) ->
         ],
         users=[
             User(
-                # I only had this occurrence once where redgifs did not
-                # send the response properly and messed up the entire JSON
-                # response, this is why I have used dict.get() here.
                 creation_time=datetime.fromtimestamp(user.get('creationtime'), tz=timezone.utc)
                 if user.get('creationtime') is not None else None,
                 description=user.get('description'),
-                followers=user.get('followers'),
-                following=user.get('following'),
-                gifs=user.get('gifs'),
+                followers=user['followers'],
+                following=user['following'],
+                gifs=user['gifs'],
                 name=user.get('name'),
                 profile_image_url=user.get('profileImageUrl'),
                 profile_url=user.get('profileUrl'),
                 published_collections=user.get('publishedCollections'),
                 status=user.get('status'),
-                published_gifs=user.get('publishedGifs'),
-                subscription=user.get('subscription'),
-                url=user.get('url'),
-                username=user.get('username'),
-                verified=user.get('verified'),
-                views=user.get('views'),
+                published_gifs=user['publishedGifs'],
+                subscription=user['subscription'],
+                url=user['url'],
+                username=user['username'],
+                verified=user['verified'],
+                views=user['views'],
                 poster=user.get('poster'),
                 preview=user.get('preview'),
                 thumbnail=user.get('thumbnail'),
