@@ -9,7 +9,7 @@ def test_attrs():
     api.login()
     r = api.search(random_tag())
 
-    if r.gifs is not None:
+    if r.gifs:
         username = r.gifs[0].username
         for gif in r.gifs:
             assert gif.id is not None

@@ -10,7 +10,7 @@ def test_attrs(query):
     api.login()
     r = api.search_image(query)
 
-    if r.images is not None:
+    if r.images:
         for img in r.images:
             assert img.id
             assert img.create_date
