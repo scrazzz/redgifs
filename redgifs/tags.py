@@ -87,14 +87,13 @@ class Tags:
 
         Parameters
         ----------
-        count: :class:`int`
-            The amount of tags to return.
+        count: Optional[:class:`int`]
+            The amount of tags to return. Defaults to 1.
 
         Returns
         -------
-        Union[:class:`str`, List[:class:`str`]]
-            If the ``count`` specified is ``1`` then a single random tag is returned
-            or else a list of tags are returned.
+        :class:`str` or List[:class:`str`]
+            A single random tag if ``count`` is 1, otherwise a list of random tags.
         """
         # If this method is being used alone, then `tags_mapping` needs to be set
         if len(self.tags_mapping) == 0:

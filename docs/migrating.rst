@@ -29,7 +29,7 @@ The entire feeds API has been removed. RedGifs had removed the feeds page from t
 The :meth:`~redgifs.API.fetch_tag_suggestions()` method has been updated and now returns a List[:class:`.TagSuggestion`] type.
 
 4. :class:`MediaType` enum
-------------
+--------------------------
 The enum which was passed to methods :meth:`~redgifs.API.get_top_this_week()` and :meth:`~redgifs.API.search_creator()`
 has been renamed from ``Type`` to :class:`.MediaType`.
 
