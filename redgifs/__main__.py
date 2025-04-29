@@ -44,12 +44,12 @@ if TYPE_CHECKING:
 def download_gif(client, url: yarl.URL, quality: str, folder: Optional[Path], *, skip_check: bool = False):
     # If skip_check is true then this will be the GIF's ID and splitting the URL is not required
     id = str(url).lower() if skip_check else url.path.split('/')[-1]
+    click.echo(f'Downloading {id}...')
     gif = client.get_gif(id)
     gif_url = gif.urls.sd if quality == 'sd' else gif.urls.hd
     filename = f'{gif_url.split("/")[3].split(".")[0]}.mp4'
     dir_ = f'{folder}/{filename}' if folder else filename
     client.download(gif_url, dir_)
-    click.echo(f'Downloading {id}...')
     click.echo('Download complete.')
 
 def _dl_with_args(client, gif: GIF | Image, quality: str, folder: Optional[Path], is_image: bool):
