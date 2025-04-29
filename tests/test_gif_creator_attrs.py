@@ -47,4 +47,4 @@ def test_attrs():
         assert c.url
         assert c.username
         assert isinstance(c.verified, bool)
-        assert c.views
+        assert isinstance(c.views, int)
