@@ -95,7 +95,7 @@ def _gifs_iter(gifs: List[GifInfo]) -> List[GIF]:
             published=g['published'],
             urls=URL(
                 sd=g['urls']['sd'],
-                hd=g['urls']['hd'],
+                hd=g['urls'].get('hd'),
                 poster=g['urls'].get('poster'),
                 thumbnail=g['urls']['thumbnail'],
                 vthumbnail=g['urls'].get('vthumbnail'),
@@ -124,7 +124,7 @@ def _images_iter(images: List[ImageInfo]) -> List[Image]:
             published=i['published'],
             urls=URL(
                 sd=i['urls']['sd'],
-                hd=i['urls']['hd'],
+                hd=i['urls'].get('hd'),
                 poster=i['urls'].get('poster'),
                 thumbnail=i['urls']['thumbnail'],
                 vthumbnail=i['urls'].get('vthumbnail'),

@@ -246,7 +246,7 @@ class HTTP:
         if (yarl_url.host is not None and 'redgifs.com' in yarl_url.host):
             if 'watch' in yarl_url.path:
                 id = yarl_url.path.strip('/watch/')
-                hd_url = self.get_gif(id)['gif']['urls']['hd']
+                hd_url = self.get_gif(id)['gif']['urls'].get('hd') or self.get_gif(id)['gif']['urls'].get('sd')
                 return dl(hd_url)
             else:
                 return dl(str_url)
@@ -415,7 +415,7 @@ class AsyncHttp:
         if (yarl_url.host is not None and 'redgifs.com' in yarl_url.host):
             if 'watch' in yarl_url.path:
                 id = yarl_url.path.strip('/watch/')
-                hd_url = (await self.get_gif(id))['gif']['urls']['hd']
+                hd_url = (await self.get_gif(id))['gif']['urls'].get('hd') or (await self.get_gif(id))['gif']['urls'].get('sd')
                 return (await dl(hd_url))
             else:
                 return (await dl(str_url))

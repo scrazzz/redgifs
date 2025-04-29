@@ -26,8 +26,7 @@ class ImageInfo(TypedDict):
     sexuality: Optional[List[str]]
 
 
-# NOTE: even though this is an image, the field for this is `gifs`
-# NOTE: see the type of `gifs` key.
+# NOTE: even though this is an image, the field for this from RedGifs is `gifs`
 class BaseImageResponse(TypedDict):
     page: int
     pages: int

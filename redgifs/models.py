@@ -39,7 +39,7 @@ class URL:
     ----------
     sd: :class:`str`
         The sd URL of the media.
-    hd: :class:`str`
+    hd: Optional[:class:`str`]
         The hd URL of the media.
     poster: Optional[:class:`str`]
         The poster URL of the media.
@@ -58,7 +58,7 @@ class URL:
     __slots__ = ('sd', 'hd', 'poster', 'thumbnail', 'vthumbnail', 'web_url', 'file_url', 'embed_url')
 
     sd: str
-    hd: str
+    hd: Optional[str]
     poster: Optional[str]
     thumbnail: str
     vthumbnail: Optional[str]

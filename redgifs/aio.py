@@ -118,7 +118,7 @@ class API:
             published=json['published'],
             urls=URL(
                 sd=urls['sd'],
-                hd=urls['hd'],
+                hd=urls.get('hd'),
                 poster=urls.get('poster'),
                 thumbnail=urls['thumbnail'],
                 vthumbnail=urls.get('vthumbnail'),

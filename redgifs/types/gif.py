@@ -5,8 +5,8 @@ from .user import UserInfo
 
 class MediaInfo(TypedDict):
     sd: str
-    hd: str
-    gif: str
+    hd: Optional[str]
+    html: str
     poster: str
     thumbnail: str
     vthumbnail: Optional[str]
