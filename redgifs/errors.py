@@ -60,14 +60,20 @@ class HTTPException(RedGifsError):
 
     def __init__(self, response: Union[requests.Response, aiohttp.ClientResponse], json: Optional[Union[Dict[str, Any], str]]):
         self.response: Any = response
+        self.reason: Optional[str] = response.reason
+        self.status: int
+        self.code: str
+        self.message: str
 
         if isinstance(response, requests.Response):
             self.status = response.status_code
         elif isinstance(response, aiohttp.ClientResponse):
             self.status = response.status
 
-        self.error: Optional[Union[Dict[str, Any], str]] = json
         if isinstance(json, dict):
-            self.error = json.get('errorMessage') or json.get('error') or json.get('message')
+            error = json.get('errorMessage') or json.get('error')
+            if error:
+                self.code = error.get('code', '')
+                self.message = error.get('message', '')
 
-        super().__init__(f'{self.status} (Error: {self.error})')
+        super().__init__(f'{self.status} {self.reason} ({self.code}: {self.message})')
