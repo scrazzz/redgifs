@@ -3,15 +3,19 @@
 Changelogs
 ==========
 
-2.1.2
+2.2.0
 -----
 - Fixed multiple KeyErrors inside the library:
 
   * https://github.com/scrazzz/redgifs/commit/c4acb0d1a8f0c8bce558c398c9b1e9e17d0f397b
   * https://github.com/scrazzz/redgifs/commit/e654b1b2ecbad7f5cc06f459deb60a5093a3bd7d
   * https://github.com/scrazzz/redgifs/commit/13ca04479c2ec8b4d9f8b56e1dbb8e3ddec1a6ae
+  * https://github.com/scrazzz/redgifs/commit/e654b1b2ecbad7f5cc06f459deb60a5093a3bd7d
 
 - Fixed KeyError in :py:meth:`.Tags.random()` method when used independently.
+- Changed type of :py:attr:`.User.profile_url`
+- Changed type of :py:attr:`.User.name`
+- Changed type of :py:attr:`.URL.hd`
 
 2.1.1
 -----
