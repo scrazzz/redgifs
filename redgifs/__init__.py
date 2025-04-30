@@ -26,7 +26,7 @@ __title__ = 'redgifs'
 __author__ = 'scrazzz'
 __license__ = 'MIT'
 __copyright__ = 'Copyright (c) 2022-present scrazzz'
-__version__ = '2.1.2a'
+__version__ = '2.2.0a'
 
 from typing import Literal, NamedTuple
 
@@ -43,6 +43,6 @@ class VersionInfo(NamedTuple):
     micro: int
     releaselevel: Literal['alpha', 'beta', 'final']
 
-version_info: VersionInfo = VersionInfo(major=2, minor=1, micro=2, releaselevel='alpha')
+version_info: VersionInfo = VersionInfo(major=2, minor=2, micro=0, releaselevel='alpha')
 
 del NamedTuple, VersionInfo
