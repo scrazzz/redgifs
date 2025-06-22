@@ -51,8 +51,27 @@ Options:
 ```
 
 Examples:
+
+<details>
+<summary>Download multiple GIFs</summary>
+
 ```console
-$ # Download files to a folder
+$ redgifs https://redgifs.com/watch/abc https://redgifs.com/watch/xyz https://redgifs.com/watch/def
+Downloading abc...
+Download complete
+
+Downloading xyz...
+Download complete
+
+Downloading def...
+Download complete
+```
+</details>
+
+<details>
+<summary>Download GIFs to a specific folder</summary>
+    
+```console
 $ ls
 Home    Downloads  Homework  Music
 Backup  Documents  Videos    Games
@@ -62,10 +81,12 @@ Download complete
 $ ls Homework
 xyz.mp4
 ```
+</details>
+
+<details>
+<summary>Download GIFs from a text file that contains a list of URLs</summary>
 
 ```console
-$ # Download GIFs from a file that contains a list of URLs
-$
 $ # urls.txt:
 $ # https://redigfs.com/watch/xyz
 $ # https://redigfs.com/watch/qwe
@@ -77,17 +98,20 @@ Downloading xyz...
 Download complete
 Downloading qwe...
 ```
+</details>
+
+<details>
+<summary>Download all GIFs from a user's profile</summary>
 
 ```console
-$ # Download all GIFs from a user's profile
 $ mkdir rg_vids
 $ redgifs https://redgifs.com/users/usernamethatexists -f rg_vids
 Downloaded 1/3 GIFs
 Downloaded 2/3 GIFs
-Downloaded 3/3 GIFs
 ...
 Downloaded 3/3 videos of user usernamethatexists to folder rg_vids sucessfully!
 ```
+</details>
 
 #### 2. Synchronous usage:
 ```py
