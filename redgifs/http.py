@@ -123,8 +123,10 @@ class HTTP:
         self.__session.close()
 
     # TODO: Implement OAuth login support
-    def login(self, username: Optional[str] = None, password: Optional[str] = None) -> None:
-        if (username and password) is None:
+    def login(self, username: Optional[str] = None, password: Optional[str] = None, token: Optional[str] = None) -> None:
+        if token is not None:
+            self.headers['authorization'] = f'Bearer {token}'
+        elif (username and password) is None:
             temp_token = self.get_temp_token()['token']
             self.headers['authorization'] = f'Bearer {temp_token}'
         else:
