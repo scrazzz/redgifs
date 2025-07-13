@@ -72,7 +72,7 @@ class API:
         self.http: HTTP = HTTP(session, proxy=proxy, proxy_auth=proxy_auth)
         self._tags = Tags()
 
-    def login(self) -> 'API':
+    def login(self, token: Optional[str] = None) -> 'API':
         """
         A method to login to RedGifs with a temporary token.
         You must use this method after initialising the :class:`API <redgifs.API>` class 
@@ -82,7 +82,7 @@ class API:
         -------
         :class:`API` - The properly initialised API class.
         """
-        self.http.login()
+        self.http.login(token=token)
         return self
 
     def get_tags(self) -> List[TagInfo]:
