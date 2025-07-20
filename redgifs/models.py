@@ -43,7 +43,7 @@ class URL:
         The hd URL of the media.
     poster: Optional[:class:`str`]
         The poster URL of the media.
-    thumbnail: :class:`str`
+    thumbnail: Optional[:class:`str`]
         The thumbnail URL of the media.
     vthumbnail: Optional[:class:`str`]
         The vthumbnail URL of the media.
@@ -60,7 +60,7 @@ class URL:
     sd: str
     hd: Optional[str]
     poster: Optional[str]
-    thumbnail: str
+    thumbnail: Optional[str]
     vthumbnail: Optional[str]
     web_url: str
     file_url: Optional[str]
