@@ -3,6 +3,11 @@
 Changelogs
 ==========
 
+2.3.0
+-----
+- Fixed CLI download logic and f-string error `0af610a <https://github.com/scrazzz/redgifs/commit/0af610a6d0f30a2f93a5c95c1dc0166000d2eef7>`_
+- Changed type of :py:attr:`.URL.thumbnail` to ``Optional[str]``
+
 2.2.0
 -----
 - Fixed multiple KeyErrors inside the library:
@@ -28,7 +33,8 @@ Changelogs
 
 **Breaking Changes**
 
-- From this version onwards, breaking changes will be done on "minor" versions (semver ``major.minor.patch``). Please refer to the migrating guide (:ref:`Migrating to v2.x`) to know about the changes.
+- From this version onwards, breaking changes will be done on "minor" versions (semver ``major.minor.patch``).
+- Please refer to the migrating guide (:ref:`Migrating to v2.x`) to know about the changes on this version.
 
 2.0.0
 -----
