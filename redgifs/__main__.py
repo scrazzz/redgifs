@@ -39,20 +39,21 @@ from redgifs.enums import MediaType
 from . import __version__
 
 if TYPE_CHECKING:
+    from redgifs import API
     from redgifs.models import GIF, Image
 
-def download_gif(client, url: yarl.URL, quality: str, folder: Optional[Path], *, skip_check: bool = False):
+def download_gif(client: API, url: yarl.URL, quality: str, folder: Optional[Path], *, skip_check: bool = False):
     # If skip_check is true then this will be the GIF's ID and splitting the URL is not required
     id = str(url).lower() if skip_check else url.path.split('/')[-1]
     click.echo(f'Downloading {id}...')
     gif = client.get_gif(id)
-    gif_url = gif.urls.sd if quality == 'sd' else gif.urls.hd
+    gif_url = gif.urls.sd if quality == 'sd' else (gif.urls.hd or gif.urls.sd)
     filename = f'{gif_url.split("/")[3].split(".")[0]}.mp4'
     dir_ = f'{folder}/{filename}' if folder else filename
     client.download(gif_url, dir_)
     click.echo('Download complete.')
 
-def _dl_with_args(client, gif: GIF | Image, quality: str, folder: Optional[Path], is_image: bool):
+def _dl_with_args(client: API, gif: GIF | Image, quality: str, folder: Optional[Path], is_image: bool):
     gif_url = gif.urls.sd if quality == 'sd' else gif.urls.hd or gif.urls.sd
     filename = f'{gif_url.split("/")[3].split(".")[0]}.mp4'
     if is_image:
@@ -64,59 +65,45 @@ def _dl_with_args(client, gif: GIF | Image, quality: str, folder: Optional[Path]
     else:
         client.download(gif_url, f'{filename}')
 
-def download_users_gifs(client, url: yarl.URL, quality: str, folder: Optional[Path], images_only: bool):
+def download_users_gifs(client: API, url: yarl.URL, quality: str, folder: Optional[Path], images_only: bool):
     match = re.match(r'https://(www\.)?redgifs\.com\/users\/(?P<username>\w+)', str(url))
     if not match:
         click.UsageError(f'Not a valid redgifs user URL: {url}')
         exit(1)
 
     is_image = images_only
-
     user = match.groupdict()['username']
-    data = client.search_creator(user, media_type=MediaType.IMAGE if is_image else MediaType.GIF)
+
+    media_type = MediaType.IMAGE if is_image else MediaType.GIF
+    data = client.search_creator(user, type=media_type)
+
     curr_page = data.page
     total_pages = data.pages
-    total_gifs_in_page = data.gifs if not is_image else data.images
+    media_items = data.images if is_image else data.gifs
     total = data.total
     done = 0
 
-     # Case where there is only 1 page
-    if curr_page == total_pages:
-        spinner = itertools.cycle(["-", "\\", "|", "/"])
-        for gif in total_gifs_in_page:
-            try:
-                _dl_with_args(client, gif, quality, folder, is_image)
-                done += 1
-                click.echo(f'\r{next(spinner)} Downloaded {done}/{total} {"GIFs" if not is_image else "image"}', nl=False)
-            except Exception as e:
-                click.UsageError(f'[!] An error occurred when downloading {url}:\n{e}. Continuing...')
-                continue
+    spinner = itertools.cycle(["-", "\\", "|", "/"])
 
-        click.echo(f'\r[-] Downloaded {done}/{total} {"videos" if not is_image else "images"} of user {user} {f"to folder '{folder}'" if folder else ""} sucessfully!')
-        exit(0)
-
-    # Case where there is more than 1 page
     while curr_page <= total_pages:
-        spinner = itertools.cycle(["-", "\\", "|", "/"])
-        for gif in total_gifs_in_page:
+        for item in media_items:
             try:
-                _dl_with_args(client, gif, quality, folder, is_image)
+                _dl_with_args(client, item, quality, folder, is_image)
                 done += 1
-                click.echo(f'\r{next(spinner)} Downloaded {done}/{total} {"GIFs" if not is_image else "image"}', nl=False)
+                click.echo(f'\r{next(spinner)} Downloading {done}/{total} {"images" if is_image else "GIFs"}...', nl=False)
             except Exception as e:
-                click.echo(f'[!] An error occurred when downloading {url}:\n{e}. Continuing...')
+                click.echo(f'[!] An error occurred when downloading {url}: {e}\nContinuing...')
                 continue
 
-        # If we are in the last page, break the loop
         if curr_page == total_pages:
             break
 
         curr_page += 1
-        total_gifs_in_page.clear()
-        data = client.search_creator(user, page=curr_page)
-        total_gifs_in_page.extend(data.gifs)
+        data = client.search_creator(user, page=curr_page, type=media_type)
+        media_items = data.images if is_image else data.gifs
 
-    click.echo(f'\r[-] Downloaded {done}/{total} {"videos" if not is_image else "images"} of user {user} {f"to folder '{folder}'" if folder else ""} sucessfully!')
+    folder_info = f"to folder '{folder}'" if folder else ""
+    click.echo(f"\r[-] Downloaded {done}/{total} {'images' if is_image else 'GIFs'} of user {user} {folder_info} successfully!")
 
 @click.command()
 @click.argument('urls', nargs=-1)
