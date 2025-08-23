@@ -26,6 +26,7 @@ import datetime
 from dataclasses import dataclass
 from typing import Dict, List, Optional, TypedDict
 
+
 @dataclass
 class URL:
     """The different types of URLs.
@@ -65,6 +66,7 @@ class URL:
     web_url: str
     file_url: Optional[str]
     embed_url: Optional[str]
+
 
 @dataclass
 class GIF:
@@ -106,9 +108,21 @@ class GIF:
     """
 
     __slots__ = (
-        'id', 'create_date', 'has_audio', 'width', 'height',
-        'likes', 'tags', 'verified', 'views', 'duration',
-        'published', 'urls', 'username', 'type', 'avg_color',
+        'id',
+        'create_date',
+        'has_audio',
+        'width',
+        'height',
+        'likes',
+        'tags',
+        'verified',
+        'views',
+        'duration',
+        'published',
+        'urls',
+        'username',
+        'type',
+        'avg_color',
     )
 
     id: str
@@ -127,6 +141,7 @@ class GIF:
     type: int
     avg_color: str
     # gallery
+
 
 @dataclass
 class Image:
@@ -164,9 +179,19 @@ class Image:
     """
 
     __slots__ = (
-        'id', 'create_date', 'width', 'height',
-        'likes', 'tags', 'verified', 'views',
-        'published', 'urls', 'username', 'type', 'avg_color',
+        'id',
+        'create_date',
+        'width',
+        'height',
+        'likes',
+        'tags',
+        'verified',
+        'views',
+        'published',
+        'urls',
+        'username',
+        'type',
+        'avg_color',
     )
 
     id: str
@@ -182,6 +207,7 @@ class Image:
     username: str
     type: int
     avg_color: str
+
 
 @dataclass
 class User:
@@ -234,10 +260,26 @@ class User:
     """
 
     __slots__ = (
-        'creation_time', 'description', 'followers', 'following', 'gifs',
-        'name', 'profile_image_url', 'profile_url', 'published_collections', 'published_gifs',
-        'status', 'subscription', 'url', 'username', 'verified',
-        'views', 'poster', 'preview', 'thumbnail', 'links'
+        'creation_time',
+        'description',
+        'followers',
+        'following',
+        'gifs',
+        'name',
+        'profile_image_url',
+        'profile_url',
+        'published_collections',
+        'published_gifs',
+        'status',
+        'subscription',
+        'url',
+        'username',
+        'verified',
+        'views',
+        'poster',
+        'preview',
+        'thumbnail',
+        'links',
     )
 
     creation_time: Optional[datetime.datetime]
@@ -260,6 +302,7 @@ class User:
     preview: Optional[str]
     thumbnail: Optional[str]
     links: Optional[List[Dict[str, str]]]
+
 
 @dataclass
 class SearchResult:
@@ -288,7 +331,14 @@ class SearchResult:
     """
 
     __slots__ = (
-        'searched_for', 'page', 'pages', 'total', 'gifs', 'images', 'users', 'tags',
+        'searched_for',
+        'page',
+        'pages',
+        'total',
+        'gifs',
+        'images',
+        'users',
+        'tags',
     )
 
     searched_for: str
@@ -299,6 +349,7 @@ class SearchResult:
     images: Optional[List[Image]]
     users: List[User]
     tags: List[str]
+
 
 @dataclass
 class CreatorsResult:
@@ -323,6 +374,7 @@ class CreatorsResult:
     page: int
     pages: int
     total: int
+
 
 @dataclass
 class CreatorResult:
@@ -353,9 +405,10 @@ class CreatorResult:
     gifs: List[GIF]
     images: List[Image]
 
+
 class TagSuggestion(TypedDict):
     """The tag suggestion results.
-    
+
     Attributes
     ----------
     name: :class:`str`
@@ -363,5 +416,6 @@ class TagSuggestion(TypedDict):
     count: :class:`int`
         The number of GIFs with this tag.
     """
+
     name: str
     count: int

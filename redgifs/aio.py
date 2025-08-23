@@ -41,6 +41,7 @@ from .models import GIF, URL, CreatorResult, Image, SearchResult, CreatorsResult
 if TYPE_CHECKING:
     from redgifs.types.tags import TagInfo
 
+
 class API:
     """The API Instance to get information from the RedGifs API.
 
@@ -54,6 +55,7 @@ class API:
     proxy_auth: Optional[:class:`.ProxyAuth`]
         The proxy auth to provide if the proxy requires it.
     """
+
     def __init__(
         self,
         session: Optional[aiohttp.ClientSession] = None,
@@ -67,7 +69,7 @@ class API:
     async def login(self) -> 'API':
         """
         A method to login to RedGifs with a temporary token.
-        You must use this method after initialising the :class:`API` class 
+        You must use this method after initialising the :class:`API` class
         for this library to function properly.
 
         Returns
@@ -79,7 +81,7 @@ class API:
 
     async def get_tags(self) -> List[TagInfo]:
         """Get all available RedGifs Tags.
-        
+
         Returns
         -------
         ``List[Dict[str, Union[str, int]]]``
@@ -127,7 +129,7 @@ class API:
                 embed_url=to_embed_url(urls['sd']),
             ),
             username=json['userName'],
-            type=json['type'], # TODO: Find what this type is
+            type=json['type'],  # TODO: Find what this type is
             avg_color=json['avgColor'],
         )
 
@@ -199,7 +201,7 @@ class API:
         """Get tag suggestions from RedGifs.
 
         .. note::
-        
+
             It's advised to use :func:`Tags.search()` to prevent multiple API calls to redgifs.com.
 
         Parameters
@@ -362,9 +364,9 @@ class API:
             await api.download(hd_url, "video.mp4")
 
         .. note::
-            
+
             You should use this method to download any media from RedGifs
-            because RedGifs does validation on User-Agents and other params. 
+            because RedGifs does validation on User-Agents and other params.
             If you try to download it by using any other means, it will return a 403 error.
 
         Parameters
@@ -376,8 +378,8 @@ class API:
             to use. If a filename is passed then a file is created with that
             filename and used instead.
         """
-        return (await self.http.download(url, fp))
+        return await self.http.download(url, fp)
 
     async def close(self) -> None:
         """Closes the API session."""
-        return (await self.http.close())
+        return await self.http.close()

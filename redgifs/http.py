@@ -53,8 +53,9 @@ if TYPE_CHECKING:
     T = TypeVar('T')
     Response = Coroutine[Any, Any, T]
 
+
 class Route:
-    BASE: ClassVar[str] = "https://api.redgifs.com"
+    BASE: ClassVar[str] = 'https://api.redgifs.com'
 
     def __init__(self, method: str, path: str, **parameters: Any) -> None:
         self.method: str = method
@@ -64,6 +65,7 @@ class Route:
             url = url.format_map({k: quote(v) if isinstance(v, str) else v for k, v in parameters.items()})
         self.url: str = url
 
+
 class ProxyAuth(NamedTuple):
     """
     username: :class:`str`
@@ -71,8 +73,10 @@ class ProxyAuth(NamedTuple):
     password: :class:`str`
         The password.
     """
+
     username: str
     password: str
+
 
 class HTTP:
     def __init__(
@@ -80,11 +84,10 @@ class HTTP:
         session: Optional[requests.Session] = None,
         *,
         proxy: Optional[str] = None,
-        proxy_auth: Optional[ProxyAuth] = None
+        proxy_auth: Optional[ProxyAuth] = None,
     ) -> None:
-
         if session is not None and session is not isinstance(session, requests.Session):
-            raise RuntimeError("session is not of type requests.Session")
+            raise RuntimeError('session is not of type requests.Session')
 
         self.__session: requests.Session = session or requests.Session()
         self.headers: Dict[str, str] = {
@@ -143,27 +146,29 @@ class HTTP:
 
     def search(self, search_text: str, order: Order, count: int, page: int, **params: Any) -> GifResponse:
         r = Route(
-            'GET', '/v2/gifs/search?search_text={search_text}&order={order}&count={count}&page={page}',
-            search_text=search_text, order=order.value, count=count, page=page
+            'GET',
+            '/v2/gifs/search?search_text={search_text}&order={order}&count={count}&page={page}',
+            search_text=search_text,
+            order=order.value,
+            count=count,
+            page=page,
         )
         return self.request(r, **params)
 
     def get_top_this_week(self, count: int, page: int, type: MediaType, **params) -> GifResponse:
         r = Route(
-            'GET', '/v2/gifs/search?order=top7&count={count}&page={page}&type={type}',
-            count=count, page=page, type=type.value
+            'GET',
+            '/v2/gifs/search?order=top7&count={count}&page={page}&type={type}',
+            count=count,
+            page=page,
+            type=type.value,
         )
         return self.request(r, **params)
 
     # User/Creator methods
 
     def search_creators(
-        self,
-        page: int,
-        order: Order,
-        verified: bool,
-        tags: Optional[List[str]],
-        **params: Any
+        self, page: int, order: Order, verified: bool, tags: Optional[List[str]], **params: Any
     ) -> CreatorsResponse:
         url = '/v1/creators/search?page={page}&order={order}'
         if verified:
@@ -171,21 +176,24 @@ class HTTP:
         if tags:
             url += '&tags={tags}'
             r = Route(
-                'GET', url,
-                page=page, order=order.value, verified='y' if verified else 'n', tags=','.join(t for t in tags)
+                'GET', url, page=page, order=order.value, verified='y' if verified else 'n', tags=','.join(t for t in tags)
             )
             return self.request(r, **params)
         else:
-            r = Route(
-                'GET', url,
-                page=page, order=order.value, verified='y' if verified else 'n'
-            )
+            r = Route('GET', url, page=page, order=order.value, verified='y' if verified else 'n')
             return self.request(r, **params)
 
-    def search_creator(self, username: str, page: int, count: int, order: Order, type: MediaType, **params) -> CreatorResponse:
+    def search_creator(
+        self, username: str, page: int, count: int, order: Order, type: MediaType, **params
+    ) -> CreatorResponse:
         r = Route(
-            'GET', '/v2/users/{username}/search?page={page}&count={count}&order={order}&type={type}',
-            username=username, page=page, count=count, order=order.value, type=type.value
+            'GET',
+            '/v2/users/{username}/search?page={page}&count={count}&order={order}&type={type}',
+            username=username,
+            page=page,
+            count=count,
+            order=order.value,
+            type=type.value,
         )
         return self.request(r, **params)
 
@@ -197,8 +205,12 @@ class HTTP:
 
     def search_image(self, search_text: str, order: Order, count: int, page: int, **params: Any) -> ImageResponse:
         r = Route(
-            'GET', '/v2/gifs/search?search_text={search_text}&order={order}&count={count}&page={page}&type=i',
-            search_text=search_text, order=order.value, count=count, page=page
+            'GET',
+            '/v2/gifs/search?search_text={search_text}&order={order}&count={count}&page={page}&type=i',
+            search_text=search_text,
+            order=order.value,
+            count=count,
+            page=page,
         )
         return self.request(r, **params)
 
@@ -218,14 +230,16 @@ class HTTP:
 
     # download
 
-    def download(self, url: str, fp: Union[str, bytes, os.PathLike[Any], io.BufferedIOBase]) -> Union[Coroutine[Any, Any, int], int]:
+    def download(
+        self, url: str, fp: Union[str, bytes, os.PathLike[Any], io.BufferedIOBase]
+    ) -> Union[Coroutine[Any, Any, int], int]:
         """A friendly method to download a RedGifs media."""
 
         yarl_url = yarl.URL(url)
         str_url = str(yarl_url)
 
         def dl(url: str) -> int:
-            r = self.__session.get(url, headers = self.headers)
+            r = self.__session.get(url, headers=self.headers)
             _log.debug(f'GET {url} returned code: {r.status_code}')
 
             if r.status_code == 404:
@@ -243,7 +257,7 @@ class HTTP:
                 with open(fp, 'wb') as f:
                     return f.write(data)
 
-        if (yarl_url.host is not None and 'redgifs.com' in yarl_url.host):
+        if yarl_url.host is not None and 'redgifs.com' in yarl_url.host:
             if 'watch' in yarl_url.path:
                 id = yarl_url.path.strip('/watch/')
                 hd_url = self.get_gif(id)['gif']['urls'].get('hd') or self.get_gif(id)['gif']['urls'].get('sd')
@@ -260,11 +274,10 @@ class AsyncHttp:
         session: Optional[aiohttp.ClientSession] = None,
         *,
         proxy: Optional[str] = None,
-        proxy_auth: Optional[ProxyAuth] = None
+        proxy_auth: Optional[ProxyAuth] = None,
     ) -> None:
-
         if session is not None and session is not isinstance(session, aiohttp.ClientSession):
-            raise RuntimeError("session is not of type aiohttp.ClientSession")
+            raise RuntimeError('session is not of type aiohttp.ClientSession')
 
         self.__session: aiohttp.ClientSession = session or aiohttp.ClientSession()
         self.headers: Dict[str, str] = {
@@ -283,7 +296,12 @@ class AsyncHttp:
         url: str = route.url
         method: str = route.method
         async with self.__session.request(
-            method, url, headers=self.headers, proxy=str(self.proxy) if self.proxy else None, proxy_auth=self._proxy_auth, **kwargs
+            method,
+            url,
+            headers=self.headers,
+            proxy=str(self.proxy) if self.proxy else None,
+            proxy_auth=self._proxy_auth,
+            **kwargs,
         ) as resp:
             _log.debug(f'{method} {url} returned code: {resp.status}')
             js = await resp.json()
@@ -297,7 +315,7 @@ class AsyncHttp:
         await self.__session.close()
 
     async def get_temp_token(self):
-        return (await self.request(Route('GET', '/v2/auth/temporary')))
+        return await self.request(Route('GET', '/v2/auth/temporary'))
 
     # TODO: Implement OAuth login support
     async def login(self, username: Optional[str] = None, password: Optional[str] = None) -> None:
@@ -306,7 +324,7 @@ class AsyncHttp:
             self.headers['authorization'] = f'Bearer {temp_token["token"]}'
         else:
             raise NotImplementedError
-    
+
     # GIF methods
 
     def get_tags(self, **params: Any) -> Response[TagsResponse]:
@@ -317,27 +335,29 @@ class AsyncHttp:
 
     def search(self, search_text: str, order: Order, count: int, page: int, **params: Any) -> Response[GifResponse]:
         r = Route(
-            'GET', '/v2/gifs/search?search_text={search_text}&order={order}&count={count}&page={page}',
-            search_text=search_text, order=order.value, count=count, page=page
+            'GET',
+            '/v2/gifs/search?search_text={search_text}&order={order}&count={count}&page={page}',
+            search_text=search_text,
+            order=order.value,
+            count=count,
+            page=page,
         )
         return self.request(r, **params)
 
     def get_top_this_week(self, count: int, page: int, type: MediaType, **params) -> Response[GifResponse]:
         r = Route(
-            'GET', '/v2/gifs/search?order=top7&count={count}&page={page}&type={type}',
-            count=count, page=page, type=type.value
+            'GET',
+            '/v2/gifs/search?order=top7&count={count}&page={page}&type={type}',
+            count=count,
+            page=page,
+            type=type.value,
         )
         return self.request(r, **params)
 
     # User/Creator methods
 
     def search_creators(
-        self,
-        page: int,
-        order: Order,
-        verified: bool,
-        tags: Optional[List[str]],
-        **params: Any
+        self, page: int, order: Order, verified: bool, tags: Optional[List[str]], **params: Any
     ) -> Response[CreatorsResponse]:
         url = '/v1/creators/search?page={page}&order={order}'
         if verified:
@@ -345,21 +365,24 @@ class AsyncHttp:
         if tags:
             url += '&tags={tags}'
             r = Route(
-                'GET', url,
-                page=page, order=order.value, verified='y' if verified else 'n', tags=','.join(t for t in tags)
+                'GET', url, page=page, order=order.value, verified='y' if verified else 'n', tags=','.join(t for t in tags)
             )
             return self.request(r, **params)
         else:
-            r = Route(
-                'GET', url,
-                page=page, order=order.value, verified='y' if verified else 'n'
-            )
+            r = Route('GET', url, page=page, order=order.value, verified='y' if verified else 'n')
             return self.request(r, **params)
 
-    def search_creator(self, username: str, page: int, count: int, order: Order, type: MediaType, **params) -> Response[CreatorResponse]:
+    def search_creator(
+        self, username: str, page: int, count: int, order: Order, type: MediaType, **params
+    ) -> Response[CreatorResponse]:
         r = Route(
-            'GET', '/v2/users/{username}/search?page={page}&count={count}&order={order}&type={type}',
-            username=username, page=page, count=count, order=order.value, type=type.value
+            'GET',
+            '/v2/users/{username}/search?page={page}&count={count}&order={order}&type={type}',
+            username=username,
+            page=page,
+            count=count,
+            order=order.value,
+            type=type.value,
         )
         return self.request(r, **params)
 
@@ -371,8 +394,12 @@ class AsyncHttp:
 
     def search_image(self, search_text: str, order: Order, count: int, page: int, **params: Any) -> Response[ImageResponse]:
         r = Route(
-            'GET', '/v2/gifs/search?search_text={search_text}&order={order}&count={count}&page={page}&type=i',
-            search_text=search_text, order=order.value, count=count, page=page
+            'GET',
+            '/v2/gifs/search?search_text={search_text}&order={order}&count={count}&page={page}&type=i',
+            search_text=search_text,
+            order=order.value,
+            count=count,
+            page=page,
         )
         return self.request(r, **params)
 
@@ -397,7 +424,7 @@ class AsyncHttp:
         str_url = str(yarl_url)
 
         async def dl(url: str) -> int:
-            async with self.__session.get(url, headers = self.headers) as r:
+            async with self.__session.get(url, headers=self.headers) as r:
                 _log.debug(f'GET {str_url} returned code: {r.status}')
 
                 content_type = r.headers['Content-Type']
@@ -407,17 +434,19 @@ class AsyncHttp:
 
                 data = await r.read()
                 if isinstance(fp, io.BufferedIOBase):
-                    return (fp.write(data))
+                    return fp.write(data)
                 else:
                     with open(fp, 'wb') as f:
                         return f.write(data)
 
-        if (yarl_url.host is not None and 'redgifs.com' in yarl_url.host):
+        if yarl_url.host is not None and 'redgifs.com' in yarl_url.host:
             if 'watch' in yarl_url.path:
                 id = yarl_url.path.strip('/watch/')
-                hd_url = (await self.get_gif(id))['gif']['urls'].get('hd') or (await self.get_gif(id))['gif']['urls'].get('sd')
-                return (await dl(hd_url))
+                hd_url = (await self.get_gif(id))['gif']['urls'].get('hd') or (await self.get_gif(id))['gif']['urls'].get(
+                    'sd'
+                )
+                return await dl(hd_url)
             else:
-                return (await dl(str_url))
+                return await dl(str_url)
 
         raise TypeError(f'"{strip_ip(str_url)}" is not a valid RedGifs URL')

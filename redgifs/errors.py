@@ -29,9 +29,12 @@ import aiohttp
 
 from typing import Any, Dict, Optional, Union
 
+
 class RedGifsError(BaseException):
     """Base class for all redgifs errors."""
+
     pass
+
 
 class InvalidTag(RedGifsError):
     """Exception raised when no match was found for a tag.
@@ -41,9 +44,11 @@ class InvalidTag(RedGifsError):
     tag: :class:`str`
         The tag that was searched for.
     """
+
     def __init__(self, tag: str):
         self.tag: str = tag
         super().__init__(f'Tag for "{tag}" was not found.')
+
 
 class HTTPException(RedGifsError):
     """Exception raised when an HTTP Exception occurs.
@@ -58,7 +63,9 @@ class HTTPException(RedGifsError):
         The original error message from RedGifs.
     """
 
-    def __init__(self, response: Union[requests.Response, aiohttp.ClientResponse], json: Optional[Union[Dict[str, Any], str]]):
+    def __init__(
+        self, response: Union[requests.Response, aiohttp.ClientResponse], json: Optional[Union[Dict[str, Any], str]]
+    ):
         self.response: Any = response
         self.reason: Optional[str] = response.reason
         self.status: int

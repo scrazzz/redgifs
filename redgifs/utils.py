@@ -40,6 +40,7 @@ if TYPE_CHECKING:
     from redgifs.types.image import ImageInfo
     from redgifs.types.user import UserInfo
 
+
 def to_web_url(id_or_url: str, use_regex: bool = False) -> str:
     if not use_regex:
         return f'https://redgifs.com/watch/{id_or_url.lower()}'
@@ -54,11 +55,13 @@ def to_web_url(id_or_url: str, use_regex: bool = False) -> str:
     except IndexError:
         return ''
 
+
 def strip_ip(url: str) -> str:
     u = yarl.URL(url)
     if u.query.get('for'):
         return str(u % {'for': 'REDACTED'})
     return url
+
 
 def build_file_url(url: str) -> str:
     # use the 'sd' url here
@@ -66,18 +69,22 @@ def build_file_url(url: str) -> str:
     filename = u.path.replace('/', '').replace('-mobile.mp4', '')
     return f'https://api.redgifs.com/v2/gifs/{filename.lower()}/files/{filename}.mp4'
 
+
 def to_embed_url(sd_url: str) -> str:
     u = yarl.URL(sd_url)
     filename = u.path.replace('/', '').replace('-mobile.mp4', '.mp4')
     return f'https://api.redgifs.com/v2/embed/discord?name={filename}'
 
+
 def _read_tags_json() -> Dict[str, str]:
     file_ = pkgutil.get_data(__name__, 'tags.json')
-    return json.loads(file_) # type: ignore - file_ will never be None
+    return json.loads(file_)  # type: ignore - file_ will never be None
+
 
 async def _async_read_tags_json() -> Dict[str, str]:
     r = await asyncio.get_event_loop().run_in_executor(None, _read_tags_json)
     return r
+
 
 def _gifs_iter(gifs: List[GifInfo]) -> List[GIF]:
     return [
@@ -110,6 +117,7 @@ def _gifs_iter(gifs: List[GifInfo]) -> List[GIF]:
         for g in gifs
     ]
 
+
 def _images_iter(images: List[ImageInfo]) -> List[Image]:
     return [
         Image(
@@ -139,13 +147,16 @@ def _images_iter(images: List[ImageInfo]) -> List[Image]:
         for i in images
     ]
 
+
 def _users_iter(users: List[UserInfo]) -> List[User]:
     return [
         User(
             # I only had this occurrence once where redgifs did not
             # send the response properly and messed up the entire JSON
             # response, this is why I have used dict.get() here.
-            creation_time=datetime.fromtimestamp(user.get('creationtime'), tz=timezone.utc) if user.get('creationtime') is not None else None,
+            creation_time=datetime.fromtimestamp(user.get('creationtime'), tz=timezone.utc)
+            if user.get('creationtime') is not None
+            else None,
             description=user.get('description'),
             followers=user.get('followers'),
             following=user.get('following'),
@@ -164,7 +175,7 @@ def _users_iter(users: List[UserInfo]) -> List[User]:
             poster=user.get('poster'),
             preview=user.get('preview'),
             thumbnail=user.get('thumbnail'),
-            links=user.get('links')
+            links=user.get('links'),
         )
         for user in users
     ]

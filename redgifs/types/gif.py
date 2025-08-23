@@ -3,6 +3,7 @@ from typing import List, Optional, TypedDict
 from .niches import NichesInfo
 from .user import UserInfo
 
+
 class MediaInfo(TypedDict):
     sd: str
     hd: Optional[str]
@@ -25,7 +26,7 @@ class GifInfo(TypedDict):
     views: Optional[int]
     duration: float
     published: bool
-    type: int # Literal[1,2]
+    type: int  # Literal[1,2]
     urls: MediaInfo
     userName: str
     avgColor: str

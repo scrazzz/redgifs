@@ -42,6 +42,7 @@ if TYPE_CHECKING:
     from redgifs import API
     from redgifs.models import GIF, Image
 
+
 def download_gif(client: API, url: yarl.URL, quality: str, folder: Optional[Path], *, skip_check: bool = False):
     # If skip_check is true then this will be the GIF's ID and splitting the URL is not required
     id = str(url).lower() if skip_check else url.path.split('/')[-1]
@@ -53,17 +54,19 @@ def download_gif(client: API, url: yarl.URL, quality: str, folder: Optional[Path
     client.download(gif_url, dir_)
     click.echo('Download complete.')
 
+
 def _dl_with_args(client: API, gif: GIF | Image, quality: str, folder: Optional[Path], is_image: bool):
     gif_url = gif.urls.sd if quality == 'sd' else gif.urls.hd or gif.urls.sd
     filename = f'{gif_url.split("/")[3].split(".")[0]}.mp4'
     if is_image:
-        name, ext = gif_url.split("/")[3].split('.')
+        name, ext = gif_url.split('/')[3].split('.')
         filename = f'{name}.{ext}'
 
     if folder:
         client.download(gif_url, f'{folder}/{filename}')
     else:
         client.download(gif_url, f'{filename}')
+
 
 def download_users_gifs(client: API, url: yarl.URL, quality: str, folder: Optional[Path], images_only: bool):
     match = re.match(r'https://(www\.)?redgifs\.com\/users\/(?P<username>\w+)', str(url))
@@ -83,7 +86,7 @@ def download_users_gifs(client: API, url: yarl.URL, quality: str, folder: Option
     total = data.total
     done = 0
 
-    spinner = itertools.cycle(["-", "\\", "|", "/"])
+    spinner = itertools.cycle(['-', '\\', '|', '/'])
 
     while curr_page <= total_pages:
         for item in media_items:
@@ -102,28 +105,49 @@ def download_users_gifs(client: API, url: yarl.URL, quality: str, folder: Option
         data = client.search_creator(user, page=curr_page, type=media_type)
         media_items = data.images if is_image else data.gifs
 
-    folder_info = f"to folder '{folder}'" if folder else ""
-    click.echo(f"\r[-] Downloaded {done}/{total} {'images' if is_image else 'GIFs'} of user {user} {folder_info} successfully!")
+    folder_info = f"to folder '{folder}'" if folder else ''
+    click.echo(
+        f'\r[-] Downloaded {done}/{total} {"images" if is_image else "GIFs"} of user {user} {folder_info} successfully!'
+    )
+
 
 @click.command()
 @click.argument('urls', nargs=-1)
 @click.option('-v', '--version', is_flag=True, help='Shows currently installed version.')
-@click.option('-q', '--quality', type=click.Choice(['sd', 'hd']), default='hd', show_default=True, help='Video quality of GIF to download.')
 @click.option(
-    '-f', '--folder',
-    help='The folder to save the downloads to.',
-    type=click.Path(exists=True, file_okay=False, dir_okay=True, path_type=Path),
-    metavar='FOLDER_NAME'
+    '-q',
+    '--quality',
+    type=click.Choice(['sd', 'hd']),
+    default='hd',
+    show_default=True,
+    help='Video quality of GIF to download.',
 )
 @click.option(
-    '-i', '--input', 'file',
+    '-f',
+    '--folder',
+    help='The folder to save the downloads to.',
+    type=click.Path(exists=True, file_okay=False, dir_okay=True, path_type=Path),
+    metavar='FOLDER_NAME',
+)
+@click.option(
+    '-i',
+    '--input',
+    'file',
     help='Download URLs from a newline seperated txt file.',
     type=click.Path(exists=True, file_okay=True, dir_okay=False),
-    metavar='FILE_NAME'
+    metavar='FILE_NAME',
 )
 @click.option('--images', is_flag=True, help='Download only images from a user profile.')
 @click.pass_context
-def cli(ctx: click.Context, urls: Iterable[str], quality: str, folder: Optional[Path], file: Optional[str], version: bool, images: bool) -> None:
+def cli(
+    ctx: click.Context,
+    urls: Iterable[str],
+    quality: str,
+    folder: Optional[Path],
+    file: Optional[str],
+    version: bool,
+    images: bool,
+) -> None:
     if version:
         info = []
         info.append('- python: v{0.major}.{0.minor}.{0.micro}-{0.releaselevel}'.format(sys.version_info))

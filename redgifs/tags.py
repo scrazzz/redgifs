@@ -31,6 +31,7 @@ from .errors import InvalidTag
 
 __all__ = ('Tags',)
 
+
 class Tags:
     tags_mapping: Dict[str, str] = {}
 
@@ -74,12 +75,10 @@ class Tags:
             return results
 
     @overload
-    def random(self, count: Literal[1] = ...) -> str:
-        ...
+    def random(self, count: Literal[1] = ...) -> str: ...
 
     @overload
-    def random(self, count: int) -> List[str]:
-        ...
+    def random(self, count: int) -> List[str]: ...
 
     def random(self, count: int = 1):
         """
@@ -99,5 +98,4 @@ class Tags:
         if len(self.tags_mapping) == 0:
             self._set(_read_tags_json())
 
-        return choices(list(self.tags_mapping.values()), k=count) if count != 1 \
-        else choice(list(self.tags_mapping.values()))
+        return choices(list(self.tags_mapping.values()), k=count) if count != 1 else choice(list(self.tags_mapping.values()))

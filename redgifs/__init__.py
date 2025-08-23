@@ -37,11 +37,13 @@ from .tags import *
 from .errors import *
 from .utils import *
 
+
 class VersionInfo(NamedTuple):
     major: int
     minor: int
     micro: int
     releaselevel: Literal['alpha', 'beta', 'final']
+
 
 version_info: VersionInfo = VersionInfo(major=2, minor=3, micro=0, releaselevel='final')
 

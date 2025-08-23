@@ -43,13 +43,14 @@ if TYPE_CHECKING:
 
 __all__ = ('API',)
 
+
 class API:
     """The API Instance to get information from the RedGifs API.
 
     .. note::
 
         If you are using this library in an asynchronous code,
-        you should be referencing :ref:`Async API` section.
+        you should refer the :ref:`Async API` section.
 
     Parameters
     ----------
@@ -67,7 +68,7 @@ class API:
         session: Optional[requests.Session] = None,
         *,
         proxy: Optional[str] = None,
-        proxy_auth: Optional[ProxyAuth] = None
+        proxy_auth: Optional[ProxyAuth] = None,
     ) -> None:
         self.http: HTTP = HTTP(session, proxy=proxy, proxy_auth=proxy_auth)
         self._tags = Tags()
@@ -75,7 +76,7 @@ class API:
     def login(self) -> 'API':
         """
         A method to login to RedGifs with a temporary token.
-        You must use this method after initialising the :class:`API <redgifs.API>` class 
+        You must use this method after initialising the :class:`API <redgifs.API>` class
         for this library to function properly.
 
         Returns
@@ -87,13 +88,13 @@ class API:
 
     def get_tags(self) -> List[TagInfo]:
         """Get all available RedGifs Tags.
-        
+
         Returns
         -------
         ``List[Dict[str, Union[str, int]]]``
         """
-        return (self.http.get_tags()['tags'])
-    
+        return self.http.get_tags()['tags']
+
     def get_gif(self, id: str) -> GIF:
         """
         Get details of a single GIF using its ID.
@@ -138,7 +139,7 @@ class API:
             type=json['type'],
             avg_color=json['avgColor'],
         )
-    
+
     def get_trending_gifs(self) -> List[GIF]:
         """
         Get the top 10 trending GIFs on RedGifs.
@@ -207,7 +208,7 @@ class API:
         """Get tag suggestions from RedGifs.
 
         .. note::
-        
+
             It's advised to use :func:`Tags.search()` to prevent multiple API calls to redgifs.com.
 
         Parameters
@@ -222,14 +223,7 @@ class API:
         result = self.http.get_tag_suggestions(query)
         return [TagSuggestion(name=d['text'], count=d['gifs']) for d in result]
 
-    def search(
-        self,
-        search_text: str,
-        *,
-        order: Order = Order.TRENDING,
-        count: int = 80,
-        page: int = 1
-    ) -> SearchResult:
+    def search(self, search_text: str, *, order: Order = Order.TRENDING, count: int = 80, page: int = 1) -> SearchResult:
         """
         Search for GIFs.
 
@@ -322,14 +316,7 @@ class API:
 
     search_user = search_creator
 
-    def search_image(
-        self,
-        search_text: str,
-        *,
-        order: Order = Order.NEW,
-        count: int = 80,
-        page: int = 1
-    ) -> SearchResult:
+    def search_image(self, search_text: str, *, order: Order = Order.NEW, count: int = 80, page: int = 1) -> SearchResult:
         """
         Search for images.
 
@@ -367,9 +354,9 @@ class API:
             api.download(hd_url, "video.mp4")
 
         .. note::
-            
+
             You should use this method to download any media from RedGifs
-            because RedGifs does validation on User-Agents and other params. 
+            because RedGifs does validation on User-Agents and other params.
             If you try to download it by using any other means, it will return 403 error.
 
         Parameters

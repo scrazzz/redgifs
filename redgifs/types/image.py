@@ -17,7 +17,7 @@ class ImageInfo(TypedDict):
     verified: bool
     views: Optional[int]
     published: bool
-    type: int # Literal[1,2]
+    type: int  # Literal[1,2]
     urls: MediaInfo
     userName: str
     avgColor: str

@@ -39,6 +39,7 @@ if TYPE_CHECKING:
 
 _log = logging.getLogger(__name__)
 
+
 # For GIFs
 def parse_search(searched_for: str, json: GifResponse, media_type: MediaType) -> SearchResult:
     _log.debug('Using `parse_search` for: {searched_for}')
@@ -73,7 +74,9 @@ def parse_search(searched_for: str, json: GifResponse, media_type: MediaType) ->
                 username=img['userName'],
                 type=img['type'],
                 avg_color=img['avgColor'],
-            ) for img in json['gifs'] if media_type == MediaType.IMAGE
+            )
+            for img in json['gifs']
+            if media_type == MediaType.IMAGE
         ],
         gifs=[
             GIF(
@@ -102,12 +105,14 @@ def parse_search(searched_for: str, json: GifResponse, media_type: MediaType) ->
                 type=gif['type'],
                 avg_color=gif['avgColor'],
             )
-            for gif in json_gifs if media_type == MediaType.GIF
+            for gif in json_gifs
+            if media_type == MediaType.GIF
         ],
         users=[
             User(
                 creation_time=datetime.fromtimestamp(user.get('creationtime'), tz=timezone.utc)
-                if user.get('creationtime') is not None else None,
+                if user.get('creationtime') is not None
+                else None,
                 description=user.get('description'),
                 followers=user['followers'],
                 following=user['following'],
@@ -132,6 +137,7 @@ def parse_search(searched_for: str, json: GifResponse, media_type: MediaType) ->
         ],
         tags=json['tags'],
     )
+
 
 # For images
 def parse_search_image(searched_for: str, json: ImageResponse) -> SearchResult:
@@ -175,6 +181,7 @@ def parse_search_image(searched_for: str, json: ImageResponse) -> SearchResult:
         tags=json['tags'],
     )
 
+
 def parse_creators(json: CreatorsResponse) -> CreatorsResult:
     _log.debug('Using `parse_creators`')
     items = json['items']
@@ -184,6 +191,7 @@ def parse_creators(json: CreatorsResponse) -> CreatorsResult:
         page=json['page'],
         total=json['total'],
     )
+
 
 def parse_creator(json: CreatorResponse, media_type: MediaType) -> CreatorResult:
     _log.debug('Using `parse_creator`')
@@ -218,14 +226,14 @@ def parse_creator(json: CreatorResponse, media_type: MediaType) -> CreatorResult
             GIF(
                 id=gif['id'],
                 create_date=datetime.fromtimestamp(gif['createDate'], tz=timezone.utc),
-                has_audio=gif['hasAudio'], # type: ignore - We aren't setting values for ImageInfo
+                has_audio=gif['hasAudio'],  # type: ignore - We aren't setting values for ImageInfo
                 width=gif['width'],
                 height=gif['height'],
                 likes=gif['likes'],
                 tags=gif['tags'],
                 verified=gif['verified'],
                 views=gif['views'],
-                duration=gif['duration'], # type: ignore - We aren't setting values for ImageInfo
+                duration=gif['duration'],  # type: ignore - We aren't setting values for ImageInfo
                 published=gif['published'],
                 urls=URL(
                     sd=gif['urls']['sd'],
@@ -241,7 +249,8 @@ def parse_creator(json: CreatorResponse, media_type: MediaType) -> CreatorResult
                 type=gif['type'],
                 avg_color=gif['avgColor'],
             )
-            for gif in json['gifs'] if media_type == MediaType.GIF
+            for gif in json['gifs']
+            if media_type == MediaType.GIF
         ],
         images=[
             Image(
@@ -267,6 +276,8 @@ def parse_creator(json: CreatorResponse, media_type: MediaType) -> CreatorResult
                 username=img['userName'],
                 type=img['type'],
                 avg_color=img['avgColor'],
-            ) for img in json['gifs'] if media_type == MediaType.IMAGE # RedGifs return the key for this data as "gifs" even though it's an image...
-        ]
+            )
+            for img in json['gifs']
+            if media_type == MediaType.IMAGE  # RedGifs return the key for this data as "gifs" even though it's an image...
+        ],
     )

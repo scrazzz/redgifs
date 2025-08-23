@@ -50,6 +50,13 @@ redgifs = "redgifs.__main__:cli"
 [tool.setuptools.dynamic]
 version = {attr = "redgifs.__version__"}
 
+[tool.ruff]
+line-length = 125
+
+[tool.ruff.format]
+line-ending = "lf"
+quote-style = "single"
+
 [tool.pyright]
 include = [
     "redgifs",

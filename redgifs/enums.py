@@ -28,20 +28,19 @@ from enum import Enum, EnumMeta
 
 __all__ = ('Order', 'MediaType')
 
+
 class OrderMeta(EnumMeta):
     """Custom metaclass to handle deprecated enum attributes."""
+
     def __getattribute__(cls, name: str):
         """Intercept class attribute access to raise warnings for deprecated names."""
-        deprecated_names = {
-            "trending", "top", "latest", "oldest", "recent", "best", "top28", "new"
-        }
+        deprecated_names = {'trending', 'top', 'latest', 'oldest', 'recent', 'best', 'top28', 'new'}
         if name in deprecated_names:
             warnings.warn(
-                f"'Order.{name}' is deprecated, use 'Order.{name.upper()}' instead.",
-                DeprecationWarning,
-                stacklevel=2
+                f"'Order.{name}' is deprecated, use 'Order.{name.upper()}' instead.", DeprecationWarning, stacklevel=2
             )
         return super().__getattribute__(name)
+
 
 class Order(Enum, metaclass=OrderMeta):
     """An enum representing the order of the results."""
@@ -65,7 +64,9 @@ class Order(Enum, metaclass=OrderMeta):
     NEW = 'new'
     new = 'new'
 
+
 class MediaType(Enum):
     """An enum representing the media type of the results."""
+
     IMAGE = 'i'
     GIF = 'g'
