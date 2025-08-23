@@ -37,6 +37,9 @@ docs = [
 test = [
     "pytest==8.3.5",
 ]
+dev = [
+    "ruff>=0.12.10",
+]
 
 [project.urls]
 Documentation = "https://redgifs.rtfd.io/en/stable/"
