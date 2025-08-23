@@ -36,7 +36,6 @@ import yarl
 
 import redgifs
 from redgifs.enums import MediaType
-from . import __version__
 
 if TYPE_CHECKING:
     from redgifs import API
