@@ -29,6 +29,7 @@ from datetime import datetime, timezone
 from typing import TYPE_CHECKING
 
 from .enums import MediaType
+from .errors import RedGifsError
 from .utils import _users_iter, build_file_url, to_embed_url, to_web_url
 from .models import GIF, URL, CreatorResult, Image, User, SearchResult, CreatorsResult
 
@@ -195,6 +196,12 @@ def parse_creators(json: CreatorsResponse) -> CreatorsResult:
 
 def parse_creator(json: CreatorResponse, media_type: MediaType) -> CreatorResult:
     _log.debug('Using `parse_creator`')
+
+    # RedGifs API should actually throw a 404 HTTP response if the user is not found
+    # BUT since it does NOT do that everytime, this is how we are going to handle it.
+    if len(json['users']) == 0:
+        raise RedGifsError('User not found')
+
     user = json['users'][0]
     return CreatorResult(
         creator=User(
