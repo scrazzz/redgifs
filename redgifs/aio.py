@@ -36,7 +36,7 @@ from .tags import Tags
 from .enums import Order, MediaType
 from .utils import _async_read_tags_json, build_file_url, _gifs_iter, _images_iter, to_embed_url, to_web_url
 from .parser import parse_search, parse_creator, parse_creators, parse_search_image
-from .models import GIF, URL, CreatorResult, Image, SearchResult, CreatorsResult, TagSuggestion
+from .models import GIF, URL, CreatorResult, Image, SearchResult, CreatorsResult, TagSuggestion, User
 
 if TYPE_CHECKING:
     from redgifs.types.tags import TagInfo
@@ -316,6 +316,43 @@ class API:
         return parse_creator(resp, type)
 
     search_user = search_creator
+
+    async def get_user(self, username: str):
+        """
+        Get details of a user on RedGifs.
+
+        Parameters
+        ----------
+        username: :class:`str`
+            The username of the user.
+
+        Returns
+        -------
+        :class:`.User` - The user's details
+        """
+        resp = await self.http.get_user(username)
+        return User(
+            creation_time=datetime.fromtimestamp(resp['creationtime'], tz=timezone.utc),
+            description=resp.get('description'),
+            followers=resp['followers'],
+            following=resp['following'],
+            gifs=resp['gifs'],
+            name=resp.get('name'),
+            links=resp.get('links'),
+            poster=resp.get('poster'),
+            preview=resp.get('preview'),
+            profile_image_url=resp.get('profileImageUrl'),
+            profile_url=resp.get('profileUrl'),
+            published_collections=resp.get('publishedCollections'),
+            published_gifs=resp['publishedGifs'],
+            status=resp.get('status'),
+            subscription=resp['subscription'],
+            thumbnail=resp.get('thumbnail'),
+            url=resp['url'],
+            username=resp['username'],
+            verified=resp['verified'],
+            views=resp['views'],
+        )
 
     async def search_image(
         self,

@@ -48,7 +48,7 @@ if TYPE_CHECKING:
     from redgifs.types.gif import GetGifResponse, GifResponse
     from redgifs.types.image import ImageResponse, TrendingImagesResponse
     from redgifs.types.tags import TagsResponse, TagSuggestion
-    from redgifs.types.user import CreatorResponse, CreatorsResponse
+    from redgifs.types.user import CreatorResponse, CreatorsResponse, UserInfo
 
     T = TypeVar('T')
     Response = Coroutine[Any, Any, T]
@@ -194,6 +194,14 @@ class HTTP:
             count=count,
             order=order.value,
             type=type.value,
+        )
+        return self.request(r, **params)
+
+    def get_user(self, username: str, **params) -> UserInfo:
+        r = Route(
+            'GET',
+            '/v1/users/{username}',
+            username=username,
         )
         return self.request(r, **params)
 
@@ -383,6 +391,14 @@ class AsyncHttp:
             count=count,
             order=order.value,
             type=type.value,
+        )
+        return self.request(r, **params)
+
+    def get_user(self, username: str, **params) -> Response[UserInfo]:
+        r = Route(
+            'GET',
+            '/v1/users/{username}',
+            username=username,
         )
         return self.request(r, **params)
 
