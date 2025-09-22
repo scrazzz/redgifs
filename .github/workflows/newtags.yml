@@ -1,4 +1,4 @@
-name: update tags.json
+name: Update tags.json
 
 on:
   workflow_dispatch:
