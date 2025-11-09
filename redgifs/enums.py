@@ -45,24 +45,17 @@ class OrderMeta(EnumMeta):
 class Order(Enum, metaclass=OrderMeta):
     """An enum representing the order of the results."""
 
-    TRENDING = 'trending'
-    trending = 'trending'
     TOP = 'top'
-    top = 'top'
-    LATEST = 'latest'
-    latest = 'latest'
-    OLDEST = 'oldest'
-    oldest = 'oldest'
-
-    # These tags are not available on the web UI but still works through the API.
-    RECENT = 'recent'
-    recent = 'recent'
-    BEST = 'best'
-    best = 'best'
+    TOP7 = 'top7'
     TOP28 = 'top28'
-    top28 = 'top28'
-    NEW = 'new'
-    new = 'new'
+    LATEST = 'latest'
+    SCORE = 'score'
+    TRENDING = 'trending'
+
+    # for compatibility
+    RECENT = LATEST
+    NEW = LATEST
+    BEST = TRENDING
 
 
 class MediaType(Enum):
