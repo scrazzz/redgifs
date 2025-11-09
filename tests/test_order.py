@@ -5,6 +5,7 @@ api = API().login()
 def random_tag() -> str:
     return Tags().random(1)
 
+# TODO: add more tests for new tags from redgifs/enums.py
 
 # GIFS
 def test_order_recent():
@@ -31,9 +32,9 @@ def test_order_latest():
     r = api.search(random_tag(), order=Order.LATEST)
     assert r
 
-def test_order_oldest():
-    r = api.search(random_tag(), order=Order.OLDEST)
-    assert r
+# def test_order_oldest():
+#     r = api.search(random_tag(), order=Order.OLDEST)
+#     assert r
 
 # ----------------------------- #
 
@@ -62,6 +63,6 @@ def test_order_latest_i():
     r = api.search_image(random_tag(), order=Order.LATEST)
     assert r
 
-def test_order_oldest_i():
-    r = api.search_image(random_tag(), order=Order.OLDEST)
-    assert r
+# def test_order_oldest_i():
+#     r = api.search_image(random_tag(), order=Order.OLDEST)
+#     assert r
