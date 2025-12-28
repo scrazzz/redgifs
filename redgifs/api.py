@@ -223,7 +223,7 @@ class API:
         result = self.http.get_tag_suggestions(query)
         return [TagSuggestion(name=d['text'], count=d['gifs']) for d in result]
 
-    def search(self, search_text: str, *, order: Order = Order.TRENDING, count: int = 80, page: int = 1) -> SearchResult:
+    def search(self, search_text: str, *, order: Order = Order.TRENDING, count: int = 40, page: int = 1) -> SearchResult:
         """
         Search for GIFs.
 

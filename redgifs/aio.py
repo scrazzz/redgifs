@@ -222,7 +222,7 @@ class API:
         search_text: str,
         *,
         order: Order = Order.TRENDING,
-        count: int = 80,
+        count: int = 40,
         page: int = 1,
     ) -> SearchResult:
         """
