@@ -147,7 +147,7 @@ class HTTP:
     def search(self, search_text: str, order: Order, count: int, page: int, **params: Any) -> GifResponse:
         r = Route(
             'GET',
-            '/v2/gifs/search?search_text={search_text}&order={order}&count={count}&page={page}',
+            '/v2/gifs/search?type=g&order={order}&count={count}&page={page}&tags={search_text}',
             search_text=search_text,
             order=order.value,
             count=count,
@@ -344,7 +344,7 @@ class AsyncHttp:
     def search(self, search_text: str, order: Order, count: int, page: int, **params: Any) -> Response[GifResponse]:
         r = Route(
             'GET',
-            '/v2/gifs/search?search_text={search_text}&order={order}&count={count}&page={page}',
+            '/v2/gifs/search?type=g&order={order}&count={count}&page={page}&tags={search_text}',
             search_text=search_text,
             order=order.value,
             count=count,
