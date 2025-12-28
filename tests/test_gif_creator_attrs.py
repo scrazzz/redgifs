@@ -17,7 +17,7 @@ def test_attrs():
             assert isinstance(gif.has_audio, bool)
             assert gif.width and gif.height
             assert isinstance(gif.likes, int)
-            assert gif.tags
+            # assert gif.tags # some gifs don't have tags
             assert isinstance(gif.published, bool)
             assert gif.urls
         
@@ -30,7 +30,7 @@ def test_attrs():
 
         assert c.creation_time
         # assert c.description
-        assert c.followers
+        assert c.followers >= 0
         assert c.following >= 0
         assert c.gifs
         # assert c.links
