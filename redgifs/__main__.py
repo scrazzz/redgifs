@@ -68,7 +68,7 @@ def _dl_with_args(client: API, gif: GIF | Image, quality: str, folder: Optional[
 
 
 def download_users_gifs(client: API, url: yarl.URL, quality: str, folder: Optional[Path], images_only: bool):
-    match = re.match(r'https://(www\.)?redgifs\.com\/users\/(?P<username>\w+)', str(url))
+    match = re.match(r'https://(www\.)?redgifs\.com\/users\/(?P<username>[\w-]+)', str(url))
     if not match:
         click.UsageError(f'Not a valid redgifs user URL: {url}')
         exit(1)
