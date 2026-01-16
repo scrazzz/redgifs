@@ -3,6 +3,12 @@
 Changelogs
 ==========
 
+2.4.0
+-----
+- Completely deprecated usage of lower-case :py:class:`Order` attributes.
+- Changed default kwarg ``count`` value of search methods (:py:meth:`API.search_gif`, :py:meth:`API.search_image`) from 80 to 40.
+- Fixed GIF search and image search API endpoints
+
 2.3.0
 -----
 - Fixed CLI download logic and f-string error `0af610a <https://github.com/scrazzz/redgifs/commit/0af610a6d0f30a2f93a5c95c1dc0166000d2eef7>`_
