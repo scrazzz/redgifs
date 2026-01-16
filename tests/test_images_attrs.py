@@ -16,10 +16,10 @@ def test_attrs(query):
             assert img.create_date
             assert img.width
             assert img.height
-            # assert img.likes
+            assert img.likes >= 0
             assert img.tags
-            # assert img.verified
-            assert img.views
+            assert isinstance(img.verified, bool)
+            assert isinstance(img.views, int) >= 0
             assert img.published
             assert img.urls
             assert img.username
