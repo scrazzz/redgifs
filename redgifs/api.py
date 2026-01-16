@@ -353,7 +353,7 @@ class API:
             views=resp['views'],
         )
 
-    def search_image(self, search_text: str, *, order: Order = Order.NEW, count: int = 80, page: int = 1) -> SearchResult:
+    def search_image(self, search_text: str, *, order: Order = Order.TRENDING, count: int = 40, page: int = 1) -> SearchResult:
         """
         Search for images.
 

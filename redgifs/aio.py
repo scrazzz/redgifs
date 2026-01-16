@@ -358,8 +358,8 @@ class API:
         self,
         search_text: str,
         *,
-        order: Order = Order.NEW,
-        count: int = 80,
+        order: Order = Order.TRENDING,
+        count: int = 40,
         page: int = 1,
     ) -> SearchResult:
         """
