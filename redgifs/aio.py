@@ -219,7 +219,7 @@ class API:
 
     async def search(
         self,
-        search_text: str,
+        search_text: Union[str, List[str]],
         *,
         order: Order = Order.TRENDING,
         count: int = 40,
@@ -230,8 +230,8 @@ class API:
 
         Parameters
         ----------
-        search_text: :class:`str`
-            The type of GIFs to search for. Can be a string or an instance of :class:`.Tags`.
+        search_text: Union[:class:`str`, List[:class:`str`]]
+            The type of GIFs to search for. Can be a string or a list of strings.
         order: Optional[:class:`.Order`]
             The order of the GIFs to return.
         count: Optional[:class:`int`]
@@ -246,8 +246,10 @@ class API:
         if len(self._tags.tags_mapping) == 0:
             tags = await _async_read_tags_json()
             self._tags._set(tags)
+        texts = [search_text] if isinstance(search_text, str) else search_text
+        new_tags = [self._tags.search(text)[0] for text in texts]
 
-        st = self._tags.search(search_text)[0]
+        st = '+'.join(new_tags)
         resp = await self.http.search(st, order, count, page)
         return parse_search(st, resp, MediaType.GIF)
 
