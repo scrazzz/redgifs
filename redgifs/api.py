@@ -224,14 +224,14 @@ class API:
         return [TagSuggestion(name=d['text'], count=d['gifs']) for d in result]
 
     def search(
-        self, search_query: Union[str, List[str]], *, order: Order = Order.TRENDING, count: int = 40, page: int = 1
+        self, search_text: Union[str, List[str]], *, order: Order = Order.TRENDING, count: int = 40, page: int = 1
     ) -> SearchResult:
         """
         Search for GIFs.
 
         Parameters
         ----------
-        search_query: Union[:class:`str`, List[:class:`str`]]
+        search_text: Union[:class:`str`, List[:class:`str`]]
             The type of GIFs to search for. Can be a string or a list of strings.
         order: Optional[:class:`Order`]
             The order of the GIFs to return.
@@ -247,7 +247,8 @@ class API:
         if len(self._tags.tags_mapping) == 0:
             tags = _read_tags_json()
             self._tags._set(tags)
-        texts = [search_query] if isinstance(search_query, str) else search_query
+
+        texts = [search_text] if isinstance(search_text, str) else search_text
         new_tags = [self._tags.search(text)[0] for text in texts]
 
         st = '+'.join(new_tags)
