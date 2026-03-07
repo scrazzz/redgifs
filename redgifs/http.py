@@ -37,7 +37,7 @@ import yarl
 
 from . import __version__
 from .errors import HTTPException
-from .enums import Order, MediaType
+from .enums import Order, MediaType, NicheOrder, NicheGifOrder
 from .utils import strip_ip
 
 __all__ = ('ProxyAuth',)
@@ -47,6 +47,7 @@ _log = logging.getLogger(__name__)
 if TYPE_CHECKING:
     from redgifs.types.gif import GetGifResponse, GifResponse
     from redgifs.types.image import ImageResponse, TrendingImagesResponse
+    from redgifs.types.niches import NicheResponse
     from redgifs.types.tags import TagsResponse, TagSuggestion
     from redgifs.types.user import CreatorResponse, CreatorsResponse, UserInfo
 
@@ -235,6 +236,30 @@ class HTTP:
     def get_tag_suggestions(self, query: str) -> List[TagSuggestion]:
         r = Route('GET', '/v2/search/suggest?query={query}', query=query)
         return self.request(r)
+
+    # Niche methods
+
+    def search_niches(self, query: str, order: NicheOrder, count: int, page: int, **params: Any) -> NicheResponse:
+        r = Route(
+            'GET',
+            '/v2/niches/search?query={query}&order={order}&count={count}&page={page}',
+            query=query,
+            order=order.value,
+            count=count,
+            page=page,
+        )
+        return self.request(r, **params)
+
+    def search_niche(self, niche_id: str, order: NicheGifOrder, count: int, page: int, **params: Any) -> GifResponse:
+        r = Route(
+            'GET',
+            '/v2/niches/{niche_id}/gifs?order={order}&count={count}&page={page}',
+            niche_id=niche_id,
+            order=order.value,
+            count=count,
+            page=page,
+        )
+        return self.request(r, **params)
 
     # download
 
@@ -432,6 +457,30 @@ class AsyncHttp:
     def get_tag_suggestions(self, query: str) -> Response[List[TagSuggestion]]:
         r = Route('GET', '/v2/search/suggest?query={query}', query=query)
         return self.request(r)
+
+    # Niche methods
+
+    def search_niches(self, query: str, order: NicheOrder, count: int, page: int, **params: Any) -> Response[NicheResponse]:
+        r = Route(
+            'GET',
+            '/v2/niches/search?query={query}&order={order}&count={count}&page={page}',
+            query=query,
+            order=order.value,
+            count=count,
+            page=page,
+        )
+        return self.request(r, **params)
+
+    def search_niche(self, niche_id: str, order: NicheGifOrder, count: int, page: int, **params: Any) -> Response[GifResponse]:
+        r = Route(
+            'GET',
+            '/v2/niches/{niche_id}/gifs?order={order}&count={count}&page={page}',
+            niche_id=niche_id,
+            order=order.value,
+            count=count,
+            page=page,
+        )
+        return self.request(r, **params)
 
     # download
 

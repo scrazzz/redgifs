@@ -31,11 +31,12 @@ from typing import TYPE_CHECKING
 from .enums import MediaType
 from .errors import RedGifsError
 from .utils import _users_iter, build_file_url, to_embed_url, to_web_url
-from .models import GIF, URL, CreatorResult, Image, User, SearchResult, CreatorsResult
+from .models import GIF, URL, CreatorResult, Image, User, SearchResult, CreatorsResult, NicheResult, Niche
 
 if TYPE_CHECKING:
     from redgifs.types.gif import GifResponse
     from redgifs.types.image import ImageResponse
+    from redgifs.types.niches import NicheResponse
     from redgifs.types.user import CreatorResponse, CreatorsResponse
 
 _log = logging.getLogger(__name__)
@@ -286,5 +287,26 @@ def parse_creator(json: CreatorResponse, media_type: MediaType) -> CreatorResult
             )
             for img in json['gifs']
             if media_type == MediaType.IMAGE  # RedGifs return the key for this data as "gifs" even though it's an image...
+        ],
+    )
+
+def parse_search_niche(query: str, json: NicheResponse) -> NicheResult:
+    _log.debug('Using `parse_search_niche`')
+    return NicheResult(
+        searched_for=query,
+        page=int(json['page']),
+        pages=int(json['pages']),
+        total=int(json['total']),
+        niches=[
+            Niche(
+                id = niche['id'],
+                name = niche['name'],
+                gifs = int(niche['gifs']),
+                subscribers = int(niche['subscribers']),
+                tags = niche['tags'],
+                preferences = niche['preferences'],
+                thumbnail = niche['thumbnail'],
+            )
+            for niche in json['niches']
         ],
     )
