@@ -67,7 +67,7 @@ class Tags:
         try:
             return [self.tags_mapping[tag]]
         except KeyError:
-            results = difflib.get_close_matches(tag.title(), self.tags_mapping.values())
+            results = difflib.get_close_matches(tag.lower(), self.tags_mapping.values())
 
             if len(results) == 0:
                 raise InvalidTag(tag)
