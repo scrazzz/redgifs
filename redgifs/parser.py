@@ -63,7 +63,7 @@ def parse_search(searched_for: str, json: GifResponse, media_type: MediaType) ->
                 views=img['views'],
                 published=img['published'],
                 urls=URL(
-                    sd=img['urls']['sd'],
+                    sd=img['urls'].get('sd'),
                     hd=img['urls'].get('hd'),
                     poster=img['urls'].get('poster'),
                     thumbnail=img['urls'].get('thumbnail'),
@@ -93,7 +93,7 @@ def parse_search(searched_for: str, json: GifResponse, media_type: MediaType) ->
                 duration=int(gif['duration']) if gif['duration'] is not None else gif['duration'],
                 published=gif['published'],
                 urls=URL(
-                    sd=gif['urls']['sd'],
+                    sd=gif['urls'].get('sd'),
                     hd=gif['urls'].get('hd'),
                     poster=gif['urls'].get('poster'),
                     thumbnail=gif['urls'].get('thumbnail'),
@@ -163,7 +163,7 @@ def parse_search_image(searched_for: str, json: ImageResponse) -> SearchResult:
                 views=gif['views'],
                 published=gif['published'],
                 urls=URL(
-                    sd=gif['urls']['sd'],
+                    sd=gif['urls'].get('sd'),
                     hd=gif['urls'].get('hd'),
                     poster=gif['urls'].get('poster'),
                     thumbnail=gif['urls'].get('thumbnail'),
@@ -243,7 +243,7 @@ def parse_creator(json: CreatorResponse, media_type: MediaType) -> CreatorResult
                 duration=gif['duration'],  # type: ignore - We aren't setting values for ImageInfo
                 published=gif['published'],
                 urls=URL(
-                    sd=gif['urls']['sd'],
+                    sd=gif['urls'].get('sd'),
                     hd=gif['urls'].get('hd'),
                     poster=gif['urls'].get('poster'),
                     thumbnail=gif['urls'].get('thumbnail'),
@@ -271,7 +271,7 @@ def parse_creator(json: CreatorResponse, media_type: MediaType) -> CreatorResult
                 views=img['views'],
                 published=img['published'],
                 urls=URL(
-                    sd=img['urls']['sd'],
+                    sd=img['urls'].get('sd'),
                     hd=img['urls'].get('hd'),
                     poster=img['urls'].get('poster'),
                     thumbnail=img['urls'].get('thumbnail'),
