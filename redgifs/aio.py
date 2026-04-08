@@ -441,7 +441,7 @@ class API:
         resp = await self.http.search_niches(query, order, count, page)
         return parse_search_niche(query, resp)
 
-    async def search_niche(self, niche_id: str, *, order: NicheGifOrder = NicheGifOrder.TRENDING, count: int = 40, page: int = 1) -> SearchResult:
+    async def get_niche(self, niche_id: str, *, order: NicheGifOrder = NicheGifOrder.TRENDING, count: int = 40, page: int = 1) -> SearchResult:
         """
         Search for a single niche's GIFs
 
@@ -460,7 +460,7 @@ class API:
         -------
         :class:`.SearchResult` - The search result.
         """
-        resp = await self.http.search_niche(niche_id, order, count, page)
+        resp = await self.http.get_niche(niche_id, order, count, page)
         return parse_search(niche_id, resp, MediaType.GIF)
 
     async def close(self) -> None:

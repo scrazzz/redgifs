@@ -250,7 +250,7 @@ class HTTP:
         )
         return self.request(r, **params)
 
-    def search_niche(self, niche_id: str, order: NicheGifOrder, count: int, page: int, **params: Any) -> GifResponse:
+    def get_niche(self, niche_id: str, order: NicheGifOrder, count: int, page: int, **params: Any) -> GifResponse:
         r = Route(
             'GET',
             '/v2/niches/{niche_id}/gifs?order={order}&count={count}&page={page}',
@@ -471,7 +471,7 @@ class AsyncHttp:
         )
         return self.request(r, **params)
 
-    def search_niche(self, niche_id: str, order: NicheGifOrder, count: int, page: int, **params: Any) -> Response[GifResponse]:
+    def get_niche(self, niche_id: str, order: NicheGifOrder, count: int, page: int, **params: Any) -> Response[GifResponse]:
         r = Route(
             'GET',
             '/v2/niches/{niche_id}/gifs?order={order}&count={count}&page={page}',
