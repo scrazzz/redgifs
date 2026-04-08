@@ -7,6 +7,9 @@
     <a href="https://github.com/scrazzz/redgifs/actions/workflows/test.yml">
         <img src="https://github.com/scrazzz/redgifs/actions/workflows/test.yml/badge.svg" alt="pytest">
     </a>
+    <a href="https://github.com/scrazzz/redgifs/actions/workflows/pyright.yml">
+        <img src="https://github.com/scrazzz/redgifs/actions/workflows/pyright.yml/badge.svg" alt="pytest">
+    </a>
     <a href='https://redgifs.readthedocs.io/en/latest/?badge=latest'>
         <img src='https://readthedocs.org/projects/redgifs/badge/?version=latest' alt='Documentation Status' />
     </a>
