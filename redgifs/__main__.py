@@ -48,6 +48,11 @@ def download_gif(client: API, url: yarl.URL, quality: str, folder: Optional[Path
     click.echo(f'Downloading {id}...')
     gif = client.get_gif(id)
     gif_url = gif.urls.sd if quality == 'sd' else (gif.urls.hd or gif.urls.sd)
+
+    if gif_url is None:  # guard clause
+        click.echo(f'No URL available for GIF {id}, skipping.')
+        return
+
     filename = f'{gif_url.split("/")[3].split(".")[0]}.mp4'
     dir_ = f'{folder}/{filename}' if folder else filename
     client.download(gif_url, dir_)
@@ -56,6 +61,11 @@ def download_gif(client: API, url: yarl.URL, quality: str, folder: Optional[Path
 
 def _dl_with_args(client: API, gif: GIF | Image, quality: str, folder: Optional[Path], is_image: bool):
     gif_url = gif.urls.sd if quality == 'sd' else gif.urls.hd or gif.urls.sd
+
+    if gif_url is None:  # guard clause
+        click.echo(f'No URL available for GIF {id}, skipping.')
+        return
+
     filename = f'{gif_url.split("/")[3].split(".")[0]}.mp4'
     if is_image:
         name, ext = gif_url.split('/')[3].split('.')
