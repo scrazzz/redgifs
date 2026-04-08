@@ -140,6 +140,33 @@ loop = asyncio.get_event_loop()
 loop.run_until_complete(main())
 ```
 
+#### 4. Context managers:
+
+Context managers for automatic usage of login() and close() are available :
+```python
+from redgifs import API # note this
+
+with API() as api:
+    response = api.search('latina', count=4)
+
+print(response.gifs[0])
+```
+
+or async :
+```python
+import asyncio
+from redgifs.aio import API # note this
+
+async def main():
+    async with API() as api:
+        response = await api.search('latina', count=4)
+
+    print(response.gifs[0])
+
+loop = asyncio.get_event_loop()
+loop.run_until_complete(main())  # run
+```
+
 More examples can be found in the examples directory.
 
 -----

@@ -415,3 +415,12 @@ class API:
     def close(self) -> None:
         """Closes the API session."""
         return self.http.close()
+
+    def __enter__(self):
+        """Context manager."""
+        self.login()
+        return self
+
+    def __exit__(self, exc_type, exc, tb):
+        """Context manager."""
+        self.close()

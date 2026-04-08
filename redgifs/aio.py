@@ -422,3 +422,12 @@ class API:
     async def close(self) -> None:
         """Closes the API session."""
         return await self.http.close()
+
+    async def __aenter__(self):
+        """Context manager."""
+        await self.login()
+        return self
+
+    async def __aexit__(self, exc_type, exc, tb):
+        """Context manager."""
+        await self.close()
