@@ -51,6 +51,7 @@ class Order(Enum, metaclass=OrderMeta):
     LATEST = 'latest'
     SCORE = 'score'
     TRENDING = 'trending'
+    BEST_MATCH = 'best_match'
 
     # for compatibility
     RECENT = LATEST
