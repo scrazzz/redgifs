@@ -32,6 +32,10 @@ def test_order_latest():
     r = api.search(random_tag(), order=Order.LATEST)
     assert r
 
+def test_order_best_match():
+    r = api.search(random_tag(), order=Order.BEST_MATCH)
+    assert r
+
 # def test_order_oldest():
 #     r = api.search(random_tag(), order=Order.OLDEST)
 #     assert r
@@ -61,6 +65,10 @@ def test_order_new_i():
 
 def test_order_latest_i():
     r = api.search_image(random_tag(), order=Order.LATEST)
+    assert r
+
+def test_order_best_match_i():
+    r = api.search_image(random_tag(), order=Order.BEST_MATCH)
     assert r
 
 # def test_order_oldest_i():
