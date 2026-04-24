@@ -32,11 +32,11 @@ from typing import TYPE_CHECKING, Any, List, Optional, Union
 import requests
 
 from .tags import Tags
-from .enums import Order, MediaType
+from .enums import Order, NicheOrder, NicheGifOrder, MediaType
 from .http import HTTP, ProxyAuth
 from .utils import _read_tags_json, build_file_url, _gifs_iter, _images_iter, to_embed_url, to_web_url
-from .parser import parse_creator, parse_search, parse_creators, parse_search_image
-from .models import URL, GIF, CreatorResult, Image, SearchResult, CreatorsResult, TagSuggestion, User
+from .parser import parse_creator, parse_search, parse_creators, parse_search_image, parse_search_niche
+from .models import URL, GIF, CreatorResult, Image, SearchResult, CreatorsResult, TagSuggestion, User, NicheResult
 
 if TYPE_CHECKING:
     from redgifs.types.tags import TagInfo
@@ -411,6 +411,50 @@ class API:
             filename and used instead.
         """
         return self.http.download(url, fp)
+
+    def search_niches(self, query: str, *, order: NicheOrder = NicheOrder.BEST_MATCH, count: int = 40, page: int = 1) -> NicheResult:
+        """
+        Search for niches.
+
+        Parameters
+        ----------
+        query: :class:`str`
+            The niches to search for.
+        order: Optional[:class:`.NicheOrder`]
+            The order of the niches to return.
+        count: Optional[:class:`int`]
+            The amount of images to return.
+        page: Optional[:class:`int`]
+            The page number of the images to return.
+
+        Returns
+        -------
+        :class:`.NicheResult` - The search result.
+        """
+        resp = self.http.search_niches(query, order, count, page)
+        return parse_search_niche(query, resp)
+
+    def get_niche(self, niche_id: str, *, order: NicheGifOrder = NicheGifOrder.TRENDING, count: int = 40, page: int = 1) -> SearchResult:
+        """
+        Search for a single niche's GIFs 
+
+        Parameters
+        ----------
+        niche_id: :class:`str`
+            The ID of the niche. If the URL is ``https://redgifs.com/niches/abcxyz`` then the ID is ``abcxyz``.
+        order: Optional[:class:`.NicheGifOrder`]
+            The order of the GIFs to return.
+        count: Optional[:class:`int`]
+            The amount of GIFs to return.
+        page: Optional[:class:`int`]
+            The page number of the GIFs to return.
+
+        Returns
+        -------
+        :class:`.SearchResult` - The search result.
+        """
+        resp = self.http.get_niche(niche_id, order, count, page)
+        return parse_search(niche_id, resp, MediaType.GIF)
 
     def close(self) -> None:
         """Closes the API session."""

@@ -419,3 +419,55 @@ class TagSuggestion(TypedDict):
 
     name: str
     count: int
+
+class Niche(TypedDict):
+    """The niche information returned from RedGifs.
+
+    Attributes
+    ----------
+    id: :class:`str`
+        The niche ID.
+    name: :class:`str`
+        The niche name.
+    gifs: :class:`int`
+        The amount of GIFs in this niche.
+    subscribers: :class:`int`
+        The amount of subscribers for this niche.
+    tags: List[:class:`str`]
+        A list of tags for this niche.
+    preferences: List[:class:`str`]
+        A list of preferences for this niche.
+    thumbnail: :class:`str`
+        The thumbnail URL for this niche.
+    """
+
+    id: str
+    name: str
+    gifs: int
+    subscribers: int
+    tags: List[str]
+    preferences: List[str]
+    thumbnail: str
+
+class NicheResult(TypedDict):
+    """The niche result searched for.
+
+    Attributes
+    ----------
+    searched_for: :class:`str`
+        The result of what you have searched for.
+    page: :class:`int`
+        The current page number.
+    pages: :class:`int`
+        The total number of pages available.
+    total: :class:`int`
+        The total number of niches for the query.
+    niches: List[:class:`Niche`]
+        The niches for the query.
+    """
+
+    searched_for: str
+    page: int
+    pages: int
+    total: int
+    niches: List[Niche]

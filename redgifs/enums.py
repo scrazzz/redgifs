@@ -26,7 +26,7 @@ DEALINGS IN THE SOFTWARE.
 import warnings
 from enum import Enum, EnumMeta
 
-__all__ = ('Order', 'MediaType')
+__all__ = ('Order', 'NicheOrder', 'NicheGifOrder', 'MediaType')
 
 
 class OrderMeta(EnumMeta):
@@ -57,6 +57,23 @@ class Order(Enum, metaclass=OrderMeta):
     NEW = LATEST
     BEST = TRENDING
 
+class NicheOrder(Enum):
+    """An enum representing the order of the results for niches."""
+
+    POSTS = 'posts'
+    SUBSCRIBERS = 'subscribers'
+    BEST_MATCH = 'best_match'
+    ALPHABETICAL_ASC = 'alphabetical_asc'
+    ALPHABETICAL_DESC = 'alphabetical_desc'
+
+class NicheGifOrder(Enum):
+    """An enum representing the order of the results for niche gifs."""
+
+    TRENDING = 'trending'
+    OLDEST = 'oldest'
+    LATEST = 'latest'
+    BEST = 'best'
+    HOT = 'hot'
 
 class MediaType(Enum):
     """An enum representing the media type of the results."""
