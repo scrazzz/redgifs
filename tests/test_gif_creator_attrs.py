@@ -1,8 +1,10 @@
 from redgifs import API, Tags
 from redgifs.errors import HTTPException
 
+
 def random_tag() -> str:
     return Tags().random(1)
+
 
 def test_attrs():
     api = API()
@@ -20,14 +22,13 @@ def test_attrs():
             # assert gif.tags # some gifs don't have tags
             assert isinstance(gif.published, bool)
             assert gif.urls
-        
+
         try:
             c = api.search_creator(username).creator
         except HTTPException as e:
-            return print('Failed to get user profile. User may have been deleted.')
+            return print(f'Error: Failed to get user profile - {e}')
 
         # attrs commented out can be None or empty (str) or 0 (int)
-
         assert c.creation_time
         # assert c.description
         assert c.followers >= 0
