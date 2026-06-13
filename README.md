@@ -112,7 +112,7 @@ $ redgifs https://redgifs.com/users/usernamethatexists -f rg_vids
 Downloaded 1/3 GIFs
 Downloaded 2/3 GIFs
 ...
-Downloaded 3/3 videos of user usernamethatexists to folder rg_vids sucessfully!
+Downloaded 3/3 videos of user usernamethatexists to folder rg_vids successfully!
 ```
 </details>
 
