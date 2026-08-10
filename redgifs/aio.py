@@ -139,8 +139,13 @@ class API:
 
         Returns
         -------
-        List[:class:`.Image`]
+        List[:class:`.GIF`]
+        
+        .. deprecated:: 2.5.0
+            This method will be removed in the next version.
         """
+        import warnings
+        warnings.warn("This method will be removed in the next version.", DeprecationWarning, stacklevel=2)
         r = (await self.http.get_trending_gifs())['gifs']
         return _gifs_iter(r)
 
